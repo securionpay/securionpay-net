@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurionPay", "SecurionPay\SecurionPay.csproj", "{9318D796-2A9C-4313-9D14-9C5D3E215C31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurionPayTests", "SecurionPayTests\SecurionPayTests.csproj", "{3471913F-9197-430A-82C7-A6B6EB2E581C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9318D796-2A9C-4313-9D14-9C5D3E215C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9318D796-2A9C-4313-9D14-9C5D3E215C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9318D796-2A9C-4313-9D14-9C5D3E215C31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3471913F-9197-430A-82C7-A6B6EB2E581C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3471913F-9197-430A-82C7-A6B6EB2E581C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3471913F-9197-430A-82C7-A6B6EB2E581C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3471913F-9197-430A-82C7-A6B6EB2E581C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
