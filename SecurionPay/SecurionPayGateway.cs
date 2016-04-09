@@ -44,6 +44,7 @@ namespace SecurionPay
             {
                 client = new HttpClient(customHttpMessageHandler);
             }
+            client.BaseAddress = new Uri(_serverUrl);
         }
 
         #region public
@@ -410,7 +411,6 @@ namespace SecurionPay
         private async Task<T> SendRequest<T>(HttpMethod method, string action, object parameter)
         {
 
-            client.BaseAddress = new Uri(_serverUrl);
             HttpRequestMessage request = new HttpRequestMessage(method, _serverUrl + action);
             if (parameter != null)
             {
