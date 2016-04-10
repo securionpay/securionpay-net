@@ -8,11 +8,15 @@ namespace SecurionPay.Exception
 {
     public class SecurionPayException : System.Exception
     {
-        public SecurionPayException(Error error)
+        public SecurionPayException(Error error, string requestType, string requestAction)
         {
             Error = error;
+            RequestType = requestType;
+            RequestAction = requestAction;
         }
 
         public Error Error{ get; private set; }
+        public string RequestType { get; private set; }
+        public string RequestAction { get; private set; }
     }
 }

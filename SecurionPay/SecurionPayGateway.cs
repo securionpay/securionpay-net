@@ -71,7 +71,7 @@ namespace SecurionPay
         public async Task<Charge> RetrieveCharge(String id)
         {
             var url = String.Format("{0}/{1}", CHARGES_PATH, id);
-            return await SendRequest<Charge>(HttpMethod.Post, url);
+            return await SendRequest<Charge>(HttpMethod.Get, url);
         }
 
         public async Task<Charge> UpdateCharge(ChargeUpdateRequest chargeUpdate)
@@ -431,7 +431,7 @@ namespace SecurionPay
                 ErrorResponse errorResponse;
                 var apiErrorRsponseString = await response.Content.ReadAsStringAsync();
                 errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(apiErrorRsponseString);
-                throw new SecurionPayException(errorResponse.Error);
+                throw new SecurionPayException(errorResponse.Error,typeof(T).Name,action);
             }
 
 
