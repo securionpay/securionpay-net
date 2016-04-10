@@ -3,6 +3,7 @@ using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
 using SecurionPay;
+using SecurionPay.Enums;
 using SecurionPay.Request;
 using SecurionPayTests.Units.Tools;
 using System;
@@ -34,25 +35,67 @@ namespace SecurionPayTests.Units
         }
 
         [TestMethod]
-        public async Task CreateBlackListTest()
+        public async Task CreateFingerprintBlackListTest()
         {
-            var blacklistRuleRequest = new BlacklistRuleRequest() { Fingerprint = "fssdfhda" + DateTime.Now.Millisecond };
+            await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.Fingerprint, Fingerprint = "test_fp" + DateTime.Now.Millisecond });
+        }
+
+        [TestMethod]
+        public async Task CreateEmailBlackListTest()
+        {
+            await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.Email, Email = "test" + DateTime.Now.Millisecond + "@example.com" });
+        }
+
+        [TestMethod]
+        public async Task CreateLanguageBlackListTest()
+        {
+            await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.AcceptLanguage, AcceptLanguage = "test" + DateTime.Now.Millisecond});
+        }
+
+        [TestMethod]
+        public async Task CreateIpBlackListTest()
+        {
+            await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.IpAddress, IpAddress = "192.168.11.1" });
+        }
+
+        [TestMethod]
+        public async Task CreateIpCountryBlackListTest()
+        {
+            await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.IpCountry, IpCountry = "PL" });
+        }
+
+        [TestMethod]
+        public async Task CreateMetadataBlackListTest()
+        {
+            await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.Metadata, MetadataKey = "key",MetadataValue="value" });
+        }
+
+        [TestMethod]
+        public async Task CreateUserAgentBlackListTest()
+        {
+            await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.UserAgent, IpCountry = "UA" });
+        }
+
+
+        #region private
+
+        private async Task CreatelBlackListTest(BlacklistRuleRequest createRequest)
+        {
+
             await _requestTester.TestMethod(
                 async (api) =>
                 {
-                    var rule = await api.CreateBlacklistRule(blacklistRuleRequest);
+                    var rule = await api.CreateBlacklistRule(createRequest);
                 },
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
                     Address = _gatewayAdress + "/blacklist",
                     Header = GetDesiredHeader(),
-                    Content = ToJson(blacklistRuleRequest)
+                    Content = ToJson(createRequest)
                 }
             );
         }
-
-        #region private
 
         private string ToJson(object obj)
         {
