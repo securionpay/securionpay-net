@@ -16,7 +16,7 @@ namespace SecurionPayTests.Units.Tools
     {
         string _gatewayAddress;
         string _privateKey;
-
+        SemaphoreSlim semaphore = new SemaphoreSlim(0);
         public RequestTester(string privateKey,string gatewayAddress)
         {
             _gatewayAddress = gatewayAddress;
@@ -28,11 +28,13 @@ namespace SecurionPayTests.Units.Tools
             var mock = new Mock<HttpMessageHandler>();
             HttpRequestMessage request=null;
             string requestJson = null;
+
             mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .Callback< HttpRequestMessage,CancellationToken>(async (htm,ct)=>
                 {
                     requestJson = await htm.Content.ReadAsStringAsync();
                     request = htm;
+                    semaphore.Release();
                 })
                 .Returns(Task.Run(() => new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.BadGateway }));
             SecurionPayGateway api = new SecurionPayGateway(_privateKey, _gatewayAddress, mock.Object);
@@ -42,6 +44,7 @@ namespace SecurionPayTests.Units.Tools
                 await methodToTest(api);
             }
             catch { }
+            await semaphore.WaitAsync();
             Assert.IsTrue(expectedRequest.Match(request, requestJson));
         }
     }
