@@ -32,9 +32,18 @@ namespace SecurionPayTests.Units.Tools
             mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .Callback< HttpRequestMessage,CancellationToken>(async (htm,ct)=>
                 {
-                    requestJson = await htm.Content.ReadAsStringAsync();
-                    request = htm;
-                    semaphore.Release();
+                    try
+                    {
+                        request = htm;
+                        if (htm.Content != null)
+                        {
+                            requestJson = await htm.Content.ReadAsStringAsync();
+                        }
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
                 })
                 .Returns(Task.Run(() => new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.BadGateway }));
             SecurionPayGateway api = new SecurionPayGateway(_privateKey, _gatewayAddress, mock.Object);

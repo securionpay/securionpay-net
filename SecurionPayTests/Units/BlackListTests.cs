@@ -77,6 +77,26 @@ namespace SecurionPayTests.Units
         }
 
 
+        [TestMethod]
+        public async Task RetrieveBlackListTest()
+        {
+            var ruleId = "test" + DateTime.Now.Millisecond;
+            await _requestTester.TestMethod(
+                async (api) =>
+                {
+                    await api.RetrieveBlacklistRule(ruleId);
+                },
+                new RequestDescriptor()
+                {
+                    Method = HttpMethod.Get,
+                    Address = _gatewayAdress + "/blacklist/" + ruleId,
+                    Header = GetDesiredHeader(),
+                    Content = null
+                }
+            );
+        }
+
+
         #region private
 
         private async Task CreatelBlackListTest(BlacklistRuleRequest createRequest)
