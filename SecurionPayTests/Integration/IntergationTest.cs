@@ -13,6 +13,7 @@ namespace SecurionPayTests.Integration
     public class IntergationTest
     {
         protected SecurionPayGateway _gateway;
+        protected Random _random;
 
         public IntergationTest()
         {
@@ -20,6 +21,7 @@ namespace SecurionPayTests.Integration
             var gatewayUrl=config.AppSettings.Settings["gateway_test_url"].Value;
             var privateKey= config.AppSettings.Settings["gateway_test_key"].Value;
             _gateway = new SecurionPayGateway(privateKey,gatewayUrl );
+            _random = new Random();
 
         }
 

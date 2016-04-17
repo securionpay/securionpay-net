@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace SecurionPayTests.Integration
 {
     [TestClass]
-    public class FlowsTest: IntergationTest
+    public class FlowsTest : IntergationTest
     {
         /// <summary>
         /// test for flow Token -> Charge -> Capture -> Refund
@@ -69,10 +69,10 @@ namespace SecurionPayTests.Integration
                 var chargeRequest = new ChargeRequest() { Amount = 1000, Currency = "PLN", Card = new CardRequest() { Id = token.Id }, Description = "sss" };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
-                var customerRequest = new CustomerRequest() { Email = "test@test.com", Description = "test customer", Card = new CardRequest() {Id=charge.Id } };
+                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer", Card = new CardRequest() { Id = charge.Id } };
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                chargeRequest = new ChargeRequest() { Amount = 1000, Currency = "PLN",CustomerId=customer.Id, Description = "sss"};
+                chargeRequest = new ChargeRequest() { Amount = 1000, Currency = "PLN", CustomerId = customer.Id, Description = "sss" };
                 charge = await _gateway.CreateCharge(chargeRequest);
 
                 Assert.AreEqual(1000, charge.Amount);
@@ -84,6 +84,116 @@ namespace SecurionPayTests.Integration
                 HandleApiException(exc);
             }
         }
-      
+
+        /// <summary>
+        /// test for flow Plan -> Customer -> Token -> Subscription
+        /// </summary>
+        /// <returns></returns>
+        [TestMethod]
+        public async Task SubscribeWithTokenTest()
+        {
+            try
+            {
+                var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
+                var plan = await _gateway.CreatePlan(planRequest);
+
+                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customer = await _gateway.CreateCustomer(customerRequest);
+
+                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = "2016", Cvc = "432", CardholderName = "Jan Kowalski" };
+                var token = await _gateway.CreateToken(createTokenRequest);
+
+                var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = new CardRequest() { Id = token.Id } };
+                var subscription = await _gateway.CreateSubscription(subscriptionRequest);
+
+                Assert.AreEqual(plan.Id, subscription.PlanId);
+                Assert.AreEqual(customer.Id, subscription.CustomerId);
+
+            }
+            catch (SecurionPayException exc)
+            {
+                HandleApiException(exc);
+            }
+        }
+
+        /// <summary>
+        /// test for flow Customer -> Charge -> Charge (existing card)
+        /// </summary>
+        /// <returns></returns>
+        [TestMethod]
+        public async Task ChargeCustomerTwiceTest()
+        {
+            try
+            {
+                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customer = await _gateway.CreateCustomer(customerRequest);
+
+                var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
+                var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId=customer.Id,Card=cardRequest};
+                var charge = await _gateway.CreateCharge(chargeRequest);
+
+                chargeRequest = new ChargeRequest(){Amount=1000,Currency="EUR",CustomerId=charge.CustomerId};
+                var charge2 = await _gateway.CreateCharge(chargeRequest);
+
+                Assert.AreEqual(1000,charge2.Amount);
+                Assert.AreEqual(customer.Id, charge2.CustomerId);
+
+            }
+            catch (SecurionPayException exc)
+            {
+                HandleApiException(exc);
+            }
+        }
+
+        /// <summary>
+        /// test for flow Customer -> Add card -> Charge card
+        /// </summary>
+        /// <returns></returns>
+        [TestMethod]
+        public async Task ChargeCardTest()
+        {
+            try
+            {
+                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customer = await _gateway.CreateCustomer(customerRequest);
+
+                var cardRequest = new CardRequest() {CustomerId=customer.Id, Number = "4242424242424242" ,ExpMonth="12",ExpYear="2055",Cvc="123",CardholderName="test test"};
+                var card = await _gateway.CreateCard(cardRequest);
+
+                card = await _gateway.RetrieveCard(customer.Id, card.Id);
+
+                Assert.AreEqual("4242", card.Last4);
+                Assert.AreEqual("12", card.ExpMonth);
+                Assert.AreEqual("2055", card.ExpYear);
+                Assert.AreEqual("test test", card.CardholderName);
+
+                var chargeReqest = new ChargeRequest() { Amount=1000,Currency="EUR",CustomerId=card.CustomerId};
+                var charge =await _gateway.CreateCharge(chargeReqest);
+
+                Assert.AreEqual(1000, charge.Amount);
+                
+                /*
+
+            return api.charges.create({
+                amount: 1000,
+                currency: 'EUR',
+                customerId: card.customerId
+            });
+        }).then(function(charge) {
+            expect(charge.amount).toBe(1000);
+                 * */
+            }
+            catch (SecurionPayException exc)
+            {
+                HandleApiException(exc);
+            }
+        }
+
+
+        private string GetRandomEmail()
+        {
+            return string.Format("test{0}@test.com", _random.Next(9999));
+        }
+
     }
 }

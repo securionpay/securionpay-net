@@ -20,7 +20,6 @@ namespace SecurionPayTests.Units
     [TestClass]
     public class BlackListTests
     {
-        RequestTester _requestTester;
         string _gatewayAdress;
         string _privateKey="test";
         string _appVersion;
@@ -29,7 +28,6 @@ namespace SecurionPayTests.Units
         public void InitializeTests()
         {
             _gatewayAdress = "https://api.securionpay.com";
-            _requestTester = new RequestTester(_privateKey, _gatewayAdress);
             var assemblyVersion = Assembly.Load("SecurionPay").GetName().Version;
             _appVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major, assemblyVersion.MajorRevision, assemblyVersion.Minor);
         }
@@ -80,8 +78,9 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveBlackListTest()
         {
+            var requestTester = new RequestTester(_privateKey, _gatewayAdress);
             var ruleId = "test" + DateTime.Now.Millisecond;
-            await _requestTester.TestMethod(
+            await requestTester.TestMethod(
                 async (api) =>
                 {
                     await api.RetrieveBlacklistRule(ruleId);
@@ -101,8 +100,8 @@ namespace SecurionPayTests.Units
 
         private async Task CreatelBlackListTest(BlacklistRuleRequest createRequest)
         {
-
-            await _requestTester.TestMethod(
+            var requestTester = new RequestTester(_privateKey, _gatewayAdress);
+            await requestTester.TestMethod(
                 async (api) =>
                 {
                     var rule = await api.CreateBlacklistRule(createRequest);

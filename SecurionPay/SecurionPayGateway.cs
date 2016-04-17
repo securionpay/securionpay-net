@@ -152,7 +152,7 @@ namespace SecurionPay
         public async Task<Card> RetrieveCard(String customerId, String id)
         {
             var url = string.Format(CARDS_PATH, customerId) + "/" + id;
-            return await SendRequest<Card>(HttpMethod.Post, url);
+            return await SendRequest<Card>(HttpMethod.Get, url);
         }
 
         public async Task<Card> UpdateCard(CardUpdateRequest updateCard)
