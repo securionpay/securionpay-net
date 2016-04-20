@@ -30,12 +30,21 @@ namespace SecurionPay
         private string _serverUrl = "";
         private string _privateAuthToken;
         private string _version = "2.0.0";
+        HttpClient client;
 
-        public SecurionPayGateway(string privateKey,string serverUrl = "https://api.securionpay.com/")
+        public SecurionPayGateway(string privateKey,string serverUrl = "https://api.securionpay.com/", HttpMessageHandler customHttpMessageHandler=null)
         {
             _serverUrl = serverUrl;
             var tokenBytes = Encoding.UTF8.GetBytes(privateKey + ":");
             _privateAuthToken = Convert.ToBase64String(tokenBytes);
+            if (customHttpMessageHandler == null)
+            {
+                client = new HttpClient();
+            } else
+            {
+                client = new HttpClient(customHttpMessageHandler);
+            }
+            client.BaseAddress = new Uri(_serverUrl);
         }
 
         #region public
@@ -62,7 +71,7 @@ namespace SecurionPay
         public async Task<Charge> RetrieveCharge(String id)
         {
             var url = String.Format("{0}/{1}", CHARGES_PATH, id);
-            return await SendRequest<Charge>(HttpMethod.Post, url);
+            return await SendRequest<Charge>(HttpMethod.Get, url);
         }
 
         public async Task<Charge> UpdateCharge(ChargeUpdateRequest chargeUpdate)
@@ -143,7 +152,7 @@ namespace SecurionPay
         public async Task<Card> RetrieveCard(String customerId, String id)
         {
             var url = string.Format(CARDS_PATH, customerId) + "/" + id;
-            return await SendRequest<Card>(HttpMethod.Post, url);
+            return await SendRequest<Card>(HttpMethod.Get, url);
         }
 
         public async Task<Card> UpdateCard(CardUpdateRequest updateCard)
@@ -401,33 +410,31 @@ namespace SecurionPay
 
         private async Task<T> SendRequest<T>(HttpMethod method, string action, object parameter)
         {
-            using (var client = new HttpClient())
+
+            HttpRequestMessage request = new HttpRequestMessage(method, _serverUrl + action);
+            if (parameter != null)
             {
-                client.BaseAddress = new Uri(_serverUrl);
-                HttpRequestMessage request = new HttpRequestMessage(method, _serverUrl + action);
-                if (parameter != null)
-                {
-                    var requestJson = JsonConvert.SerializeObject(parameter, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-                    request.Content = new StringContent(requestJson, Encoding.UTF8, "application/json");
-                }
-
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", _privateAuthToken);
-                client.DefaultRequestHeaders.Add("User-Agent", string.Format("SecurionPay-DOTNET/{0}", _version));
-                HttpResponseMessage response = await client.SendAsync(request);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    var apiResponseString = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(apiResponseString);
-                }
-                else
-                {
-                    ErrorResponse errorResponse;
-                    var apiErrorRsponseString = await response.Content.ReadAsStringAsync();
-                    errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(apiErrorRsponseString);
-                    throw new SecurionPayException(errorResponse.Error);
-                }
-
+                var requestJson = JsonConvert.SerializeObject(parameter, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+                request.Content = new StringContent(requestJson, Encoding.UTF8, "application/json");
             }
+
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", _privateAuthToken);
+            client.DefaultRequestHeaders.Add("User-Agent", string.Format("SecurionPay-DOTNET/{0}", _version));
+            HttpResponseMessage response = await client.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var apiResponseString = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<T>(apiResponseString);
+            }
+            else
+            {
+                ErrorResponse errorResponse;
+                var apiErrorRsponseString = await response.Content.ReadAsStringAsync();
+                errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(apiErrorRsponseString);
+                throw new SecurionPayException(errorResponse.Error,typeof(T).Name,action);
+            }
+
+
         }
 
         #endregion

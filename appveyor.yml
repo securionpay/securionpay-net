@@ -1,2 +1,3 @@
 before_build:
   - nuget restore
+  - ps: .\setup_integration_tests.ps1 "https://api.securionpay.com/" "pr_test_FjW0q2HMs40Jj3KGua5294sp"
