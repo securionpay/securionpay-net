@@ -18,19 +18,8 @@ using System.Threading.Tasks;
 namespace SecurionPayTests.Units
 {
     [TestClass]
-    public class BlackListTests
+    public class BlackListTests :BaseUnitTestsSet
     {
-        string _gatewayAdress;
-        string _privateKey="test";
-        string _appVersion;
-
-        [TestInitialize]
-        public void InitializeTests()
-        {
-            _gatewayAdress = "https://api.securionpay.com";
-            var assemblyVersion = Assembly.Load("SecurionPay").GetName().Version;
-            _appVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major, assemblyVersion.MajorRevision, assemblyVersion.Minor);
-        }
 
         [TestMethod]
         public async Task CreateFingerprintBlackListTest()
@@ -78,7 +67,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveBlackListTest()
         {
-            var requestTester = new RequestTester(_privateKey, _gatewayAdress);
+            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
             var ruleId = "test" + DateTime.Now.Millisecond;
             await requestTester.TestMethod(
                 async (api) =>
@@ -88,19 +77,57 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = _gatewayAdress + "/blacklist/" + ruleId,
+                    Address = GatewayAdress + "/blacklist/" + ruleId,
                     Header = GetDesiredHeader(),
                     Content = null
                 }
             );
         }
 
+        [TestMethod]
+        public async Task DeleteBlackListTest()
+        {
+            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var ruleId = "test" + DateTime.Now.Millisecond;
+            await requestTester.TestMethod(
+                async (api) =>
+                {
+                    await api.DeleteBlacklistRule(ruleId);
+                },
+                new RequestDescriptor()
+                {
+                    Method = HttpMethod.Delete,
+                    Address = GatewayAdress + "/blacklist/" + ruleId,
+                    Header = GetDesiredHeader(),
+                    Content = null
+                }
+            );
+        }
+
+        [TestMethod]
+        public async Task ListBlackListTest()
+        {
+            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            await requestTester.TestMethod(
+                async (api) =>
+                {
+                    await api.ListBlacklistRules();
+                },
+                new RequestDescriptor()
+                {
+                    Method = HttpMethod.Get,
+                    Address = GatewayAdress + "/blacklist" ,
+                    Header = GetDesiredHeader(),
+                    Content = null
+                }
+            );
+        }
 
         #region private
 
         private async Task CreatelBlackListTest(BlacklistRuleRequest createRequest)
         {
-            var requestTester = new RequestTester(_privateKey, _gatewayAdress);
+            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
             await requestTester.TestMethod(
                 async (api) =>
                 {
@@ -109,27 +136,11 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = _gatewayAdress + "/blacklist",
+                    Address = GatewayAdress + "/blacklist",
                     Header = GetDesiredHeader(),
                     Content = ToJson(createRequest)
                 }
             );
-        }
-
-        private string ToJson(object obj)
-        {
-            return JsonConvert.SerializeObject(obj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-        }
-
-        private List<string> GetDesiredHeader()
-        {
-            return new List<string>() { string.Format("Authorization: Basic {0}", Base64Encode(_privateKey+":")), string.Format("User-Agent: SecurionPay-DOTNET/{0}", _appVersion) };
-        }
-
-        public static string Base64Encode(string plainText)
-        {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
         }
 
         #endregion
