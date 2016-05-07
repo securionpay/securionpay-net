@@ -67,6 +67,12 @@
     <Compile Include="Units\BaseUnitTestsSet.cs" />
     <Compile Include="Units\BlackListTests.cs" />
     <Compile Include="Units\CardsTests.cs" />
+    <Compile Include="Units\ChargeTests.cs" />
+    <Compile Include="Units\CustmersTests.cs" />
+    <Compile Include="Units\EventsTests.cs" />
+    <Compile Include="Units\SubscriptionsTests.cs" />
+    <Compile Include="Units\TokensTests.cs" />
+    <Compile Include="Units\Tools\MatchResult.cs" />
     <Compile Include="Units\Tools\RequestTester.cs" />
     <Compile Include="Units\Tools\RequestDescriptor.cs" />
   </ItemGroup>

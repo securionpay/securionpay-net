@@ -54,7 +54,8 @@ namespace SecurionPayTests.Units.Tools
             }
             catch { }
             await semaphore.WaitAsync();
-            Assert.IsTrue(expectedRequest.Match(request, requestJson));
+            var result=expectedRequest.Match(request, requestJson);
+            Assert.IsTrue(result.MatchSuccess,result.MatchFailReasonsMessage);
         }
     }
 }

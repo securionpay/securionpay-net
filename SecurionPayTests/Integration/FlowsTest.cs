@@ -172,16 +172,6 @@ namespace SecurionPayTests.Integration
 
                 Assert.AreEqual(1000, charge.Amount);
                 
-                /*
-
-            return api.charges.create({
-                amount: 1000,
-                currency: 'EUR',
-                customerId: card.customerId
-            });
-        }).then(function(charge) {
-            expect(charge.amount).toBe(1000);
-                 * */
             }
             catch (SecurionPayException exc)
             {

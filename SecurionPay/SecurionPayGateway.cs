@@ -229,7 +229,7 @@ namespace SecurionPay
         public async Task<Subscription> RetrieveSubscription(String customerId, String id)
         {
             var url = string.Format(SUBSCRIPTIONS_PATH, customerId) + "/" + id;
-            return await SendRequest<Subscription>(HttpMethod.Post, url);
+            return await SendRequest<Subscription>(HttpMethod.Get, url);
         }
 
         public async Task<Subscription> UpdateSubscription(SubscriptionUpdateRequest updateSubscriptionRequest)
@@ -264,7 +264,7 @@ namespace SecurionPay
         public async Task<Event> RetrieveEvent(String id)
         {
             var url = string.Format("{0}/{1}", EVENTS_PATH, id);
-            return await SendRequest<Event>(HttpMethod.Post, url);
+            return await SendRequest<Event>(HttpMethod.Get, url);
         }
 
         public async Task<ListResponse<Event>> ListEvents()
