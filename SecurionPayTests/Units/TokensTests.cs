@@ -16,8 +16,8 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task CreateTokenTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
-            var tokenRequest  = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = "2016", Cvc = "432", CardholderName = "Jan Kowalski" };
+            var requestTester = GetRequestTester();
+            var tokenRequest  = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = "2016", Cvc = "432", CardholderName = "John Smith" };
             await requestTester.TestMethod(
                 async (api) =>
                 {
@@ -36,7 +36,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveTokenTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var tokenId = "1";
             await requestTester.TestMethod(
                 async (api) =>

@@ -16,9 +16,9 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task CreateSubscriptionWithCardTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "Jan Kowalski" };
+            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
             var subscriptionRequest = new SubscriptionRequest() { CustomerId= customerId ,Card= cardRequest,Quantity=1000,PlanId="1" };
             await requestTester.TestMethod(
                 async (api) =>
@@ -38,7 +38,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task CreateSubscriptionWithTokenTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "1";
             var tokenId = "1";
             var subscriptionRequest = new SubscriptionRequest() { CustomerId = customerId, Card = new CardRequest() { Id = tokenId }, Quantity = 1000, PlanId = "1" };
@@ -61,7 +61,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveSubscriptionTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "c1";
             var subscriptionId = "s1";
             await requestTester.TestMethod(
@@ -82,10 +82,10 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task UpdateSubscriptionTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "c1";
             var subscriptionId = "s1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "Jan Kowalski" };
+            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
             var subscriptionUpdateRequest = new SubscriptionUpdateRequest() { CustomerId= customerId ,Card= cardRequest ,Quantity=1000,SubscriptionId= subscriptionId };
             await requestTester.TestMethod(
                 async (api) =>
@@ -105,10 +105,10 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task CancelSubscriptionTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "c1";
             var subscriptionId = "s1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "Jan Kowalski" };
+            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
             var subscriptionCancelRequest = new SubscriptionCancelRequest() { CustomerId = customerId,SubscriptionId = subscriptionId ,AtPeriodEnd=true};
             await requestTester.TestMethod(
                 async (api) =>
@@ -128,7 +128,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task ListSubscriptionsTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "c1";
             await requestTester.TestMethod(
                 async (api) =>

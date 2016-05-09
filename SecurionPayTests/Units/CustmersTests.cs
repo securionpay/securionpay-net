@@ -16,7 +16,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task CreateCustomerTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerRequest = new CustomerRequest() { Email="test@example.com",Description="description"};
             await requestTester.TestMethod(
                 async (api) =>
@@ -37,8 +37,8 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task CreateCustomerWithCardTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "Jan Kowalski" };
+            var requestTester = GetRequestTester();
+            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
             var customerRequest = new CustomerRequest() { Card= cardRequest, Email = "test@example.com", Description = "description" };
             await requestTester.TestMethod(
                 async (api) =>
@@ -58,7 +58,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveCustomerTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "1";
             await requestTester.TestMethod(
                 async (api) =>
@@ -78,9 +78,9 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task UpdateCustomerTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "Jan Kowalski" };
+            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
             var customerUpdaterequest = new CustomerUpdateRequest() {CustomerId= customerId, Card= cardRequest,DefaultCardId="2" };
             await requestTester.TestMethod(
                 async (api) =>
@@ -100,7 +100,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task DeleteCustomerTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "1";
             await requestTester.TestMethod(
                 async (api) =>
@@ -120,7 +120,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task ListCustomerTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             await requestTester.TestMethod(
                 async (api) =>
                 {

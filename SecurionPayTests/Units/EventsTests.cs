@@ -17,7 +17,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveEventsTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var eventId = "1";
             await requestTester.TestMethod(
                 async (api) =>
@@ -37,7 +37,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task ListEventsTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
 
             await requestTester.TestMethod(
                 async (api) =>

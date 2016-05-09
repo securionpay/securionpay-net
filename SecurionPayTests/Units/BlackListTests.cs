@@ -67,7 +67,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveBlackListTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var ruleId = "test" + DateTime.Now.Millisecond;
             await requestTester.TestMethod(
                 async (api) =>
@@ -87,7 +87,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task DeleteBlackListTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var ruleId = "test" + DateTime.Now.Millisecond;
             await requestTester.TestMethod(
                 async (api) =>
@@ -107,7 +107,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task ListBlackListTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             await requestTester.TestMethod(
                 async (api) =>
                 {
@@ -127,7 +127,7 @@ namespace SecurionPayTests.Units
 
         private async Task CreatelBlackListTest(BlacklistRuleRequest createRequest)
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             await requestTester.TestMethod(
                 async (api) =>
                 {

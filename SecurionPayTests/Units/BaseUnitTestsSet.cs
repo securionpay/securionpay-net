@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,10 @@ namespace SecurionPayTests.Units
     {
         private string _appVersion;
         private string _gatewayAdress;
-        private string _privateKey = "test";
+        private string _secretKey = "test";
 
         public string GatewayAdress { get { return _gatewayAdress; } }
-        public string PrivateKey { get { return _privateKey; } }
+        public string SecretKey { get { return _secretKey; } }
 
         [TestInitialize]
         public void InitializeTests()
@@ -28,7 +29,7 @@ namespace SecurionPayTests.Units
 
         protected List<string> GetDesiredHeader()
         {
-            return new List<string>() { string.Format("Authorization: Basic {0}", Base64Encode(_privateKey + ":")), string.Format("User-Agent: SecurionPay-DOTNET/{0}", _appVersion) };
+            return new List<string>() { string.Format("Authorization: Basic {0}", Base64Encode(_secretKey + ":")), string.Format("User-Agent: SecurionPay-DOTNET/{0}", _appVersion) };
         }
 
         protected string ToJson(object obj)
@@ -40,6 +41,11 @@ namespace SecurionPayTests.Units
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        protected RequestTester GetRequestTester()
+        {
+            return new RequestTester(SecretKey, GatewayAdress);
         }
     }
 }

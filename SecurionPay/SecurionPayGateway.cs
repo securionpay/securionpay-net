@@ -32,10 +32,10 @@ namespace SecurionPay
         private string _version = "2.0.0";
         HttpClient client;
 
-        public SecurionPayGateway(string privateKey,string serverUrl = "https://api.securionpay.com/", HttpMessageHandler customHttpMessageHandler=null)
+        public SecurionPayGateway(string secretKey,string serverUrl = "https://api.securionpay.com/", HttpMessageHandler customHttpMessageHandler=null)
         {
             _serverUrl = serverUrl;
-            var tokenBytes = Encoding.UTF8.GetBytes(privateKey + ":");
+            var tokenBytes = Encoding.UTF8.GetBytes(secretKey + ":");
             _privateAuthToken = Convert.ToBase64String(tokenBytes);
             if (customHttpMessageHandler == null)
             {

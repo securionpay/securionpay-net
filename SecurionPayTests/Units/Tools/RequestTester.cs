@@ -15,12 +15,12 @@ namespace SecurionPayTests.Units.Tools
     public class RequestTester
     {
         string _gatewayAddress;
-        string _privateKey;
+        string _secretKey;
         SemaphoreSlim semaphore = new SemaphoreSlim(0);
-        public RequestTester(string privateKey,string gatewayAddress)
+        public RequestTester(string secretKey,string gatewayAddress)
         {
             _gatewayAddress = gatewayAddress;
-            _privateKey = privateKey;
+            _secretKey = secretKey;
         }
 
         public async Task TestMethod(Func<SecurionPayGateway, Task> methodToTest, RequestDescriptor expectedRequest)
@@ -46,7 +46,7 @@ namespace SecurionPayTests.Units.Tools
                     }
                 })
                 .Returns(Task.Run(() => new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.BadGateway }));
-            SecurionPayGateway api = new SecurionPayGateway(_privateKey, _gatewayAddress, mock.Object);
+            SecurionPayGateway api = new SecurionPayGateway(_secretKey, _gatewayAddress, mock.Object);
             
             try
             {

@@ -16,9 +16,9 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task CreateCardTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "1";
-            var cardRequest = new CardRequest() { CustomerId= customerId, Number="404129331232" , ExpMonth="6" , ExpYear="2015" , CardholderName="Jan Kowalski" };
+            var cardRequest = new CardRequest() { CustomerId= customerId, Number="404129331232" , ExpMonth="6" , ExpYear="2015" , CardholderName="John Smith" };
             await requestTester.TestMethod(
                 async (api) =>
                 {
@@ -37,7 +37,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveCardTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "1";
             var cardId = "1";
             await requestTester.TestMethod(
@@ -59,7 +59,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task UpdateCardTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "1";
             var cardId = "1";
             var cardUpdateRequest = new CardUpdateRequest() {CardholderName="Jan Kowaslki",CustomerId= customerId ,CardId=cardId};
@@ -81,7 +81,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task DeleteCardTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "1";
             var cardId = "1";
             await requestTester.TestMethod(
@@ -102,7 +102,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task ListCardsTest()
         {
-            var requestTester = new RequestTester(PrivateKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerId = "1";
             var cardListRequest = new CardListRequest() { CustomerId= customerId,Limit=5 };
             await requestTester.TestMethod(
