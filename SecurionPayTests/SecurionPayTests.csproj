@@ -61,6 +61,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Integration\CrossSaleOfferTests.cs" />
     <Compile Include="Integration\FlowsTest.cs" />
     <Compile Include="Integration\IntergationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,7 +69,8 @@
     <Compile Include="Units\BlackListTests.cs" />
     <Compile Include="Units\CardsTests.cs" />
     <Compile Include="Units\ChargeTests.cs" />
-    <Compile Include="Units\CustmersTests.cs" />
+    <Compile Include="Units\CrossSaleOfferTests.cs" />
+    <Compile Include="Units\CustomersTests.cs" />
     <Compile Include="Units\EventsTests.cs" />
     <Compile Include="Units\SubscriptionsTests.cs" />
     <Compile Include="Units\TokensTests.cs" />

@@ -39,6 +39,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\DateConverter.cs" />
+    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequestCharge.cs" />
+    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferListRequest.cs" />
+    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequest.cs" />
+    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferUpdateRequest.cs" />
+    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequestSubscription.cs" />
+    <Compile Include="Response\CrossSaleOffer.cs" />
+    <Compile Include="Enums\CrossSaleOfferTemplate.cs" />
+    <Compile Include="Response\CrossSaleOfferCharge.cs" />
+    <Compile Include="Response\CrossSaleOfferSubscription.cs" />
     <Compile Include="SecurionPayException.cs" />
     <Compile Include="Converters\EventDataConverter.cs" />
     <Compile Include="Converters\SafeEnumConverter.cs" />

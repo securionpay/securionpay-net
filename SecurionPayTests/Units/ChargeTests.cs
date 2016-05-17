@@ -159,8 +159,6 @@ namespace SecurionPayTests.Units
                 }
             );
         }
-        //TODO charge from cross-sale
-        //TODO charge with cross-sale
 
     }
 }
