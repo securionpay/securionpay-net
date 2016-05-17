@@ -62,6 +62,12 @@ namespace SecurionPay.Response
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }
 
+        [JsonProperty("fromCrossSale")]
+        private FromCrossSale FromCrossSale { get; set; }
+
+        [JsonProperty("withCrossSales")]
+        private List<WithCrossSale> WithCrossSales { get; set; }
+
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;
 

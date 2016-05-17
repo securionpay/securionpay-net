@@ -49,6 +49,8 @@
     <Compile Include="Enums\CrossSaleOfferTemplate.cs" />
     <Compile Include="Response\CrossSaleOfferCharge.cs" />
     <Compile Include="Response\CrossSaleOfferSubscription.cs" />
+    <Compile Include="Response\FromCrossSale.cs" />
+    <Compile Include="Response\WithCrossSale.cs" />
     <Compile Include="SecurionPayException.cs" />
     <Compile Include="Converters\EventDataConverter.cs" />
     <Compile Include="Converters\SafeEnumConverter.cs" />
