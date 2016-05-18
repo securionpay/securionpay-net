@@ -12,6 +12,7 @@ using SecurionPay.Response;
 using SecurionPay.Request;
 using SecurionPay.Exception;
 using SecurionPay.Request.CrossSaleOffer;
+using System.Security.Cryptography;
 
 namespace SecurionPay
 {
@@ -35,6 +36,7 @@ namespace SecurionPay
         private string _serverUrl = "";
         private string _privateAuthToken;
         private string _version = "2.0.0";
+        private string _secretKey;
         HttpClient client;
 
         public SecurionPayGateway(string secretKey, string serverUrl = "https://api.securionpay.com/", HttpMessageHandler customHttpMessageHandler = null)
@@ -42,6 +44,7 @@ namespace SecurionPay
             _serverUrl = serverUrl;
             var tokenBytes = Encoding.UTF8.GetBytes(secretKey + ":");
             _privateAuthToken = Convert.ToBase64String(tokenBytes);
+            _secretKey = secretKey;
             if (customHttpMessageHandler == null)
             {
                 client = new HttpClient();
@@ -348,6 +351,21 @@ namespace SecurionPay
         public async Task<ListResponse<CrossSaleOffer>> ListCrossSaleOffers(CrossSaleOfferListRequest request)
         {
             return await SendListRequest<CrossSaleOffer>(HttpMethod.Get, CROSS_SALE_OFFER_PATH, request);
+        }
+
+        #endregion
+
+        #region checkout
+
+        public string SignCheckoutRequest(CheckoutRequest checkoutRequest)
+        {
+            string data = JsonConvert.SerializeObject(checkoutRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore,DefaultValueHandling=DefaultValueHandling.Ignore });
+
+            var hash = new HMACSHA256(Encoding.UTF8.GetBytes(_secretKey));
+            var hashedData = hash.ComputeHash(Encoding.UTF8.GetBytes(data));
+            string signature = BitConverter.ToString(hashedData).Replace("-", string.Empty).ToLower();
+
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(signature + "|" + data));
         }
 
         #endregion
