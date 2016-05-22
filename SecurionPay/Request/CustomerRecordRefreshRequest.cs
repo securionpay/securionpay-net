@@ -12,6 +12,6 @@ namespace SecurionPay.Request
         public string CustomerRecordId { get; set; }
 
         [JsonProperty("subscription")]
-        private bool Subscription { get; set; }
+        public bool Subscription { get; set; }
     }
 }
