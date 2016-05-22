@@ -359,13 +359,83 @@ namespace SecurionPay
 
         public string SignCheckoutRequest(CheckoutRequest checkoutRequest)
         {
-            string data = JsonConvert.SerializeObject(checkoutRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore,DefaultValueHandling=DefaultValueHandling.Ignore });
+            string data = JsonConvert.SerializeObject(checkoutRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore });
 
             var hash = new HMACSHA256(Encoding.UTF8.GetBytes(_secretKey));
             var hashedData = hash.ComputeHash(Encoding.UTF8.GetBytes(data));
             string signature = BitConverter.ToString(hashedData).Replace("-", string.Empty).ToLower();
 
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(signature + "|" + data));
+        }
+
+        #endregion
+
+        #region customer records
+
+        public async Task<CustomerRecord> CreateCustomerRecord(CustomerRecordRequest request)
+        {
+            return await SendRequest<CustomerRecord>(HttpMethod.Post, CUSTOMER_RECORDS_PATH, request);
+        }
+
+        public async Task<CustomerRecord> RefreshCustomerRecord(CustomerRecordRefreshRequest request)
+        {
+            var url = CUSTOMER_RECORDS_PATH + "/" + request.CustomerRecordId;
+            return await SendRequest<CustomerRecord>(HttpMethod.Post, url, request);
+
+        }
+
+        public async Task<CustomerRecord> RetrieveCustomerRecord(string customerRecordId)
+        {
+            var url = CUSTOMER_RECORDS_PATH + "/" + customerRecordId;
+            return await SendRequest<CustomerRecord>(HttpMethod.Get, url);
+        }
+
+        public async Task<ListResponse<CustomerRecord>> ListCustomerRecords()
+        {
+            return await SendListRequest<CustomerRecord>(HttpMethod.Get, CUSTOMER_RECORDS_PATH);
+
+        }
+
+        public async Task<ListResponse<CustomerRecord>> ListCustomerRecords(CustomerRecordListRequest request)
+        {
+            return await SendListRequest<CustomerRecord>(HttpMethod.Get, CUSTOMER_RECORDS_PATH, request);
+        }
+
+        public async Task<CustomerRecordFee> RetrieveCustomerRecordFee(string customerRecordId, string customerRecordFeeId)
+        {
+            var url = string.Format(CUSTOMER_RECORD_FEES_PATH, customerRecordId) + "/" + customerRecordFeeId;
+            return await SendRequest<CustomerRecordFee>(HttpMethod.Get, url);
+
+        }
+
+        public async Task<ListResponse<CustomerRecordFee>> ListCustomerRecordFees(string customerRecordId)
+        {
+            var url = string.Format(CUSTOMER_RECORD_FEES_PATH, customerRecordId);
+            return await SendListRequest<CustomerRecordFee>(HttpMethod.Get, url);
+        }
+
+        public async Task<ListResponse<CustomerRecordFee>> ListCustomerRecordFees(CustomerRecordFeeListRequest request)
+        {
+            var url = string.Format(CUSTOMER_RECORD_FEES_PATH, request.CustomerRecordId);
+            return await SendListRequest<CustomerRecordFee>(HttpMethod.Get, url, request);
+        }
+
+        public async Task<CustomerRecordProfit> RetrieveCustomerRecordProfit(string customerRecordId, string customerRecordProfitId)
+        {
+            var url = string.Format(CUSTOMER_RECORD_PROFITS_PATH, customerRecordId) + "/" + customerRecordProfitId;
+            return await SendRequest<CustomerRecordProfit>(HttpMethod.Get, url);
+        }
+
+        public async Task<ListResponse<CustomerRecordProfit>> ListCustomerRecordProfits(string customerRecordId)
+        {
+            var url = string.Format(CUSTOMER_RECORD_PROFITS_PATH, customerRecordId);
+            return await SendListRequest<CustomerRecordProfit>(HttpMethod.Get, url);
+        }
+
+        public async Task<ListResponse<CustomerRecordProfit>> ListCustomerRecordProfits(CustomerRecordProfitListRequest request)
+        {
+            var url = string.Format(CUSTOMER_RECORD_PROFITS_PATH, request.CustomerRecordId);
+            return await SendListRequest<CustomerRecordProfit>(HttpMethod.Get, url);
         }
 
         #endregion

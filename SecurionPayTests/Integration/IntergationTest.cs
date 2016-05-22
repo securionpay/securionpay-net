@@ -36,6 +36,11 @@ namespace SecurionPayTests.Integration
 
             );
         }
-        
+
+        protected string GetRandomEmail()
+        {
+            return string.Format("test{0}@test.com", _random.Next(999999));
+        }
+
     }
 }

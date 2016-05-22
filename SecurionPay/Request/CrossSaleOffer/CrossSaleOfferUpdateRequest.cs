@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SecurionPay.Converters;
 using SecurionPay.Enums;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace SecurionPay.Request.CrossSaleOffer
         public CrossSaleOfferRequestSubscription Subscription { get; set; }
 
         [JsonProperty("template")]
+        [JsonConverter(typeof(SafeEnumConverter))]
         public CrossSaleOfferTemplate Template { get; set; }
 
         [JsonProperty("title")]

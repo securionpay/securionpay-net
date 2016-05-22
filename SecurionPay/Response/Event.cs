@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
 using SecurionPay.Converters;
 using SecurionPay.Enums;
+using System;
+
 namespace SecurionPay.Response
 {
     public class Event
@@ -20,6 +22,7 @@ namespace SecurionPay.Response
         public string Log { get; set; }
 
         [JsonProperty("created")]
-        public long Created { get; set; }
+        [JsonConverter(typeof(DateConverter))]
+        public DateTime Created { get; set; }
     }
 }

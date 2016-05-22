@@ -17,7 +17,8 @@ namespace SecurionPay.Response
         public String Id { get; set; }
 
         [JsonProperty("created")]
-        public long Created { get; set; }
+        [JsonConverter(typeof(DateConverter))]
+        public DateTime Created { get; set; }
 
         [JsonProperty("amount")]
         public int Amount { get; set; }
