@@ -1,5 +1,7 @@
 # SecurionPay .NET Library
 
+[![Build status](https://ci.appveyor.com/api/projects/status/84d0yck10hlpaseq/branch/master?svg=true)](https://ci.appveyor.com/project/SecurionPay/securionpay-net/branch/master)
+
 If you don't already have SecurionPay account you can create it [here](https://securionpay.com/signup). 
 
 ## Instalation 
