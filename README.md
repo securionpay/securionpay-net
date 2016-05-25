@@ -1,15 +1,26 @@
 # SecurionPay .NET Library
 
-If you don't already have SecurionPay account you can create it [here](https://securionpay.com/register). 
+If you don't already have SecurionPay account you can create it [here](https://securionpay.com/signup). 
 
 ## Instalation 
+
+### NuGet
+
+To install SecurionPay, run the following command in the [Package Manager Console](https://docs.nuget.org/consume/package-manager-console)
+
+```
+PM> Install-Package SecurionPay 
+```
+More info [here](https://www.nuget.org/packages/SecurionPay/)
+
+### Manual
 
 You can download the latest release from [here](https://github.com/securionpay/securionpay-net/releases).
 
 ## Quick start example
 
 ```cs
-SecurionPayGateway gateway = new SecurionPayGateway("pr_test_[YOUR_PRIVATE_KEY]");
+SecurionPayGateway gateway = new SecurionPayGateway("sk_test_[YOUR_SECRET_KEY]");
 
 ChargeRequest request = new ChargeRequest()
 {
