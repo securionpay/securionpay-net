@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using SecurionPay.Response;
 using SecurionPay.Request;
 using SecurionPay.Exception;
+using SecurionPay.Request.CrossSaleOffer;
+using System.Security.Cryptography;
 
 namespace SecurionPay
 {
@@ -19,28 +21,35 @@ namespace SecurionPay
     /// </summary>
     public class SecurionPayGateway
     {
-        private const String CHARGES_PATH = "/charges";
-        private const String TOKENS_PATH = "/tokens";
-        private const String CUSTOMERS_PATH = "/customers";
-        private const String CARDS_PATH = "/customers/{0}/cards";
-        private const String PLANS_PATH = "/plans";
-        private const String SUBSCRIPTIONS_PATH = "/customers/{0}/subscriptions";
-        private const String EVENTS_PATH = "/events";
-        private const String BLACKLIST_RULE_PATH="/blacklist";
+        private const string CHARGES_PATH = "/charges";
+        private const string TOKENS_PATH = "/tokens";
+        private const string CUSTOMERS_PATH = "/customers";
+        private const string CARDS_PATH = "/customers/{0}/cards";
+        private const string PLANS_PATH = "/plans";
+        private const string SUBSCRIPTIONS_PATH = "/customers/{0}/subscriptions";
+        private const string EVENTS_PATH = "/events";
+        private const string BLACKLIST_RULE_PATH = "/blacklist";
+        private const string CROSS_SALE_OFFER_PATH = "/cross-sale-offers";
+        private const string CUSTOMER_RECORDS_PATH = "/customer-records";
+        private const string CUSTOMER_RECORD_FEES_PATH = "/customer-records/{0}/fees";
+        private const string CUSTOMER_RECORD_PROFITS_PATH = "/customer-records/{0}/profits";
         private string _serverUrl = "";
         private string _privateAuthToken;
         private string _version = "2.0.0";
+        private string _secretKey;
         HttpClient client;
 
-        public SecurionPayGateway(string privateKey,string serverUrl = "https://api.securionpay.com/", HttpMessageHandler customHttpMessageHandler=null)
+        public SecurionPayGateway(string secretKey, string serverUrl = "https://api.securionpay.com/", HttpMessageHandler customHttpMessageHandler = null)
         {
             _serverUrl = serverUrl;
-            var tokenBytes = Encoding.UTF8.GetBytes(privateKey + ":");
+            var tokenBytes = Encoding.UTF8.GetBytes(secretKey + ":");
             _privateAuthToken = Convert.ToBase64String(tokenBytes);
+            _secretKey = secretKey;
             if (customHttpMessageHandler == null)
             {
                 client = new HttpClient();
-            } else
+            }
+            else
             {
                 client = new HttpClient(customHttpMessageHandler);
             }
@@ -175,7 +184,7 @@ namespace SecurionPay
 
         public async Task<ListResponse<Card>> ListCards(CardListRequest request)
         {
-            var url = string.Format(CARDS_PATH, request.CustomerId) ;
+            var url = string.Format(CARDS_PATH, request.CustomerId);
             return await SendListRequest<Card>(HttpMethod.Get, url, request);
         }
 
@@ -229,7 +238,7 @@ namespace SecurionPay
         public async Task<Subscription> RetrieveSubscription(String customerId, String id)
         {
             var url = string.Format(SUBSCRIPTIONS_PATH, customerId) + "/" + id;
-            return await SendRequest<Subscription>(HttpMethod.Post, url);
+            return await SendRequest<Subscription>(HttpMethod.Get, url);
         }
 
         public async Task<Subscription> UpdateSubscription(SubscriptionUpdateRequest updateSubscriptionRequest)
@@ -264,7 +273,7 @@ namespace SecurionPay
         public async Task<Event> RetrieveEvent(String id)
         {
             var url = string.Format("{0}/{1}", EVENTS_PATH, id);
-            return await SendRequest<Event>(HttpMethod.Post, url);
+            return await SendRequest<Event>(HttpMethod.Get, url);
         }
 
         public async Task<ListResponse<Event>> ListEvents()
@@ -309,6 +318,128 @@ namespace SecurionPay
 
         #endregion
 
+        #region cross-sale-offer
+
+        public async Task<CrossSaleOffer> CreateCrossSaleOffer(CrossSaleOfferRequest request)
+        {
+            return await SendRequest<CrossSaleOffer>(HttpMethod.Post, CROSS_SALE_OFFER_PATH, request);
+        }
+
+        public async Task<CrossSaleOffer> RetrieveCrossSaleOffer(string crossSaleOfferId)
+        {
+            var url = CROSS_SALE_OFFER_PATH + "/" + crossSaleOfferId;
+            return await SendRequest<CrossSaleOffer>(HttpMethod.Get, url);
+        }
+
+        public async Task<CrossSaleOffer> UpdateCrossSaleOffer(CrossSaleOfferUpdateRequest request)
+        {
+            var url = CROSS_SALE_OFFER_PATH + "/" + request.CrossSaleOfferId;
+            return await SendRequest<CrossSaleOffer>(HttpMethod.Post, url, request);
+
+        }
+        public async Task<DeleteResponse> DeleteCrossSaleOffer(string crossSaleOfferId)
+        {
+            var url = CROSS_SALE_OFFER_PATH + "/" + crossSaleOfferId;
+            return await SendRequest<DeleteResponse>(HttpMethod.Delete, url);
+        }
+
+        public async Task<ListResponse<CrossSaleOffer>> ListCrossSaleOffers()
+        {
+            return await SendListRequest<CrossSaleOffer>(HttpMethod.Get, CROSS_SALE_OFFER_PATH);
+        }
+
+        public async Task<ListResponse<CrossSaleOffer>> ListCrossSaleOffers(CrossSaleOfferListRequest request)
+        {
+            return await SendListRequest<CrossSaleOffer>(HttpMethod.Get, CROSS_SALE_OFFER_PATH, request);
+        }
+
+        #endregion
+
+        #region checkout
+
+        public string SignCheckoutRequest(CheckoutRequest checkoutRequest)
+        {
+            string data = JsonConvert.SerializeObject(checkoutRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore });
+
+            var hash = new HMACSHA256(Encoding.UTF8.GetBytes(_secretKey));
+            var hashedData = hash.ComputeHash(Encoding.UTF8.GetBytes(data));
+            string signature = BitConverter.ToString(hashedData).Replace("-", string.Empty).ToLower();
+
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(signature + "|" + data));
+        }
+
+        #endregion
+
+        #region customer records
+
+        public async Task<CustomerRecord> CreateCustomerRecord(CustomerRecordRequest request)
+        {
+            return await SendRequest<CustomerRecord>(HttpMethod.Post, CUSTOMER_RECORDS_PATH, request);
+        }
+
+        public async Task<CustomerRecord> RefreshCustomerRecord(CustomerRecordRefreshRequest request)
+        {
+            var url = CUSTOMER_RECORDS_PATH + "/" + request.CustomerRecordId;
+            return await SendRequest<CustomerRecord>(HttpMethod.Post, url, request);
+
+        }
+
+        public async Task<CustomerRecord> RetrieveCustomerRecord(string customerRecordId)
+        {
+            var url = CUSTOMER_RECORDS_PATH + "/" + customerRecordId;
+            return await SendRequest<CustomerRecord>(HttpMethod.Get, url);
+        }
+
+        public async Task<ListResponse<CustomerRecord>> ListCustomerRecords()
+        {
+            return await SendListRequest<CustomerRecord>(HttpMethod.Get, CUSTOMER_RECORDS_PATH);
+
+        }
+
+        public async Task<ListResponse<CustomerRecord>> ListCustomerRecords(CustomerRecordListRequest request)
+        {
+            return await SendListRequest<CustomerRecord>(HttpMethod.Get, CUSTOMER_RECORDS_PATH, request);
+        }
+
+        public async Task<CustomerRecordFee> RetrieveCustomerRecordFee(string customerRecordId, string customerRecordFeeId)
+        {
+            var url = string.Format(CUSTOMER_RECORD_FEES_PATH, customerRecordId) + "/" + customerRecordFeeId;
+            return await SendRequest<CustomerRecordFee>(HttpMethod.Get, url);
+
+        }
+
+        public async Task<ListResponse<CustomerRecordFee>> ListCustomerRecordFees(string customerRecordId)
+        {
+            var url = string.Format(CUSTOMER_RECORD_FEES_PATH, customerRecordId);
+            return await SendListRequest<CustomerRecordFee>(HttpMethod.Get, url);
+        }
+
+        public async Task<ListResponse<CustomerRecordFee>> ListCustomerRecordFees(CustomerRecordFeeListRequest request)
+        {
+            var url = string.Format(CUSTOMER_RECORD_FEES_PATH, request.CustomerRecordId);
+            return await SendListRequest<CustomerRecordFee>(HttpMethod.Get, url, request);
+        }
+
+        public async Task<CustomerRecordProfit> RetrieveCustomerRecordProfit(string customerRecordId, string customerRecordProfitId)
+        {
+            var url = string.Format(CUSTOMER_RECORD_PROFITS_PATH, customerRecordId) + "/" + customerRecordProfitId;
+            return await SendRequest<CustomerRecordProfit>(HttpMethod.Get, url);
+        }
+
+        public async Task<ListResponse<CustomerRecordProfit>> ListCustomerRecordProfits(string customerRecordId)
+        {
+            var url = string.Format(CUSTOMER_RECORD_PROFITS_PATH, customerRecordId);
+            return await SendListRequest<CustomerRecordProfit>(HttpMethod.Get, url);
+        }
+
+        public async Task<ListResponse<CustomerRecordProfit>> ListCustomerRecordProfits(CustomerRecordProfitListRequest request)
+        {
+            var url = string.Format(CUSTOMER_RECORD_PROFITS_PATH, request.CustomerRecordId);
+            return await SendListRequest<CustomerRecordProfit>(HttpMethod.Get, url);
+        }
+
+        #endregion
+
         #endregion
 
         #region private
@@ -342,7 +473,7 @@ namespace SecurionPay
             return DeserializeList<TList>(securionpayList);
         }
 
-        private string GenerateGetPath(object parameters,string parentName=null)
+        private string GenerateGetPath(object parameters, string parentName = null)
         {
             StringBuilder path = new StringBuilder();
             var type = parameters.GetType();
@@ -358,27 +489,27 @@ namespace SecurionPay
                     }
                     else
                     {
-                        path.Append(GenerateGetSection(value, property,parentName));
+                        path.Append(GenerateGetSection(value, property, parentName));
 
                     }
                 }
             }
-            var finalPath=path.ToString();
+            var finalPath = path.ToString();
             if (parentName == null)
             {
-                finalPath=finalPath.TrimEnd('&');
+                finalPath = finalPath.TrimEnd('&');
             }
             return finalPath;
         }
 
         private bool IsIgnored(PropertyInfo property)
         {
-            return property.GetCustomAttributes(typeof(JsonIgnoreAttribute), true).FirstOrDefault()!=null;
+            return property.GetCustomAttributes(typeof(JsonIgnoreAttribute), true).FirstOrDefault() != null;
         }
 
         private string GenerateGetSection(object value, PropertyInfo property, string parentName)
         {
-            var propertyName = GetPropertyName( property);
+            var propertyName = GetPropertyName(property);
             if (parentName != null)
             {
                 return parentName + "[" + propertyName + "]=" + Uri.EscapeDataString(value.ToString()) + "&";
@@ -431,7 +562,7 @@ namespace SecurionPay
                 ErrorResponse errorResponse;
                 var apiErrorRsponseString = await response.Content.ReadAsStringAsync();
                 errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(apiErrorRsponseString);
-                throw new SecurionPayException(errorResponse.Error,typeof(T).Name,action);
+                throw new SecurionPayException(errorResponse.Error, typeof(T).Name, action);
             }
 
 

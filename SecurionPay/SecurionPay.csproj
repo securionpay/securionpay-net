@@ -36,9 +36,32 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\DateConverter.cs" />
+    <Compile Include="Request\CheckoutRequest.cs" />
+    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequestCharge.cs" />
+    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferListRequest.cs" />
+    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequest.cs" />
+    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferUpdateRequest.cs" />
+    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequestSubscription.cs" />
+    <Compile Include="Request\CustomerRecordFeeListRequest.cs" />
+    <Compile Include="Request\CustomerRecordListRequest.cs" />
+    <Compile Include="Request\CustomerRecordProfitListRequest.cs" />
+    <Compile Include="Request\CustomerRecordRefreshRequest.cs" />
+    <Compile Include="Request\CustomerRecordRequest.cs" />
+    <Compile Include="Response\CrossSaleOffer.cs" />
+    <Compile Include="Enums\CrossSaleOfferTemplate.cs" />
+    <Compile Include="Response\CrossSaleOfferCharge.cs" />
+    <Compile Include="Response\CrossSaleOfferSubscription.cs" />
+    <Compile Include="Response\CustomerRecord.cs" />
+    <Compile Include="Response\CustomerRecordFee.cs" />
+    <Compile Include="Response\CustomerRecordProfit.cs" />
+    <Compile Include="Response\FromCrossSale.cs" />
+    <Compile Include="Response\WithCrossSale.cs" />
     <Compile Include="SecurionPayException.cs" />
     <Compile Include="Converters\EventDataConverter.cs" />
     <Compile Include="Converters\SafeEnumConverter.cs" />
@@ -95,14 +118,19 @@
     <Compile Include="SecurionPayGateway.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="bouncy_castle_hmac_sha_pcl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle-PCL.1.0.0.6\lib\bouncy_castle_hmac_sha_pcl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net40+sl4+win8+wp71+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net40+sl4+win8+wp71+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.IO">
       <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\portable-net40+sl5+win8+wp8+wpa81\System.IO.dll</HintPath>

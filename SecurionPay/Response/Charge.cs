@@ -17,7 +17,8 @@ namespace SecurionPay.Response
         public String Id { get; set; }
 
         [JsonProperty("created")]
-        public long Created { get; set; }
+        [JsonConverter(typeof(DateConverter))]
+        public DateTime Created { get; set; }
 
         [JsonProperty("amount")]
         public int Amount { get; set; }
@@ -61,6 +62,12 @@ namespace SecurionPay.Response
 
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }
+
+        [JsonProperty("fromCrossSale")]
+        private FromCrossSale FromCrossSale { get; set; }
+
+        [JsonProperty("withCrossSales")]
+        private List<WithCrossSale> WithCrossSales { get; set; }
 
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;

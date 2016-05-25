@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SecurionPay.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace SecurionPay.Response
         public String Currency { get; set; }
 
         [JsonProperty("created")]
-        public long Created { get; set; }
+        [JsonConverter(typeof(DateConverter))]
+        public DateTime Created { get; set; }
 
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }

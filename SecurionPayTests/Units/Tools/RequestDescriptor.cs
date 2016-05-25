@@ -14,11 +14,32 @@ namespace SecurionPayTests.Units.Tools
         public List<string> Header { get; set; }
         public string Content { get; set; }
 
-        public bool Match(HttpRequestMessage message,string content)
+        public MatchResult Match(HttpRequestMessage message,string content)
         {
             var headersMatching = message.Headers.All(x=> Header.Contains(x.Key+": "+x.Value.First()) && Header.Count == message.Headers.Count());
-            
-            return Method == message.Method && Address==message.RequestUri.AbsoluteUri && headersMatching && Content== content;
+            MatchResult result = new MatchResult();
+            result.MatchSuccess = true;
+            if(Method != message.Method)
+            {
+                result.MatchSuccess = false;
+                result.MatchFailReasonsMessage += "Wrong http method. ";
+            }
+            if (Address != message.RequestUri.AbsoluteUri)
+            {
+                result.MatchSuccess = false;
+                result.MatchFailReasonsMessage += "Wrong address. ";
+            }
+            if (!headersMatching)
+            {
+                result.MatchSuccess = false;
+                result.MatchFailReasonsMessage += "Wrong header. ";
+            }
+            if(Content != content)
+            {
+                result.MatchSuccess = false;
+                result.MatchFailReasonsMessage += "Wrong content. ";
+            }
+            return result;
         }
     }
 }

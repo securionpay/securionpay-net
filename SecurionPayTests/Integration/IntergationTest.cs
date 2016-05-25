@@ -19,8 +19,8 @@ namespace SecurionPayTests.Integration
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var gatewayUrl=config.AppSettings.Settings["gateway_test_url"].Value;
-            var privateKey= config.AppSettings.Settings["gateway_test_key"].Value;
-            _gateway = new SecurionPayGateway(privateKey,gatewayUrl );
+            var secretKey = config.AppSettings.Settings["gateway_test_key"].Value;
+            _gateway = new SecurionPayGateway(secretKey, gatewayUrl );
             _random = new Random();
 
         }
@@ -36,6 +36,11 @@ namespace SecurionPayTests.Integration
 
             );
         }
-        
+
+        protected string GetRandomEmail()
+        {
+            return string.Format("test{0}@test.com", _random.Next(999999));
+        }
+
     }
 }
