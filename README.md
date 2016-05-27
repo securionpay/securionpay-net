@@ -55,4 +55,4 @@ catch (SecurionPayException e)
 
 ## Documentation
 
-For further information, please refer to our official API documentation at https://securionpay.com/docs/api.
+For further information, please refer to our official documentation at https://securionpay.com/docs.
