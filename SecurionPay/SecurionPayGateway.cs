@@ -35,7 +35,7 @@ namespace SecurionPay
         private const string CUSTOMER_RECORD_PROFITS_PATH = "/customer-records/{0}/profits";
         private string _serverUrl = "";
         private string _privateAuthToken;
-        private string _version = "2.0.0";
+        private string _version="2.1.0";
         private string _secretKey;
         HttpClient client;
 

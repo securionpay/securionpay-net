@@ -24,7 +24,7 @@ namespace SecurionPayTests.Units
         {
             _gatewayAdress = "https://api.securionpay.com";
             var assemblyVersion = Assembly.Load("SecurionPay").GetName().Version;
-            _appVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major, assemblyVersion.MajorRevision, assemblyVersion.Minor);
+            _appVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.MajorRevision);
         }
 
         protected List<string> GetDesiredHeader()
