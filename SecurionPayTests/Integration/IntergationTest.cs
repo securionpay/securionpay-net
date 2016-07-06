@@ -30,7 +30,7 @@ namespace SecurionPayTests.Integration
         {
             Assert.Fail(string.Format("SecurionPayException  was thrown with message: {0},code:{1},request type:{2},action:{3}",
                           exc.Error.Message,
-                          exc.Error.Code.HasValue ? exc.Error.Code.Value.ToString() : "no code",
+                          exc.Error.Code.ToString(),
                           exc.RequestType,
                           exc.RequestAction)
 
