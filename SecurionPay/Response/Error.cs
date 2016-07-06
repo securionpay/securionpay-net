@@ -19,7 +19,7 @@ namespace SecurionPay.Response
 
         [JsonProperty("code")]
         [JsonConverter(typeof(SafeEnumConverter))]
-        public ErrorCode? Code { get; set; }
+        public ErrorCode Code { get; set; }
 
         [JsonProperty("chargeId")]
         public String ChargeId { get; set; }
