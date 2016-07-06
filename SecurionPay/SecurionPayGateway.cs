@@ -200,7 +200,7 @@ namespace SecurionPay
         public async Task<Plan> RetrievePlan(String id)
         {
             var url = string.Format("{0}/{1}", PLANS_PATH, id);
-            return await SendRequest<Plan>(HttpMethod.Post, url);
+            return await SendRequest<Plan>(HttpMethod.Get, url);
         }
 
         public async Task<Plan> UpdatePlan(PlanUpdateRequest updatePlanRequest)
