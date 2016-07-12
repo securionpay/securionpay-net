@@ -27,10 +27,10 @@ namespace SecurionPay.Enums
         IncorrectCvc,
 
 	    [EnumMember(Value = "incorrect_zip")]
-        Incorrect_zip,
+        IncorrectZip,
 
 	    [EnumMember(Value = "expired_card")]
-        Expired_card,
+        ExpiredCard,
 
 	    [EnumMember(Value = "insufficient_funds")]
         InsufficientFunds,
@@ -42,7 +42,7 @@ namespace SecurionPay.Enums
         SuspectedFraud,
 
 	    [EnumMember(Value = "card_declined")]
-        Card_declined,
+        CardDeclined,
 
 	    [EnumMember(Value = "processing_error")]
         ProcessingError,

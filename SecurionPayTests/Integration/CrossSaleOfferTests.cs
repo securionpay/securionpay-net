@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace SecurionPayTests.Integration
 {
     [TestClass]
-    public class CrossSaleOfferTests : IntergationTest
+    public class CrossSaleOfferTests : IntegrationTest
     {
         [TestMethod]
         public async Task CreateCrossSaleOfferTest()

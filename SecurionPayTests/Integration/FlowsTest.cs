@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace SecurionPayTests.Integration
 {
     [TestClass]
-    public class FlowsTest : IntergationTest
+    public class FlowsTest : IntegrationTest
     {
         /// <summary>
         /// test for flow Token -> Charge -> Capture -> Refund

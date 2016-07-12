@@ -61,9 +61,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Integration\ChargeTests.cs" />
     <Compile Include="Integration\CrossSaleOfferTests.cs" />
     <Compile Include="Integration\FlowsTest.cs" />
-    <Compile Include="Integration\IntergationTest.cs" />
+    <Compile Include="Integration\IntegrationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Units\BaseUnitTestsSet.cs" />
     <Compile Include="Units\BlackListTests.cs" />
