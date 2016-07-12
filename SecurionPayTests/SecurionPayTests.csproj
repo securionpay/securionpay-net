@@ -74,6 +74,7 @@
     <Compile Include="Units\CustomerRecordsTests.cs" />
     <Compile Include="Units\CustomersTests.cs" />
     <Compile Include="Units\EventsTests.cs" />
+    <Compile Include="Units\PlansTests.cs" />
     <Compile Include="Units\SubscriptionsTests.cs" />
     <Compile Include="Units\TokensTests.cs" />
     <Compile Include="Units\Tools\MatchResult.cs" />

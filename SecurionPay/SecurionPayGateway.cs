@@ -67,25 +67,25 @@ namespace SecurionPay
 
         public async Task<Charge> CaptureCharge(CaptureRequest capture)
         {
-            var url = String.Format("{0}/{1}/capture", CHARGES_PATH, capture.ChargeId);
+            var url = string.Format("{0}/{1}/capture", CHARGES_PATH, capture.ChargeId);
             return await SendRequest<Charge>(HttpMethod.Post, url, capture);
         }
 
         public async Task<Charge> RefundCharge(RefundRequest refund)
         {
-            var url = String.Format("{0}/{1}/refund", CHARGES_PATH, refund.ChargeId);
+            var url = string.Format("{0}/{1}/refund", CHARGES_PATH, refund.ChargeId);
             return await SendRequest<Charge>(HttpMethod.Post, url, refund);
         }
 
-        public async Task<Charge> RetrieveCharge(String id)
+        public async Task<Charge> RetrieveCharge(string id)
         {
-            var url = String.Format("{0}/{1}", CHARGES_PATH, id);
+            var url = string.Format("{0}/{1}", CHARGES_PATH, id);
             return await SendRequest<Charge>(HttpMethod.Get, url);
         }
 
         public async Task<Charge> UpdateCharge(ChargeUpdateRequest chargeUpdate)
         {
-            var url = String.Format("{0}/{1}", CHARGES_PATH, chargeUpdate.ChargeId);
+            var url = string.Format("{0}/{1}", CHARGES_PATH, chargeUpdate.ChargeId);
             return await SendRequest<Charge>(HttpMethod.Post, url, chargeUpdate);
         }
 
@@ -104,9 +104,9 @@ namespace SecurionPay
             return await SendRequest<Token>(HttpMethod.Post, TOKENS_PATH, createTokenRequest);
         }
 
-        public async Task<Token> RetrieveToken(String id)
+        public async Task<Token> RetrieveToken(string id)
         {
-            var url = String.Format("{0}/{1}", TOKENS_PATH, id);
+            var url = string.Format("{0}/{1}", TOKENS_PATH, id);
             return await SendRequest<Token>(HttpMethod.Get, url);
         }
 
@@ -121,20 +121,20 @@ namespace SecurionPay
 
         public async Task<Customer> UpdateCustomer(CustomerUpdateRequest updateCustomerRequest)
         {
-            var url = String.Format("{0}/{1}", CUSTOMERS_PATH, updateCustomerRequest.CustomerId);
+            var url = string.Format("{0}/{1}", CUSTOMERS_PATH, updateCustomerRequest.CustomerId);
             return await SendRequest<Customer>(HttpMethod.Post, url, updateCustomerRequest);
         }
 
-        public async Task<Customer> RetrieveCustomer(String id)
+        public async Task<Customer> RetrieveCustomer(string id)
         {
 
-            var url = String.Format("{0}/{1}", CUSTOMERS_PATH, id);
+            var url = string.Format("{0}/{1}", CUSTOMERS_PATH, id);
             return await SendRequest<Customer>(HttpMethod.Get, url);
         }
 
-        public async Task<DeleteResponse> DeleteCustomer(String id)
+        public async Task<DeleteResponse> DeleteCustomer(string id)
         {
-            var url = String.Format("{0}/{1}", CUSTOMERS_PATH, id);
+            var url = string.Format("{0}/{1}", CUSTOMERS_PATH, id);
             return await SendRequest<DeleteResponse>(HttpMethod.Delete, url);
         }
 
@@ -158,7 +158,7 @@ namespace SecurionPay
             return await SendRequest<Card>(HttpMethod.Post, url, createCardRequest);
         }
 
-        public async Task<Card> RetrieveCard(String customerId, String id)
+        public async Task<Card> RetrieveCard(string customerId, string id)
         {
             var url = string.Format(CARDS_PATH, customerId) + "/" + id;
             return await SendRequest<Card>(HttpMethod.Get, url);
@@ -170,13 +170,13 @@ namespace SecurionPay
             return await SendRequest<Card>(HttpMethod.Post, url, updateCard);
         }
 
-        public async Task<DeleteResponse> DeleteCard(String customerId, String id)
+        public async Task<DeleteResponse> DeleteCard(string customerId, string id)
         {
             var url = string.Format(CARDS_PATH, customerId) + "/" + id;
             return await SendRequest<DeleteResponse>(HttpMethod.Delete, url);
         }
 
-        public async Task<ListResponse<Card>> ListCards(String customerId)
+        public async Task<ListResponse<Card>> ListCards(string customerId)
         {
             var url = string.Format(CARDS_PATH, customerId);
             return await SendListRequest<Card>(HttpMethod.Get, url);
@@ -197,10 +197,10 @@ namespace SecurionPay
             return await SendRequest<Plan>(HttpMethod.Post, PLANS_PATH, createPlanRequest);
         }
 
-        public async Task<Plan> RetrievePlan(String id)
+        public async Task<Plan> RetrievePlan(string id)
         {
             var url = string.Format("{0}/{1}", PLANS_PATH, id);
-            return await SendRequest<Plan>(HttpMethod.Post, url);
+            return await SendRequest<Plan>(HttpMethod.Get, url);
         }
 
         public async Task<Plan> UpdatePlan(PlanUpdateRequest updatePlanRequest)
@@ -214,7 +214,7 @@ namespace SecurionPay
             return await SendListRequest<Plan>(HttpMethod.Get, PLANS_PATH);
         }
 
-        public async Task<DeleteResponse> DeletePlan(String id)
+        public async Task<DeleteResponse> DeletePlan(string id)
         {
             var url = string.Format("{0}/{1}", PLANS_PATH, id);
             return await SendRequest<DeleteResponse>(HttpMethod.Delete, url);
@@ -235,7 +235,7 @@ namespace SecurionPay
             return await SendRequest<Subscription>(HttpMethod.Post, url, createSubscriptionRequest);
         }
 
-        public async Task<Subscription> RetrieveSubscription(String customerId, String id)
+        public async Task<Subscription> RetrieveSubscription(string customerId, string id)
         {
             var url = string.Format(SUBSCRIPTIONS_PATH, customerId) + "/" + id;
             return await SendRequest<Subscription>(HttpMethod.Get, url);
@@ -247,7 +247,7 @@ namespace SecurionPay
             return await SendRequest<Subscription>(HttpMethod.Post, url, updateSubscriptionRequest);
         }
 
-        public async Task<ListResponse<Subscription>> ListSubscriptions(String customerId)
+        public async Task<ListResponse<Subscription>> ListSubscriptions(string customerId)
         {
             var url = string.Format(SUBSCRIPTIONS_PATH, customerId);
             return await SendListRequest<Subscription>(HttpMethod.Get, url);
@@ -270,7 +270,7 @@ namespace SecurionPay
 
         #region events
 
-        public async Task<Event> RetrieveEvent(String id)
+        public async Task<Event> RetrieveEvent(string id)
         {
             var url = string.Format("{0}/{1}", EVENTS_PATH, id);
             return await SendRequest<Event>(HttpMethod.Get, url);
@@ -294,13 +294,13 @@ namespace SecurionPay
             return await SendRequest<BlacklistRule>(HttpMethod.Post, BLACKLIST_RULE_PATH, request);
         }
 
-        public async Task<BlacklistRule> RetrieveBlacklistRule(String id)
+        public async Task<BlacklistRule> RetrieveBlacklistRule(string id)
         {
             var url = BLACKLIST_RULE_PATH + "/" + id;
             return await SendRequest<BlacklistRule>(HttpMethod.Get, url);
         }
 
-        public async Task<DeleteResponse> DeleteBlacklistRule(String id)
+        public async Task<DeleteResponse> DeleteBlacklistRule(string id)
         {
             var url = BLACKLIST_RULE_PATH + "/" + id;
             return await SendRequest<DeleteResponse>(HttpMethod.Delete, url);
