@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Integration
 {
-    public class IntergationTest
+    public class IntegrationTest
     {
         protected SecurionPayGateway _gateway;
         protected Random _random;
 
-        public IntergationTest()
+        public IntegrationTest()
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var gatewayUrl=config.AppSettings.Settings["gateway_test_url"].Value;

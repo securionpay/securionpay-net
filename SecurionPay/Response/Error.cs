@@ -11,7 +11,7 @@ namespace SecurionPay.Response
     public class Error
     {
         [JsonProperty("message")]
-        public String Message { get; set; }
+        public string Message { get; set; }
 
         [JsonProperty("type")]
         [JsonConverter(typeof(SafeEnumConverter))]
@@ -22,10 +22,10 @@ namespace SecurionPay.Response
         public ErrorCode? Code { get; set; }
 
         [JsonProperty("chargeId")]
-        public String ChargeId { get; set; }
+        public string ChargeId { get; set; }
 
         [JsonProperty("blacklistRuleId")]
-        public String BlacklistRuleId { get; set; }
+        public string BlacklistRuleId { get; set; }
 
     }
 }
