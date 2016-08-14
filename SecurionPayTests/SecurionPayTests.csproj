@@ -72,6 +72,7 @@
     <Compile Include="Units\CardsTests.cs" />
     <Compile Include="Units\ChargeTests.cs" />
     <Compile Include="Units\CheckoutRequestTests.cs" />
+    <Compile Include="Units\CreditTests.cs" />
     <Compile Include="Units\CrossSaleOfferTests.cs" />
     <Compile Include="Units\CustomerRecordsTests.cs" />
     <Compile Include="Units\CustomersTests.cs" />
