@@ -43,6 +43,9 @@
   <ItemGroup>
     <Compile Include="Converters\DateConverter.cs" />
     <Compile Include="Request\CheckoutRequest.cs" />
+    <Compile Include="Request\CreditRequest.cs" />
+    <Compile Include="Request\CreditUpdateRequest.cs" />
+    <Compile Include="Request\CreditWithCardRequest.cs" />
     <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequestCharge.cs" />
     <Compile Include="Request\CrossSaleOffer\CrossSaleOfferListRequest.cs" />
     <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequest.cs" />
@@ -53,6 +56,7 @@
     <Compile Include="Request\CustomerRecordProfitListRequest.cs" />
     <Compile Include="Request\CustomerRecordRefreshRequest.cs" />
     <Compile Include="Request\CustomerRecordRequest.cs" />
+    <Compile Include="Response\Credit.cs" />
     <Compile Include="Response\CrossSaleOffer.cs" />
     <Compile Include="Enums\CrossSaleOfferTemplate.cs" />
     <Compile Include="Response\CrossSaleOfferCharge.cs" />

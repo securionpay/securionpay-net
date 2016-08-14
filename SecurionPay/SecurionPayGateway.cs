@@ -22,6 +22,7 @@ namespace SecurionPay
     public class SecurionPayGateway
     {
         private const string CHARGES_PATH = "/charges";
+        private const string CREDITS_PATH = "/credits";
         private const string TOKENS_PATH = "/tokens";
         private const string CUSTOMERS_PATH = "/customers";
         private const string CARDS_PATH = "/customers/{0}/cards";
@@ -438,6 +439,36 @@ namespace SecurionPay
             return await SendListRequest<CustomerRecordProfit>(HttpMethod.Get, url);
         }
 
+        #endregion
+
+        #region credits
+
+        public async Task<ListResponse<Credit>> ListCredits()
+        {
+            return await SendListRequest<Credit>(HttpMethod.Get, CREDITS_PATH);
+        }
+
+        public async Task<Credit> CreateCredit(CreditRequest request)
+        {
+            return await SendRequest<Credit>(HttpMethod.Post, CREDITS_PATH, request);
+        }
+
+        public async Task<Credit> CreateCredit(CreditWithCardRequest request)
+        {
+            return await SendRequest<Credit>(HttpMethod.Post, CREDITS_PATH, request);
+        }
+
+        public async Task<Credit> RetrieveCredit(string creditId)
+        {
+            var url = CREDITS_PATH + "/" + creditId;
+            return await SendRequest<Credit>(HttpMethod.Get, url);
+        }
+
+        public async Task<Credit> UpdateCredit(CreditUpdateRequest updateRequest)
+        {
+            var url = CREDITS_PATH + "/" + updateRequest.CreditId;
+            return await SendRequest<Credit>(HttpMethod.Post, url, updateRequest);
+        }
         #endregion
 
         #endregion
