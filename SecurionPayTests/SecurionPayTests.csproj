@@ -67,18 +67,45 @@
     <Compile Include="Integration\FlowsTest.cs" />
     <Compile Include="Integration\IntegrationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Units\BaseUnitTestsSet.cs" />
-    <Compile Include="Units\BlackListTests.cs" />
-    <Compile Include="Units\CardsTests.cs" />
-    <Compile Include="Units\ChargeTests.cs" />
-    <Compile Include="Units\CheckoutRequestTests.cs" />
-    <Compile Include="Units\CreditTests.cs" />
-    <Compile Include="Units\CrossSaleOfferTests.cs" />
-    <Compile Include="Units\CustomerRecordsTests.cs" />
-    <Compile Include="Units\CustomersTests.cs" />
-    <Compile Include="Units\EventsTests.cs" />
-    <Compile Include="Units\PlansTests.cs" />
-    <Compile Include="Units\SubscriptionsTests.cs" />
+    <Compile Include="Units\ApiClientTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\BaseUnitTestsSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\BlackListTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CardsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\ChargeTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CheckoutRequestTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CreditTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CrossSaleOfferTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CustomerRecordsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CustomersTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\EventsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\PlansTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\SubscriptionsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Units\TokensTests.cs" />
     <Compile Include="Units\Tools\MatchResult.cs" />
     <Compile Include="Units\Tools\RequestTester.cs" />

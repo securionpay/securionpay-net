@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
+using SecurionPay.Response;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var tokenRequest  = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = "2016", Cvc = "432", CardholderName = "John Smith" };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Token>(
                 async (api) =>
                 {
                     await api.CreateToken(tokenRequest);
@@ -26,9 +27,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress+"/tokens",
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(tokenRequest)
+                    Action = "tokens",
+                    Parameter = tokenRequest
                 }
             );
         }
@@ -38,7 +38,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var tokenId = "1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Token>(
                 async (api) =>
                 {
                     await api.RetrieveToken(tokenId);
@@ -46,9 +46,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = string.Format("{0}/tokens/{1}", GatewayAdress, tokenId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = string.Format("tokens/{0}", tokenId),
+                    Parameter = null
                 }
             );
         }

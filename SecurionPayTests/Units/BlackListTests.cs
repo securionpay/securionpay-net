@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SecurionPay;
 using SecurionPay.Enums;
 using SecurionPay.Request;
+using SecurionPay.Response;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -69,7 +70,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var ruleId = "test" + DateTime.Now.Millisecond;
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<BlacklistRule>(
                 async (api) =>
                 {
                     await api.RetrieveBlacklistRule(ruleId);
@@ -77,9 +78,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = GatewayAdress + "/blacklist/" + ruleId,
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action =  "blacklist/" + ruleId,
+                    Parameter = null
                 }
             );
         }
@@ -89,7 +89,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var ruleId = "test" + DateTime.Now.Millisecond;
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<DeleteResponse>(
                 async (api) =>
                 {
                     await api.DeleteBlacklistRule(ruleId);
@@ -97,9 +97,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Delete,
-                    Address = GatewayAdress + "/blacklist/" + ruleId,
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = "blacklist/" + ruleId,
+                    Parameter = null
                 }
             );
         }
@@ -108,7 +107,7 @@ namespace SecurionPayTests.Units
         public async Task ListBlackListTest()
         {
             var requestTester = GetRequestTester();
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
                 async (api) =>
                 {
                     await api.ListBlacklistRules();
@@ -116,9 +115,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = GatewayAdress + "/blacklist" ,
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = "blacklist",
+                    Parameter = null
                 }
             );
         }
@@ -128,7 +126,7 @@ namespace SecurionPayTests.Units
         private async Task CreatelBlackListTest(BlacklistRuleRequest createRequest)
         {
             var requestTester = GetRequestTester();
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<BlacklistRule>(
                 async (api) =>
                 {
                     var rule = await api.CreateBlacklistRule(createRequest);
@@ -136,9 +134,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + "/blacklist",
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(createRequest)
+                    Action = "blacklist",
+                    Parameter = createRequest
                 }
             );
         }

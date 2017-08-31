@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
+using SecurionPay.Response;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace SecurionPayTests.Units
             var customerId = "1";
             var tokenId = "1";
             var chargeRequest = new ChargeRequest() { Amount = 1000, Currency = "PLN", Card = new CardRequest() { Id = tokenId }, Description = "sss", Captured = false };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Charge>(
                 async (api) =>
                 {
                     await api.CreateCharge(chargeRequest);
@@ -28,9 +29,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + string.Format("/charges", customerId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(chargeRequest)
+                    Action = string.Format("charges", customerId),
+                    Parameter = chargeRequest
                 }
             );
         }
@@ -42,7 +42,7 @@ namespace SecurionPayTests.Units
             var customerId = "1";
             var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
             var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customerId, Card = cardRequest };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Charge>(
                 async (api) =>
                 {
                     await api.CreateCharge(chargeRequest);
@@ -50,9 +50,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + string.Format("/charges", customerId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(chargeRequest)
+                    Action = string.Format("charges", customerId),
+                    Parameter = chargeRequest
                 }
             );
         }
@@ -63,7 +62,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var chargeId = "1";
             var captureRequest = new CaptureRequest() { ChargeId = chargeId };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Charge>(
                 async (api) =>
                 {
                     await api.CaptureCharge(captureRequest);
@@ -71,9 +70,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + string.Format("/charges/{0}/capture", chargeId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(captureRequest)
+                    Action =  string.Format("charges/{0}/capture", chargeId),
+                    Parameter = captureRequest
                 }
             );
         }
@@ -83,7 +81,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var chargeId = "1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Charge>(
                 async (api) =>
                 {
                     await api.RetrieveCharge(chargeId);
@@ -91,9 +89,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = GatewayAdress + string.Format("/charges/{0}", chargeId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = string.Format("charges/{0}", chargeId),
+                    Parameter = null
                 }
             );
         }
@@ -105,7 +102,7 @@ namespace SecurionPayTests.Units
             var chargeId = "1";
             var customerId = "1";
             var chargeUpdateRequest = new ChargeUpdateRequest() { ChargeId = chargeId, CustomerId = customerId, Description = "new description", Metadata = new Dictionary<string, string>() { { "metadata", "value" } } };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Charge>(
                 async (api) =>
                 {
                     await api.UpdateCharge(chargeUpdateRequest);
@@ -113,9 +110,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + string.Format("/charges/{0}", chargeId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(chargeUpdateRequest)
+                    Action = string.Format("charges/{0}", chargeId),
+                    Parameter = chargeUpdateRequest
                 }
             );
         }
@@ -126,7 +122,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var chargeId = "1";
             var refundRequest = new RefundRequest() { ChargeId = chargeId,Amount=500 };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Charge>(
                 async (api) =>
                 {
                     await api.RefundCharge(refundRequest);
@@ -134,9 +130,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + string.Format("/charges/{0}/refund", chargeId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(refundRequest)
+                    Action = string.Format("charges/{0}/refund", chargeId),
+                    Parameter = refundRequest
                 }
             );
         }
@@ -145,7 +140,7 @@ namespace SecurionPayTests.Units
         public async Task ListChargeTest()
         {
             var requestTester = GetRequestTester();
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
                 async (api) =>
                 {
                     await api.ListCharges();
@@ -153,9 +148,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = GatewayAdress + "/charges",
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = "charges",
+                    Parameter = null
                 }
             );
         }

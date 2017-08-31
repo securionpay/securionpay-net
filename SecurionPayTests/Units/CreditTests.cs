@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
+using SecurionPay.Response;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var customerId = "1";
             var creditRequest = new CreditRequest() { CustomerId = customerId, CardId="1" ,Amount=100,Currency="EUR"};
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Credit>(
                 async (api) =>
                 {
                     await api.CreateCredit(creditRequest);
@@ -27,9 +28,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + "/credits",
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(creditRequest)
+                    Action = "credits",
+                    Parameter = creditRequest
                 }
             );
         }
@@ -46,7 +46,7 @@ namespace SecurionPayTests.Units
                 Amount = 100,
                 Currency = "EUR"
             };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Credit>(
                 async (api) =>
                 {
                     await api.CreateCredit(creditRequest);
@@ -54,9 +54,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + "/credits",
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(creditRequest)
+                    Action = "credits",
+                    Parameter = creditRequest
                 }
             );
         }
@@ -66,7 +65,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var creditId = "1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Credit>(
                 async (api) =>
                 {
                     await api.RetrieveCredit(creditId);
@@ -74,9 +73,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address =  string.Format("{0}/credits/{1}",GatewayAdress, creditId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = string.Format("credits/{0}", creditId),
+                    Parameter = null
                 }
             );
         }
@@ -88,7 +86,7 @@ namespace SecurionPayTests.Units
             var creditId = "1";
             var updateCreditRequest = new CreditUpdateRequest() { CreditId = creditId, Description = "new description" };
 
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Credit>(
                 async (api) =>
                 {
                     await api.UpdateCredit(updateCreditRequest);
@@ -96,9 +94,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = string.Format("{0}/credits/{1}", GatewayAdress, creditId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(updateCreditRequest)
+                    Action = string.Format("credits/{0}", creditId),
+                    Parameter = updateCreditRequest
                 }
             );
         }
@@ -108,7 +105,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
 
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
                 async (api) =>
                 {
                     await api.ListCredits();
@@ -116,9 +113,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = string.Format("{0}/credits", GatewayAdress),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = "credits",
+                    Parameter = null
                 }
             );
         }

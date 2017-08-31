@@ -21,7 +21,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = "2016", Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
                 var token = await _gateway.CreateToken(createTokenRequest);
 
                 var creditRequest = new CreditRequest()
@@ -49,7 +49,7 @@ namespace SecurionPayTests.Integration
         public async Task CreateCreditWithTokenAndRetireveCreditTest()
         {
             try {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = "2016", Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
                 var token = await _gateway.CreateToken(createTokenRequest);
 
                 var creditRequest = new CreditRequest()
@@ -159,7 +159,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = "2016", Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
                 var token = await _gateway.CreateToken(createTokenRequest);
 
                 var creditRequest = new CreditRequest()

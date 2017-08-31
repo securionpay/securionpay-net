@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Enums;
 using SecurionPay.Request.CrossSaleOffer;
+using SecurionPay.Response;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace SecurionPayTests.Units
                     Currency="PLN"
                 }
             };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<CrossSaleOffer>(
                 async (api) =>
                 {
                     await api.CreateCrossSaleOffer(crossSaleOfferRequest);
@@ -41,9 +42,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + "/cross-sale-offers",
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(crossSaleOfferRequest)
+                    Action = "cross-sale-offers",
+                    Parameter = crossSaleOfferRequest
                 }
             );
         }
@@ -66,7 +66,7 @@ namespace SecurionPayTests.Units
                     CaptureCharges=true
                 }
             };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<CrossSaleOffer>(
                 async (api) =>
                 {
                     await api.CreateCrossSaleOffer(crossSaleOfferRequest);
@@ -74,9 +74,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + "/cross-sale-offers",
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(crossSaleOfferRequest)
+                    Action =  "cross-sale-offers",
+                    Parameter = crossSaleOfferRequest
                 }
             );
         }
@@ -86,7 +85,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var offerId = "1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<CrossSaleOffer>(
                 async (api) =>
                 {
                     await api.RetrieveCrossSaleOffer(offerId);
@@ -94,9 +93,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = GatewayAdress + "/cross-sale-offers/" + offerId,
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = "cross-sale-offers/" + offerId,
+                    Parameter = null
                 }
             );
         }
@@ -113,7 +111,7 @@ namespace SecurionPayTests.Units
                 Template=CrossSaleOfferTemplate.ImageAndText
                
             };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<CrossSaleOffer>(
                 async (api) =>
                 {
                     await api.UpdateCrossSaleOffer(updateRequest);
@@ -121,9 +119,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + "/cross-sale-offers/"+ offerId,
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(updateRequest)
+                    Action = "cross-sale-offers/" + offerId,
+                    Parameter = updateRequest
                 }
             );
         }
@@ -133,7 +130,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var offerId = "1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<DeleteResponse>(
                 async (api) =>
                 {
                     await api.DeleteCrossSaleOffer(offerId);
@@ -141,9 +138,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Delete,
-                    Address = GatewayAdress + "/cross-sale-offers/" + offerId,
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action =  "cross-sale-offers/" + offerId,
+                    Parameter = null
                 }
             );
         }
@@ -152,7 +148,7 @@ namespace SecurionPayTests.Units
         public async Task ListCrossSaleOfferTest()
         {
             var requestTester = GetRequestTester();
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
                 async (api) =>
                 {
                     await api.ListCrossSaleOffers();
@@ -160,9 +156,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = GatewayAdress + "/cross-sale-offers",
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = "cross-sale-offers",
+                    Parameter = null
                 }
             );
         }
@@ -176,7 +171,7 @@ namespace SecurionPayTests.Units
                 PartnerId = "1",
                 Limit = 10
             };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
                 async (api) =>
                 {
                     await api.ListCrossSaleOffers(listRequest);
@@ -184,9 +179,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = GatewayAdress + "/cross-sale-offers?limit=10&includeTotalCount=False&deleted=False&partnerId=1",
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action =  "cross-sale-offers?limit=10&includeTotalCount=False&deleted=False&partnerId=1",
+                    Parameter = null
                 }
             );
         }

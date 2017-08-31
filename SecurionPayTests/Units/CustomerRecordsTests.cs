@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
+using SecurionPay.Response;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,13 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task CreateCustomerRecordTest()
         {
-            var requestTester = new RequestTester(SecretKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             var customerRecordRequest = new CustomerRecordRequest()
             {
                 Email = "test@example.com",
                 Subscription = true
             };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<CustomerRecord>(
             async (api) =>
             {
                 await api.CreateCustomerRecord(customerRecordRequest);
@@ -30,9 +31,8 @@ namespace SecurionPayTests.Units
             new RequestDescriptor()
             {
                 Method = HttpMethod.Post,
-                Address = GatewayAdress + "/customer-records",
-                Header = GetDesiredHeader(),
-                Content = ToJson(customerRecordRequest)
+                Action = "customer-records",
+                Parameter = customerRecordRequest
             });
 
         }
@@ -40,7 +40,7 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RefreshCustomerRecordTest()
         {
-            var requestTester = new RequestTester(SecretKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             string recordId = "recordId";
             var customerRecordRefreshRequest = new CustomerRecordRefreshRequest()
             {
@@ -48,7 +48,7 @@ namespace SecurionPayTests.Units
                 CustomerRecordId=recordId,
                 Subscription = true
             };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<CustomerRecord>(
             async (api) =>
             {
                 await api.RefreshCustomerRecord(customerRecordRefreshRequest);
@@ -56,9 +56,8 @@ namespace SecurionPayTests.Units
             new RequestDescriptor()
             {
                 Method = HttpMethod.Post,
-                Address = GatewayAdress + "/customer-records/" + customerRecordRefreshRequest.CustomerRecordId,
-                Header = GetDesiredHeader(),
-                Content = ToJson(customerRecordRefreshRequest)
+                Action = "customer-records/" + customerRecordRefreshRequest.CustomerRecordId,
+                Parameter = customerRecordRefreshRequest
             });
 
         }
@@ -66,9 +65,9 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveCustomerRecordTest()
         {
-            var requestTester = new RequestTester(SecretKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             string recordId = "recordId";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<CustomerRecord>(
             async (api) =>
             {
                 await api.RetrieveCustomerRecord(recordId);
@@ -76,9 +75,8 @@ namespace SecurionPayTests.Units
             new RequestDescriptor()
             {
                 Method = HttpMethod.Get,
-                Address = GatewayAdress + "/customer-records/" + recordId,
-                Header = GetDesiredHeader(),
-                Content = null
+                Action = "customer-records/" + recordId,
+                Parameter = null
             });
 
         }
@@ -86,8 +84,8 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task ListCustomerRecordTest()
         {
-            var requestTester = new RequestTester(SecretKey, GatewayAdress);
-            await requestTester.TestMethod(
+            var requestTester = GetRequestTester();
+            await requestTester.TestMethod<SecurionpayList>(
             async (api) =>
             {
                 await api.ListCustomerRecords();
@@ -95,9 +93,8 @@ namespace SecurionPayTests.Units
             new RequestDescriptor()
             {
                 Method = HttpMethod.Get,
-                Address = GatewayAdress + "/customer-records",
-                Header = GetDesiredHeader(),
-                Content = null
+                Action = "customer-records",
+                Parameter = null
             });
 
         }
@@ -105,9 +102,9 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task ListCustomerRecordFeeTest()
         {
-            var requestTester = new RequestTester(SecretKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             string recordId = "recordId";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
             async (api) =>
             {
                 await api.ListCustomerRecordFees(recordId);
@@ -115,9 +112,8 @@ namespace SecurionPayTests.Units
             new RequestDescriptor()
             {
                 Method = HttpMethod.Get,
-                Address = GatewayAdress + string.Format("/customer-records/{0}/fees", recordId),
-                Header = GetDesiredHeader(),
-                Content = null
+                Action = string.Format("customer-records/{0}/fees", recordId),
+                Parameter = null
             });
 
         }
@@ -125,10 +121,10 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveCustomerRecordFeeTest()
         {
-            var requestTester = new RequestTester(SecretKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             string recordId = "recordId";
             string feeId = "feeId";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<CustomerRecordFee>(
             async (api) =>
             {
                 await api.RetrieveCustomerRecordFee(recordId, feeId);
@@ -136,9 +132,8 @@ namespace SecurionPayTests.Units
             new RequestDescriptor()
             {
                 Method = HttpMethod.Get,
-                Address = GatewayAdress + string.Format("/customer-records/{0}/fees/{1}", recordId, feeId),
-                Header = GetDesiredHeader(),
-                Content = null
+                Action = string.Format("customer-records/{0}/fees/{1}", recordId, feeId),
+                Parameter = null
             });
 
         }
@@ -146,9 +141,9 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task ListCustomerRecordProfitsTest()
         {
-            var requestTester = new RequestTester(SecretKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             string recordId = "recordId";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
             async (api) =>
             {
                 await api.ListCustomerRecordProfits(recordId);
@@ -156,9 +151,8 @@ namespace SecurionPayTests.Units
             new RequestDescriptor()
             {
                 Method = HttpMethod.Get,
-                Address = GatewayAdress + string.Format("/customer-records/{0}/profits", recordId),
-                Header = GetDesiredHeader(),
-                Content = null
+                Action = string.Format("customer-records/{0}/profits", recordId),
+                Parameter = null
             });
 
         }
@@ -166,10 +160,10 @@ namespace SecurionPayTests.Units
         [TestMethod]
         public async Task RetrieveCustomerRecordProfitTest()
         {
-            var requestTester = new RequestTester(SecretKey, GatewayAdress);
+            var requestTester = GetRequestTester();
             string recordId = "recordId";
             string profitId = "feeId";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<CustomerRecordProfit>(
             async (api) =>
             {
                 await api.RetrieveCustomerRecordProfit(recordId, profitId);
@@ -177,9 +171,8 @@ namespace SecurionPayTests.Units
             new RequestDescriptor()
             {
                 Method = HttpMethod.Get,
-                Address = GatewayAdress + string.Format("/customer-records/{0}/profits/{1}", recordId, profitId),
-                Header = GetDesiredHeader(),
-                Content = null
+                Action = string.Format("customer-records/{0}/profits/{1}", recordId, profitId),
+                Parameter = null
             });
 
         }

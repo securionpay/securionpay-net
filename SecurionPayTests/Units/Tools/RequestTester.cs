@@ -2,6 +2,8 @@
 using Moq;
 using Moq.Protected;
 using SecurionPay;
+using SecurionPay.Internal;
+using SecurionPay.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,48 +16,25 @@ namespace SecurionPayTests.Units.Tools
 {
     public class RequestTester
     {
-        string _gatewayAddress;
-        string _secretKey;
-        SemaphoreSlim semaphore = new SemaphoreSlim(0);
-        public RequestTester(string secretKey,string gatewayAddress)
+
+        public RequestTester()
         {
-            _gatewayAddress = gatewayAddress;
-            _secretKey = secretKey;
+
         }
 
-        public async Task TestMethod(Func<SecurionPayGateway, Task> methodToTest, RequestDescriptor expectedRequest)
+        public async Task TestMethod<TResponseType>(Func<SecurionPayGateway, Task> methodToTest, RequestDescriptor expectedRequest)
         {
-            var mock = new Mock<HttpMessageHandler>();
-            HttpRequestMessage request=null;
-            string requestJson = null;
+            var apiClientMock = new Mock<IApiClient>();
+            var signMock = new Mock<ISignService>();
+            SecurionPayGateway gateway = new SecurionPayGateway(apiClientMock.Object, signMock.Object);
 
-            mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .Callback< HttpRequestMessage,CancellationToken>(async (htm,ct)=>
-                {
-                    try
-                    {
-                        request = htm;
-                        if (htm.Content != null)
-                        {
-                            requestJson = await htm.Content.ReadAsStringAsync();
-                        }
-                    }
-                    finally
-                    {
-                        semaphore.Release();
-                    }
-                })
-                .Returns(Task.Run(() => new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.BadGateway }));
-            SecurionPayGateway api = new SecurionPayGateway(_secretKey, _gatewayAddress, mock.Object);
-            
             try
             {
-                await methodToTest(api);
+                await methodToTest(gateway);
             }
             catch { }
-            await semaphore.WaitAsync();
-            var result=expectedRequest.Match(request, requestJson);
-            Assert.IsTrue(result.MatchSuccess,result.MatchFailReasonsMessage);
+
+            apiClientMock.Verify<Task<TResponseType>>(api => api.SendRequest<TResponseType>(It.Is<HttpMethod>(method => method == expectedRequest.Method), It.Is<string>(action => action == expectedRequest.Action), It.Is<object>(obj=>obj==expectedRequest.Parameter)), Times.Once);
         }
     }
 }

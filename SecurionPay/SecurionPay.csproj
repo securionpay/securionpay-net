@@ -41,7 +41,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Internal\ApiClient.cs" />
     <Compile Include="Converters\DateConverter.cs" />
+    <Compile Include="Internal\ConfigurationProvider.cs" />
+    <Compile Include="Internal\IApiClient.cs" />
+    <Compile Include="IConfigurationProvider.cs" />
+    <Compile Include="Internal\ISignService.cs" />
+    <Compile Include="Internal\SignService.cs" />
+    <Compile Include="ISecurionPayGateway.cs" />
     <Compile Include="Request\CheckoutRequest.cs" />
     <Compile Include="Request\CreditRequest.cs" />
     <Compile Include="Request\CreditUpdateRequest.cs" />

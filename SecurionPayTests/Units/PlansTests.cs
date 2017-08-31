@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
+using SecurionPay.Response;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var planRequest = new PlanRequest() { Amount=100, Currency="USD" };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Plan>(
                 async (api) =>
                 {
                     await api.CreatePlan(planRequest);
@@ -26,9 +27,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = string.Format("{0}/plans", GatewayAdress),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(planRequest)
+                    Action = "plans",
+                    Parameter = planRequest
                 }
             );
         }
@@ -38,7 +38,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var planId = "id";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Plan>(
                 async (api) =>
                 {
                     await api.RetrievePlan(planId);
@@ -46,9 +46,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = string.Format("{0}/plans/{1}", GatewayAdress, planId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = string.Format("plans/{0}", planId),
+                    Parameter = null
                 }
             );
         }
@@ -59,7 +58,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var planId = "id";
             var planRequest = new PlanUpdateRequest() { PlanId=planId,Name="asa" };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Plan>(
                 async (api) =>
                 {
                     await api.UpdatePlan(planRequest);
@@ -67,9 +66,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = string.Format("{0}/plans/{1}", GatewayAdress, planId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(planRequest)
+                    Action = string.Format("plans/{0}", planId),
+                    Parameter = planRequest
                 }
             );
         }
@@ -78,7 +76,7 @@ namespace SecurionPayTests.Units
         public async Task ListPlansTest()
         {
             var requestTester = GetRequestTester();
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
                 async (api) =>
                 {
                     await api.ListPlans();
@@ -86,9 +84,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = string.Format("{0}/plans", GatewayAdress),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = "plans",
+                    Parameter = null
                 }
             );
         }
@@ -98,7 +95,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var planId = "id";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<DeleteResponse>(
                 async (api) =>
                 {
                     await api.DeletePlan(planId);
@@ -106,9 +103,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Delete,
-                    Address = string.Format("{0}/plans/{1}", GatewayAdress, planId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = string.Format("plans/{0}", planId),
+                    Parameter = null
                 }
             );
         }

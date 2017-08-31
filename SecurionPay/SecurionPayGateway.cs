@@ -13,48 +13,43 @@ using SecurionPay.Request;
 using SecurionPay.Exception;
 using SecurionPay.Request.CrossSaleOffer;
 using System.Security.Cryptography;
+using SecurionPay.Internal;
 
 namespace SecurionPay
 {
     /// <summary>
     /// Securion Pay API Service
     /// </summary>
-    public class SecurionPayGateway
+    public class SecurionPayGateway : ISecurionPayGateway
     {
-        private const string CHARGES_PATH = "/charges";
-        private const string CREDITS_PATH = "/credits";
-        private const string TOKENS_PATH = "/tokens";
-        private const string CUSTOMERS_PATH = "/customers";
-        private const string CARDS_PATH = "/customers/{0}/cards";
-        private const string PLANS_PATH = "/plans";
-        private const string SUBSCRIPTIONS_PATH = "/customers/{0}/subscriptions";
-        private const string EVENTS_PATH = "/events";
-        private const string BLACKLIST_RULE_PATH = "/blacklist";
-        private const string CROSS_SALE_OFFER_PATH = "/cross-sale-offers";
-        private const string CUSTOMER_RECORDS_PATH = "/customer-records";
-        private const string CUSTOMER_RECORD_FEES_PATH = "/customer-records/{0}/fees";
-        private const string CUSTOMER_RECORD_PROFITS_PATH = "/customer-records/{0}/profits";
-        private string _serverUrl = "";
-        private string _privateAuthToken;
-        private string _version="2.2.1";
-        private string _secretKey;
-        HttpClient client;
+        private const string CHARGES_PATH = "charges";
+        private const string CREDITS_PATH = "credits";
+        private const string TOKENS_PATH = "tokens";
+        private const string CUSTOMERS_PATH = "customers";
+        private const string CARDS_PATH = "customers/{0}/cards";
+        private const string PLANS_PATH = "plans";
+        private const string SUBSCRIPTIONS_PATH = "customers/{0}/subscriptions";
+        private const string EVENTS_PATH = "events";
+        private const string BLACKLIST_RULE_PATH = "blacklist";
+        private const string CROSS_SALE_OFFER_PATH = "cross-sale-offers";
+        private const string CUSTOMER_RECORDS_PATH = "customer-records";
+        private const string CUSTOMER_RECORD_FEES_PATH = "customer-records/{0}/fees";
+        private const string CUSTOMER_RECORD_PROFITS_PATH = "customer-records/{0}/profits";
+        private IApiClient _apiClient;
+        private ISignService _signService;
 
-        public SecurionPayGateway(string secretKey, string serverUrl = "https://api.securionpay.com/", HttpMessageHandler customHttpMessageHandler = null)
+        [Obsolete]
+        public SecurionPayGateway(string secretKey, string serverUrl = "https://api.securionpay.com/")
         {
-            _serverUrl = serverUrl;
-            var tokenBytes = Encoding.UTF8.GetBytes(secretKey + ":");
-            _privateAuthToken = Convert.ToBase64String(tokenBytes);
-            _secretKey = secretKey;
-            if (customHttpMessageHandler == null)
-            {
-                client = new HttpClient();
-            }
-            else
-            {
-                client = new HttpClient(customHttpMessageHandler);
-            }
-            client.BaseAddress = new Uri(_serverUrl);
+            var configuration = new ConfigurationProvider(secretKey, serverUrl);
+            _apiClient = new ApiClient(configuration);
+            _signService = new SignService(configuration);
+        }
+
+        public SecurionPayGateway(IApiClient apiClient, ISignService signService)
+        {
+            _apiClient = apiClient;
+            _signService = signService;
         }
 
         #region public
@@ -362,9 +357,7 @@ namespace SecurionPay
         {
             string data = JsonConvert.SerializeObject(checkoutRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore });
 
-            var hash = new HMACSHA256(Encoding.UTF8.GetBytes(_secretKey));
-            var hashedData = hash.ComputeHash(Encoding.UTF8.GetBytes(data));
-            string signature = BitConverter.ToString(hashedData).Replace("-", string.Empty).ToLower();
+            var signature = _signService.Sign(data);
 
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(signature + "|" + data));
         }
@@ -572,31 +565,7 @@ namespace SecurionPay
 
         private async Task<T> SendRequest<T>(HttpMethod method, string action, object parameter)
         {
-
-            HttpRequestMessage request = new HttpRequestMessage(method, _serverUrl + action);
-            if (parameter != null)
-            {
-                var requestJson = JsonConvert.SerializeObject(parameter, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-                request.Content = new StringContent(requestJson, Encoding.UTF8, "application/json");
-            }
-
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", _privateAuthToken);
-            client.DefaultRequestHeaders.Add("User-Agent", string.Format("SecurionPay-DOTNET/{0}", _version));
-            HttpResponseMessage response = await client.SendAsync(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var apiResponseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(apiResponseString);
-            }
-            else
-            {
-                ErrorResponse errorResponse;
-                var apiErrorRsponseString = await response.Content.ReadAsStringAsync();
-                errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(apiErrorRsponseString);
-                throw new SecurionPayException(errorResponse.Error, typeof(T).Name, action);
-            }
-
-
+            return await _apiClient.SendRequest<T>(method, action, parameter);
         }
 
         #endregion

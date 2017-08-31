@@ -42,5 +42,13 @@ namespace SecurionPayTests.Integration
             return string.Format("test{0}@test.com", _random.Next(999999));
         }
 
+        protected string CorrectCardExpiryYear
+        {
+            get
+            {
+                return (DateTime.Today.Year + 1).ToString();
+            }
+        }
+
     }
 }
