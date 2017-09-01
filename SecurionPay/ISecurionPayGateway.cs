@@ -1,4 +1,5 @@
 ﻿using SecurionPay.Request;
+using SecurionPay.Request.Checkout;
 using SecurionPay.Response;
 using System;
 using System.Threading.Tasks;

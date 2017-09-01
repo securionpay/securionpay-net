@@ -49,7 +49,12 @@
     <Compile Include="Internal\ISignService.cs" />
     <Compile Include="Internal\SignService.cs" />
     <Compile Include="ISecurionPayGateway.cs" />
-    <Compile Include="Request\CheckoutRequest.cs" />
+    <Compile Include="Request\Checkout\CheckoutRequestCharge.cs" />
+    <Compile Include="Request\Checkout\CheckoutRequest.cs" />
+    <Compile Include="Request\Checkout\CheckoutRequestCustomCharge.cs" />
+    <Compile Include="Request\Checkout\CheckoutRequestSubscription.cs" />
+    <Compile Include="Request\Checkout\CheckoutRequestThreeDSecure.cs" />
+    <Compile Include="Request\Checkout\CustomAmount.cs" />
     <Compile Include="Request\CreditRequest.cs" />
     <Compile Include="Request\CreditUpdateRequest.cs" />
     <Compile Include="Request\CreditWithCardRequest.cs" />

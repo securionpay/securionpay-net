@@ -14,6 +14,7 @@ using SecurionPay.Exception;
 using SecurionPay.Request.CrossSaleOffer;
 using System.Security.Cryptography;
 using SecurionPay.Internal;
+using SecurionPay.Request.Checkout;
 
 namespace SecurionPay
 {

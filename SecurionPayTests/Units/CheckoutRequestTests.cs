@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay;
 using SecurionPay.Request;
+using SecurionPay.Request.Checkout;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace SecurionPayTests.Units
             var gateway = new SecurionPayGateway("pr_test_tXHm9qV9qV9bjIRHcQr9PLPa");
             var checkoutRequest = new CheckoutRequest()
             {
-                Charge=new SecurionPay.Request.CrossSaleOffer.CrossSaleOfferRequestCharge()
+                Charge=new CheckoutRequestCharge()
                 {
                     Amount=499,
                     Currency="EUR"
