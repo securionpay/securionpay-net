@@ -19,9 +19,6 @@ namespace SecurionPay.Response
         [JsonConverter(typeof(DateConverter))]
         public DateTime Created { get; set; }
 
-        [JsonProperty("deleted")]
-        public bool Deleted { get; set; }
-
         [JsonProperty("ruleType")]
         [JsonConverter(typeof(SafeEnumConverter))]
         public BlacklistRuleType RuleType { get; set; }
