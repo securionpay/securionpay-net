@@ -41,6 +41,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\DisputeReason.cs" />
+    <Compile Include="Enums\DisputeStatus.cs" />
+    <Compile Include="Enums\LiabilityShift.cs" />
     <Compile Include="Internal\ApiClient.cs" />
     <Compile Include="Converters\DateConverter.cs" />
     <Compile Include="Internal\ConfigurationProvider.cs" />
@@ -68,6 +71,8 @@
     <Compile Include="Request\CustomerRecordProfitListRequest.cs" />
     <Compile Include="Request\CustomerRecordRefreshRequest.cs" />
     <Compile Include="Request\CustomerRecordRequest.cs" />
+    <Compile Include="Response\Address.cs" />
+    <Compile Include="Response\Billing.cs" />
     <Compile Include="Response\Credit.cs" />
     <Compile Include="Response\CrossSaleOffer.cs" />
     <Compile Include="Enums\CrossSaleOfferTemplate.cs" />
@@ -76,7 +81,10 @@
     <Compile Include="Response\CustomerRecord.cs" />
     <Compile Include="Response\CustomerRecordFee.cs" />
     <Compile Include="Response\CustomerRecordProfit.cs" />
+    <Compile Include="Response\Dispute.cs" />
     <Compile Include="Response\FromCrossSale.cs" />
+    <Compile Include="Response\Shipping.cs" />
+    <Compile Include="Response\ThreeDSecureInfo.cs" />
     <Compile Include="Response\WithCrossSale.cs" />
     <Compile Include="SecurionPayException.cs" />
     <Compile Include="Converters\EventDataConverter.cs" />

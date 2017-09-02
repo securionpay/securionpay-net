@@ -34,11 +34,11 @@ namespace SecurionPay.Response
         [JsonProperty("cards")]
         public List<Card> Cards { get; set; }
 
-        [JsonProperty("metadata")]
-        public Dictionary<String, String> Metadata { get; set; }
-
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }
+
+        [JsonProperty("metadata")]
+        public Dictionary<String, String> Metadata { get; set; }
 
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;

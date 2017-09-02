@@ -103,6 +103,7 @@ namespace SecurionPayTests.Integration
                 var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
                 var token = await _gateway.CreateToken(createTokenRequest);
 
+                //TODO send addresses
                 var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = new CardRequest() { Id = token.Id } };
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 

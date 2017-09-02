@@ -35,6 +35,9 @@ namespace SecurionPay.Response
         [JsonProperty("customerId")]
         public String CustomerId { get; set; }
 
+        [JsonProperty("subscriptionId")]
+        public string SubscriptionId { get; set; }
+
         [JsonProperty("captured")]
         public Boolean Captured { get; set; }
 
@@ -44,11 +47,11 @@ namespace SecurionPay.Response
         [JsonProperty("refunds")]
         public List<Refund> Refunds { get; set; }
 
-        [JsonProperty("metadata")]
-        public Dictionary<String, String> Metadata { get; set; }
-
         [JsonProperty("disputed")]
         public bool Disputed { get; set; }
+
+        [JsonProperty("dispute")]
+        public Dispute Dispute { get; set; }
 
         [JsonProperty("fraudDetails")]
         public FraudDetails FraudDetails { get; set; }
@@ -64,10 +67,22 @@ namespace SecurionPay.Response
         public bool Deleted { get; set; }
 
         [JsonProperty("fromCrossSale")]
-        private FromCrossSale FromCrossSale { get; set; }
+        public FromCrossSale FromCrossSale { get; set; }
 
         [JsonProperty("withCrossSales")]
-        private List<WithCrossSale> WithCrossSales { get; set; }
+        public List<WithCrossSale> WithCrossSales { get; set; }
+
+        [JsonProperty("shipping")]
+        public Shipping Shipping { get; set; }
+
+        [JsonProperty("billing")]
+        public Billing Billing { get; set; }
+
+        [JsonProperty("threeDSecureInfo")]
+        public ThreeDSecureInfo ThreeDSecureInfo { get; set; }
+
+        [JsonProperty("metadata")]
+        public Dictionary<String, String> Metadata { get; set; }
 
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;

@@ -13,6 +13,7 @@ namespace SecurionPayTests.Units
     [TestClass]
     public class CheckoutRequestTests :BaseUnitTestsSet
     {
+        //TODO have to tests - one for sign service and one for this endpoint
         [TestMethod]
         public void TestCheckoutRequest()
         {

@@ -8,8 +8,5 @@ namespace SecurionPay.Request
     {
         [JsonIgnore]
         public String ChargeId { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

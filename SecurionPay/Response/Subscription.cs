@@ -11,7 +11,6 @@ namespace SecurionPay.Response
 {
     public class Subscription
     {
-
         [JsonProperty("id")]
         public String Id { get; set; }
 
@@ -27,6 +26,10 @@ namespace SecurionPay.Response
 
         [JsonProperty("quantity")]
         public int Quantity { get; set; }
+
+
+        [JsonProperty("captureCharges")]
+        public bool CaptureCharges { get; set; }
 
         [JsonProperty("status")]
         [JsonConverter(typeof(SafeEnumConverter))]
@@ -56,16 +59,19 @@ namespace SecurionPay.Response
         [JsonProperty("cancelAtPeriodEnd")]
         public bool CancelAtPeriodEnd { get; set; }
 
-        [JsonProperty("metadata")]
-        public Dictionary<String, String> Metadata { get; set; }
-
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }
 
         [JsonProperty("remainingBillingCycles")]
         public int RemainingBillingCycles { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
+        [JsonProperty("shipping")]
+        public Shipping Shipping { get; set; }
+
+        [JsonProperty("billing")]
+        public Billing Billing { get; set; }
+
+        [JsonProperty("metadata")]
+        public Dictionary<String, String> Metadata { get; set; }
     }
 }
