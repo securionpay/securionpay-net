@@ -7,9 +7,6 @@ namespace SecurionPay.Request
 {
     public class CardRequest
     {
-        [JsonProperty("id")]
-        public String Id { get; set; }
-
         [JsonIgnore]
         public String CustomerId { get; set; }
 

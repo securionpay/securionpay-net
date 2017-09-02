@@ -62,9 +62,6 @@ namespace SecurionPay.Response
         [JsonProperty("addressCountry")]
         public String AddressCountry { get; set; }
 
-        [JsonProperty("deleted")]
-        public bool Deleted { get; set; }
-
         [JsonProperty("fingerprint")]
         public string Fingerprint { get; set; }
 
