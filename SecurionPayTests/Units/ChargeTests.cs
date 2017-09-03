@@ -20,7 +20,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var customerId = "1";
             var tokenId = "1";
-            var chargeRequest = new ChargeRequest() { Amount = 1000, Currency = "PLN", Card = new CardRequest() { Id = tokenId }, Description = "sss", Captured = false };
+            var chargeRequest = new ChargeWithCardTokenRequest() { Amount = 1000, CurrencyISOCode = "PLN", CardToken = tokenId , Description = "sss", Captured = false };
             await requestTester.TestMethod<Charge>(
                 async (api) =>
                 {
@@ -41,7 +41,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var customerId = "1";
             var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
-            var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customerId, Card = cardRequest };
+            var chargeRequest = new ChargeWithNewCardRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customerId, Card = cardRequest };
             await requestTester.TestMethod<Charge>(
                 async (api) =>
                 {

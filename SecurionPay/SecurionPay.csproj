@@ -52,6 +52,9 @@
     <Compile Include="Internal\ISignService.cs" />
     <Compile Include="Internal\SignService.cs" />
     <Compile Include="ISecurionPayGateway.cs" />
+    <Compile Include="Request\ChargeWithCardTokenRequest.cs" />
+    <Compile Include="Request\ChargeWithExisitingCardRequest.cs" />
+    <Compile Include="Request\ChargeWithNewCardRequest.cs" />
     <Compile Include="Request\Checkout\CheckoutRequestCharge.cs" />
     <Compile Include="Request\Checkout\CheckoutRequest.cs" />
     <Compile Include="Request\Checkout\CheckoutRequestCustomCharge.cs" />
@@ -71,8 +74,15 @@
     <Compile Include="Request\CustomerRecordProfitListRequest.cs" />
     <Compile Include="Request\CustomerRecordRefreshRequest.cs" />
     <Compile Include="Request\CustomerRecordRequest.cs" />
-    <Compile Include="Response\Address.cs" />
-    <Compile Include="Response\Billing.cs" />
+    <Compile Include="Common\Address.cs" />
+    <Compile Include="Common\Billing.cs" />
+    <Compile Include="Request\CustomerWithCardFromChargeRequest.cs" />
+    <Compile Include="Request\CustomerWithCardTokenRequest.cs" />
+    <Compile Include="Request\CustomerWithNewCardRequest.cs" />
+    <Compile Include="Request\SubscriptionWithCardFromChargeRequest.cs" />
+    <Compile Include="Request\SubscriptionWithCardTokenRequest.cs" />
+    <Compile Include="Request\SubscriptionWithNewCardRequest.cs" />
+    <Compile Include="Request\ThreeDSecure.cs" />
     <Compile Include="Response\Credit.cs" />
     <Compile Include="Response\CrossSaleOffer.cs" />
     <Compile Include="Enums\CrossSaleOfferTemplate.cs" />
@@ -83,7 +93,7 @@
     <Compile Include="Response\CustomerRecordProfit.cs" />
     <Compile Include="Response\Dispute.cs" />
     <Compile Include="Response\FromCrossSale.cs" />
-    <Compile Include="Response\Shipping.cs" />
+    <Compile Include="Common\Shipping.cs" />
     <Compile Include="Response\ThreeDSecureInfo.cs" />
     <Compile Include="Response\WithCrossSale.cs" />
     <Compile Include="SecurionPayException.cs" />

@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SecurionPay.Response
+namespace SecurionPay.Common
 {
-    public class Billing
+    public class Shipping
     {
         [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("address")]
         public Address Address { get; set; }
+
     }
 }

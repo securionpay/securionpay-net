@@ -12,9 +12,6 @@ namespace SecurionPay.Request
         [JsonProperty("planId")]
         public String PlanId { get; set; }
 
-        [JsonProperty("card")]
-        public CardRequest Card { get; set; }
-
         [JsonProperty("quantity")]
         public int? Quantity { get; set; }
 

@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SecurionPay.Common;
 using SecurionPay.Converters;
 using SecurionPay.Enums;
 using System;

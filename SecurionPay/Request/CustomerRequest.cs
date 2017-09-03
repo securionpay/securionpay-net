@@ -13,9 +13,6 @@ namespace SecurionPay.Request
         [JsonProperty("description")]
         public String Description { get; set; }
 
-        [JsonProperty("card")]
-        public CardRequest Card { get; set; }
-
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }
 

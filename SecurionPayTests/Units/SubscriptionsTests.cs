@@ -20,7 +20,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var customerId = "1";
             var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
-            var subscriptionRequest = new SubscriptionRequest() { CustomerId= customerId ,Card= cardRequest,Quantity=1000,PlanId="1" };
+            var subscriptionRequest = new SubscriptionWithNewCardRequest() { CustomerId= customerId ,Card= cardRequest,Quantity=1000,PlanId="1" };
             await requestTester.TestMethod<Subscription>(
                 async (api) =>
                 {
@@ -41,7 +41,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var customerId = "1";
             var tokenId = "1";
-            var subscriptionRequest = new SubscriptionRequest() { CustomerId = customerId, Card = new CardRequest() { Id = tokenId }, Quantity = 1000, PlanId = "1" };
+            var subscriptionRequest = new SubscriptionWithCardTokenRequest() { CustomerId = customerId, CardToken = tokenId , Quantity = 1000, PlanId = "1" };
             await requestTester.TestMethod<Subscription>(
                 async (api) =>
                 {

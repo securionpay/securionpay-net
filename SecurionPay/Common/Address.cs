@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SecurionPay.Response
+namespace SecurionPay.Common
 {
     public class Address
     {

@@ -39,7 +39,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
-            var customerRequest = new CustomerRequest() { Card= cardRequest, Email = "test@example.com", Description = "description" };
+            var customerRequest = new CustomerWithNewCardRequest() { Card= cardRequest, Email = "test@example.com", Description = "description" };
             await requestTester.TestMethod<Customer>(
                 async (api) =>
                 {

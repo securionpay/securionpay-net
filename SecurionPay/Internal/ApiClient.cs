@@ -15,7 +15,7 @@ namespace SecurionPay
     {
         private string _serverUrl = "";
         private string _privateAuthToken;
-        private string _version = "2.2.1";
+        private string _version = "2.3.0";
         private HttpClient client;
 
         public ApiClient(IConfigurationProvider secretKeyProvider)

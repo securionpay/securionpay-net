@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SecurionPay.Response
+namespace SecurionPay.Common
 {
-    public class Shipping
+    public class Billing
     {
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -14,5 +14,7 @@ namespace SecurionPay.Response
         [JsonProperty("address")]
         public Address Address { get; set; }
 
+        [JsonProperty("vat")]
+        public string Vat { get; set; }
     }
 }
