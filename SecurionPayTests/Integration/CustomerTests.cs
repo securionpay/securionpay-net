@@ -22,7 +22,6 @@ namespace SecurionPayTests.Integration
                 var customerRequest = new CustomerWithNewCardRequest() { Email = GetRandomEmail(), Description = "test customer",Card=cardRequest };
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-
                 Assert.AreEqual(1, customer.Cards.Count);
                 Assert.AreEqual("test test", customer.Cards.First().CardholderName);
 

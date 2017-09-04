@@ -30,7 +30,7 @@ namespace SecurionPayTests.Integration
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 var cardRequest = new CardRequest() { Number = "4024007118468684", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
-                var chargeRequest = new ChargeWithNewCardRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card = cardRequest };
+                var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card = ChargeCardDefinition.NewCard(cardRequest) };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
             }
@@ -53,7 +53,7 @@ namespace SecurionPayTests.Integration
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 var cardRequest = new CardRequest() { Number = "44444444", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
-                var chargeRequest = new ChargeWithNewCardRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card = cardRequest };
+                var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card =ChargeCardDefinition.NewCard(cardRequest) };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
             }
@@ -77,7 +77,7 @@ namespace SecurionPayTests.Integration
             var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
             var card = await _gateway.CreateCard(cardRequest);
 
-            var chargeRequest = new ChargeWithExisitingCardRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, CardId = card.Id};
+            var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card = ChargeCardDefinition.FromCardId(card.Id)};
             var charge = await _gateway.CreateCharge(chargeRequest);
 
             Assert.AreEqual(2000, charge.Amount);
@@ -99,12 +99,12 @@ namespace SecurionPayTests.Integration
             var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
             var card = await _gateway.CreateCard(cardRequest);
 
-            var chargeRequest = new ChargeWithExisitingCardRequest()
+            var chargeRequest = new ChargeRequest()
             {
                 Amount = 2000,
                 CurrencyISOCode = "EUR",
                 CustomerId = customer.Id,
-                CardId = card.Id,
+                Card = ChargeCardDefinition.FromCardId(card.Id),
                 Shipping = new Shipping() { Name = "shipping name", Address = address },
                 Billing = new Billing() { Name = "Billing name", Address = address ,Vat="76663827374"}
             };
@@ -127,7 +127,7 @@ namespace SecurionPayTests.Integration
 
             var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
 
-            var chargeRequest = new ChargeWithNewCardRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card = cardRequest, ThreeDSecure = new ThreeDSecure() { RequireEnrolledCard = true, RequireSuccessfulLiabilityShiftForEnrolledCard = true } };
+            var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card = ChargeCardDefinition.NewCard(cardRequest), ThreeDSecure = new ThreeDSecure() { RequireEnrolledCard = true, RequireSuccessfulLiabilityShiftForEnrolledCard = true } };
             var charge = await _gateway.CreateCharge(chargeRequest);
 
             Assert.AreEqual(LiabilityShift.Successful, charge.ThreeDSecureInfo.LiabilityShift);

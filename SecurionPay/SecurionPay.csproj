@@ -41,6 +41,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\ChargeCardDefinitionSerializer.cs" />
     <Compile Include="Enums\DisputeReason.cs" />
     <Compile Include="Enums\DisputeStatus.cs" />
     <Compile Include="Enums\LiabilityShift.cs" />
@@ -52,9 +53,10 @@
     <Compile Include="Internal\ISignService.cs" />
     <Compile Include="Internal\SignService.cs" />
     <Compile Include="ISecurionPayGateway.cs" />
-    <Compile Include="Request\ChargeWithCardTokenRequest.cs" />
-    <Compile Include="Request\ChargeWithExisitingCardRequest.cs" />
-    <Compile Include="Request\ChargeWithNewCardRequest.cs" />
+    <Compile Include="Request\ChargeCardDefinition.cs" />
+    <Compile Include="Request\ChargeCardTokenDefinition.cs" />
+    <Compile Include="Request\ChargeExistingCardDefinition.cs" />
+    <Compile Include="Request\ChargeNewCardDefinition.cs" />
     <Compile Include="Request\Checkout\CheckoutRequestCharge.cs" />
     <Compile Include="Request\Checkout\CheckoutRequest.cs" />
     <Compile Include="Request\Checkout\CheckoutRequestCustomCharge.cs" />

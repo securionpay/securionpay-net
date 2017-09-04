@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SecurionPay.Common;
+using SecurionPay.Converters;
 using System;
 using System.Collections.Generic;
 namespace SecurionPay.Request
@@ -30,6 +31,10 @@ namespace SecurionPay.Request
 
         [JsonProperty("threeDSecure")]
         public ThreeDSecure ThreeDSecure { get; set; }
+
+        [JsonProperty("card")]
+        [JsonConverter(typeof(ChargeCardDefinitionSerializer))]
+        public ChargeCardDefinition Card { get; set; }
 
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;
