@@ -35,6 +35,18 @@ namespace SecurionPay.Response
         [JsonProperty("customerId")]
         public string CustomerId { get; set; }
 
+        [JsonProperty("threeDSecureInfo")]
+        public ThreeDSecureInfo ThreeDSecureInfo { get; set; }
+
+        [JsonProperty("metadata")]
+        public Dictionary<String, String> Metadata { get; set; }
+
+        [JsonProperty("failureCode")]
+        public string FailureCode { get; set; }
+
+        [JsonProperty("failureMessage")]
+        public string FailureMessage { get; set; }
+
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;
     }
