@@ -13,8 +13,11 @@ namespace SecurionPay.Response
         [JsonProperty("amount")]
         public int Amount { get; set; }
 
+        /// <summary>
+        /// Currency ISO Code
+        /// </summary>
         [JsonProperty("currency")]
-        public int CurrencyISOCode { get; set; }
+        public int Currency { get; set; }
 
         [JsonProperty("enrolled")]
         public bool Enrolled { get; set; }

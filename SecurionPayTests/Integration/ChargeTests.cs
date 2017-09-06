@@ -30,7 +30,7 @@ namespace SecurionPayTests.Integration
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 var cardRequest = new CardRequest() { Number = "4024007118468684", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
-                var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card = cardRequest };
+                var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
             }
@@ -53,7 +53,7 @@ namespace SecurionPayTests.Integration
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 var cardRequest = new CardRequest() { Number = "44444444", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
-                var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card = cardRequest };
+                var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
             }
@@ -77,7 +77,7 @@ namespace SecurionPayTests.Integration
             var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
             var card = await _gateway.CreateCard(cardRequest);
 
-            var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card = new CardRequest() { Id = card.Id } };
+            var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = new CardRequest() { Id = card.Id } };
             var charge = await _gateway.CreateCharge(chargeRequest);
 
             Assert.AreEqual(2000, charge.Amount);
@@ -102,7 +102,7 @@ namespace SecurionPayTests.Integration
             var chargeRequest = new ChargeRequest()
             {
                 Amount = 2000,
-                CurrencyISOCode = "EUR",
+                Currency = "EUR",
                 CustomerId = customer.Id,
                 Card = new CardRequest() { Id = card.Id},
                 Shipping = new Shipping() { Name = "shipping name", Address = address },
@@ -128,7 +128,7 @@ namespace SecurionPayTests.Integration
 
                 var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
 
-                var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId = customer.Id, Card = cardRequest, ThreeDSecure = new ThreeDSecure() { RequireAttempt = true } };
+                var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest, ThreeDSecure = new ThreeDSecure() { RequireAttempt = true } };
                 var charge = await _gateway.CreateCharge(chargeRequest);
             }
             catch (SecurionPayException exc)

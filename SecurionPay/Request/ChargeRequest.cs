@@ -11,8 +11,11 @@ namespace SecurionPay.Request
         [JsonProperty("amount")]
         public int? Amount { get; set; }
 
+        /// <summary>
+        /// Currency ISO Code
+        /// </summary>
         [JsonProperty("currency")]
-        public String CurrencyISOCode { get; set; }
+        public String Currency { get; set; }
 
         [JsonProperty("description")]
         public String Description { get; set; }
