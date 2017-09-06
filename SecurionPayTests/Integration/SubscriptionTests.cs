@@ -26,7 +26,7 @@ namespace SecurionPayTests.Integration
 
                 var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test cardholder" };
             
-                var subscriptionRequest = new SubscriptionWithNewCardRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = cardRequest };
+                var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = cardRequest };
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
                 customer = await _gateway.RetrieveCustomer(customer.Id);
@@ -53,7 +53,7 @@ namespace SecurionPayTests.Integration
                 var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", Card =cardRequest };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
-                var subscriptionRequest = new SubscriptionWithCardFromChargeRequest() { CustomerId = customer.Id, PlanId = plan.Id, ChargeId = charge.Id };
+                var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = new CardRequest() { Id = charge.Id } };
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
                 customer = await _gateway.RetrieveCustomer(customer.Id);

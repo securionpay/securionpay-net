@@ -104,7 +104,7 @@ namespace SecurionPayTests.Integration
                 var token = await _gateway.CreateToken(createTokenRequest);
 
 
-                var subscriptionRequest = new SubscriptionWithCardTokenRequest() { CustomerId = customer.Id, PlanId = plan.Id, CardToken = token.Id  };
+                var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = new CardRequest() { Id = token.Id } };
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
                 Assert.AreEqual(plan.Id, subscription.PlanId);

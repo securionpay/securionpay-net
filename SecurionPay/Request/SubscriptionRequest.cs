@@ -18,6 +18,9 @@ namespace SecurionPay.Request
         [JsonProperty("trialEnd")]
         public long? TrialEnd { get; set; }
 
+        [JsonProperty("card")]
+        public CardRequest Card { get; set; }
+
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }
 

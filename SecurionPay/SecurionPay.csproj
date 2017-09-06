@@ -73,9 +73,6 @@
     <Compile Include="Request\CustomerRecordRequest.cs" />
     <Compile Include="Common\Address.cs" />
     <Compile Include="Common\Billing.cs" />
-    <Compile Include="Request\SubscriptionWithCardFromChargeRequest.cs" />
-    <Compile Include="Request\SubscriptionWithCardTokenRequest.cs" />
-    <Compile Include="Request\SubscriptionWithNewCardRequest.cs" />
     <Compile Include="Request\ThreeDSecure.cs" />
     <Compile Include="Response\Credit.cs" />
     <Compile Include="Response\CrossSaleOffer.cs" />
