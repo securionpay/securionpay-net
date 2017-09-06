@@ -26,7 +26,7 @@ namespace SecurionPay.Response
         [JsonProperty("defaultCardId")]
         public String DefaultCardId { get; set; }
 
-        public Card getDefaultCard()
+        public Card GetDefaultCard()
         {
             return Cards.FirstOrDefault(x => x.Id == DefaultCardId);
         }

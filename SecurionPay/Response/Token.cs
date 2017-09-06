@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SecurionPay.Converters;
+using SecurionPay.Enums;
 using System;
 using System.Collections.Generic;
 namespace SecurionPay.Response
@@ -61,6 +62,15 @@ namespace SecurionPay.Response
 
         [JsonProperty("fingerprint")]
         public String Fingerprint { get; set; }
+
+        [JsonProperty("brand")]
+        public CardBrand Brand { get; set; }
+
+        [JsonProperty("type")]
+        public CardType Type { get; set; }
+
+        [JsonProperty("threeDSecureInfo")]
+        public ThreeDSecureInfo ThreeDSecureInfo { get; set; }
 
     }
 }

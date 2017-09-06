@@ -28,7 +28,6 @@ namespace SecurionPay.Response
         [JsonProperty("quantity")]
         public int Quantity { get; set; }
 
-
         [JsonProperty("captureCharges")]
         public bool CaptureCharges { get; set; }
 
