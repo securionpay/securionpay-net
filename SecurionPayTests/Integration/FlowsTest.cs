@@ -69,7 +69,7 @@ namespace SecurionPayTests.Integration
                 var chargeRequest = new ChargeRequest() { Amount = 1000, CurrencyISOCode = "PLN", Card = new CardRequest() { Id = token.Id }, Description = "sss" };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
-                var customerRequest = new CustomerWithCardFromChargeRequest() { Email = GetRandomEmail(), Description = "test customer", ChargeId =charge.Id };
+                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer", Card = new CardRequest() { Id = charge.Id } };
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 var chargeRequest2 = new ChargeRequest() { Amount = 1000, CurrencyISOCode = "PLN", CustomerId = customer.Id, Description = "sss" };

@@ -19,7 +19,7 @@ namespace SecurionPayTests.Integration
             {
                 var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
 
-                var customerRequest = new CustomerWithNewCardRequest() { Email = GetRandomEmail(), Description = "test customer",Card=cardRequest };
+                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer",Card=cardRequest };
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 Assert.AreEqual(1, customer.Cards.Count);
@@ -41,7 +41,7 @@ namespace SecurionPayTests.Integration
                 var token = await _gateway.CreateToken(createTokenRequest);
                 token = await _gateway.RetrieveToken(token.Id);
 
-                var customerRequest = new CustomerWithCardTokenRequest() { Email = GetRandomEmail(), Description = "test customer", CardToken = token.Id };
+                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer", Card = new CardRequest() { Id = token.Id } };
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
 
