@@ -7,6 +7,12 @@ namespace SecurionPay.Request
 {
     public class CardRequest
     {
+        /// <summary>
+        /// Id of exisiting card, card token or charge id when used in ChargeCustomer.
+        /// Should be empty when requesting for new card
+        [JsonProperty("id")]
+        public String Id { get; set; }
+
         [JsonIgnore]
         public String CustomerId { get; set; }
 

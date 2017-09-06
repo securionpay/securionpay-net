@@ -33,8 +33,7 @@ namespace SecurionPay.Request
         public ThreeDSecure ThreeDSecure { get; set; }
 
         [JsonProperty("card")]
-        [JsonConverter(typeof(ChargeCardDefinitionSerializer))]
-        public ChargeCardDefinition Card { get; set; }
+        public CardRequest Card { get; set; }
 
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;

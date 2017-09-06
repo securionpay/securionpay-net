@@ -27,7 +27,7 @@ namespace SecurionPayTests.Integration
                 var token = await _gateway.CreateToken(createTokenRequest);
                 token = await _gateway.RetrieveToken(token.Id);
 
-                var chargeRequest = new ChargeRequest() { Amount = 1000, CurrencyISOCode = "PLN", Card = ChargeCardDefinition.FromCardToken(token.Id), Description = "sss", Captured = false };
+                var chargeRequest = new ChargeRequest() { Amount = 1000, CurrencyISOCode = "PLN", Card = new CardRequest() { Id = token.Id }, Description = "sss", Captured = false };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
                 var capture = new CaptureRequest() { ChargeId = charge.Id };
@@ -66,7 +66,7 @@ namespace SecurionPayTests.Integration
                 var token = await _gateway.CreateToken(createTokenRequest);
                 token = await _gateway.RetrieveToken(token.Id);
 
-                var chargeRequest = new ChargeRequest() { Amount = 1000, CurrencyISOCode = "PLN", Card = ChargeCardDefinition.FromCardToken( token.Id ), Description = "sss" };
+                var chargeRequest = new ChargeRequest() { Amount = 1000, CurrencyISOCode = "PLN", Card = new CardRequest() { Id = token.Id }, Description = "sss" };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
                 var customerRequest = new CustomerWithCardFromChargeRequest() { Email = GetRandomEmail(), Description = "test customer", ChargeId =charge.Id };
@@ -130,7 +130,7 @@ namespace SecurionPayTests.Integration
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
-                var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId=customer.Id,Card= ChargeCardDefinition.NewCard(cardRequest)};
+                var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", CustomerId=customer.Id,Card= cardRequest};
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
                 var chargeRequest2 = new ChargeRequest(){Amount=1000,CurrencyISOCode="EUR",CustomerId=charge.CustomerId};

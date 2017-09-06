@@ -50,7 +50,7 @@ namespace SecurionPayTests.Integration
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123",CardholderName="charge cardholder name" };
-                var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", Card =ChargeCardDefinition.NewCard(cardRequest) };
+                var chargeRequest = new ChargeRequest() { Amount = 2000, CurrencyISOCode = "EUR", Card =cardRequest };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
                 var subscriptionRequest = new SubscriptionWithCardFromChargeRequest() { CustomerId = customer.Id, PlanId = plan.Id, ChargeId = charge.Id };
