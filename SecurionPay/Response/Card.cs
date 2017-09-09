@@ -71,6 +71,9 @@ namespace SecurionPay.Response
         [JsonProperty("fraudCheckData")]
         public FraudCheckData FraudCheckData { get; set; }
 
+        [JsonProperty("deleted")]
+        public bool Deleted { get; set; }
+
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;
 

@@ -18,9 +18,6 @@ namespace SecurionPay.Response
         [JsonProperty("created")]
         [JsonConverter(typeof(DateConverter))]
         public DateTime Created { get; set; }
-
-        [JsonProperty("deleted")]
-        public bool Deleted { get; set; }
     }
 }
 

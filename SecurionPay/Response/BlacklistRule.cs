@@ -23,7 +23,6 @@ namespace SecurionPay.Response
         [JsonConverter(typeof(SafeEnumConverter))]
         public BlacklistRuleType RuleType { get; set; }
 
-
         [JsonProperty("fingerprint")]
         public String Fingerprint { get; set; }
 
@@ -47,6 +46,9 @@ namespace SecurionPay.Response
 
         [JsonProperty("acceptLanguage")]
         public String AcceptLanguage { get; set; }
+
+        [JsonProperty("deleted")]
+        public bool Deleted { get; set; }
 
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;

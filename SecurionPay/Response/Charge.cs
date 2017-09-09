@@ -64,9 +64,6 @@ namespace SecurionPay.Response
         [JsonProperty("failureMessage")]
         public string FailureMessage { get; set; }
 
-        [JsonProperty("deleted")]
-        public bool Deleted { get; set; }
-
         [JsonProperty("fromCrossSale")]
         public FromCrossSale FromCrossSale { get; set; }
 
