@@ -51,7 +51,6 @@
     <Compile Include="IConfigurationProvider.cs" />
     <Compile Include="Internal\ISignService.cs" />
     <Compile Include="Internal\SignService.cs" />
-    <Compile Include="ISecurionPayGateway.cs" />
     <Compile Include="Request\Checkout\CheckoutRequestCharge.cs" />
     <Compile Include="Request\Checkout\CheckoutRequest.cs" />
     <Compile Include="Request\Checkout\CheckoutRequestCustomCharge.cs" />

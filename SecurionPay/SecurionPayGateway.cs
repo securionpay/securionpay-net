@@ -21,7 +21,7 @@ namespace SecurionPay
     /// <summary>
     /// Securion Pay API Service
     /// </summary>
-    public class SecurionPayGateway : ISecurionPayGateway
+    public class SecurionPayGateway
     {
         private const string CHARGES_PATH = "charges";
         private const string CREDITS_PATH = "credits";
