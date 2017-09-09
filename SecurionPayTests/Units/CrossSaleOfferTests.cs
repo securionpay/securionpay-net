@@ -179,7 +179,7 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Action =  "cross-sale-offers?limit=10&includeTotalCount=False&deleted=False&partnerId=1",
+                    Action = "cross-sale-offers?partnerId=1&limit=10",
                     Parameter = null
                 }
             );

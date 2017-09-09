@@ -64,9 +64,11 @@ namespace SecurionPay.Response
         public String Fingerprint { get; set; }
 
         [JsonProperty("brand")]
+        [JsonConverter(typeof(SafeEnumConverter))]
         public CardBrand Brand { get; set; }
 
         [JsonProperty("type")]
+        [JsonConverter(typeof(SafeEnumConverter))]
         public CardType Type { get; set; }
 
         [JsonProperty("threeDSecureInfo")]

@@ -134,7 +134,6 @@ namespace SecurionPayTests.Integration
             catch (SecurionPayException exc)
             {
                 Assert.AreEqual("3D Secure attempt is required.", exc.Error.Message);
-
             }
         }
     }

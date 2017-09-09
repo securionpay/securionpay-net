@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SecurionPay.Request
 {
-    public class EventListRequest
+    public class ListRequest
     {
         [JsonProperty("limit")]
         public int? Limit { get; set; }
@@ -25,6 +25,6 @@ namespace SecurionPay.Request
         public CreatedFilter Created { get; set; }
 
         [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
+        public IDictionary<String, JToken> Other;
     }
 }

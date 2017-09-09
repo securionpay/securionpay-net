@@ -66,12 +66,12 @@
     <Compile Include="Request\CrossSaleOffer\CrossSaleOfferUpdateRequest.cs" />
     <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequestSubscription.cs" />
     <Compile Include="Request\CustomerRecordFeeListRequest.cs" />
-    <Compile Include="Request\CustomerRecordListRequest.cs" />
     <Compile Include="Request\CustomerRecordProfitListRequest.cs" />
     <Compile Include="Request\CustomerRecordRefreshRequest.cs" />
     <Compile Include="Request\CustomerRecordRequest.cs" />
     <Compile Include="Common\Address.cs" />
     <Compile Include="Common\Billing.cs" />
+    <Compile Include="Request\ListRequest.cs" />
     <Compile Include="Request\ThreeDSecure.cs" />
     <Compile Include="Response\Credit.cs" />
     <Compile Include="Response\CrossSaleOffer.cs" />
@@ -111,7 +111,6 @@
     <Compile Include="Request\CardListRequest.cs" />
     <Compile Include="Request\ChargeListRequest.cs" />
     <Compile Include="Request\CustomerListRequest.cs" />
-    <Compile Include="Request\EventListRequest.cs" />
     <Compile Include="Request\PlanListRequest.cs" />
     <Compile Include="Request\SubscriptionListRequest.cs" />
     <Compile Include="Request\RefundRequest.cs" />

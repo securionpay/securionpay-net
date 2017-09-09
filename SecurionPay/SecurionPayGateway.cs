@@ -278,7 +278,7 @@ namespace SecurionPay
             return await SendListRequest<Event>(HttpMethod.Get, EVENTS_PATH);
         }
 
-        public async Task<ListResponse<Event>> ListEvents(EventListRequest request)
+        public async Task<ListResponse<Event>> ListEvents(ListRequest request)
         {
             return await SendListRequest<Event>(HttpMethod.Get, EVENTS_PATH, request);
         }
@@ -391,7 +391,7 @@ namespace SecurionPay
 
         }
 
-        public async Task<ListResponse<CustomerRecord>> ListCustomerRecords(CustomerRecordListRequest request)
+        public async Task<ListResponse<CustomerRecord>> ListCustomerRecords(ListRequest request)
         {
             return await SendListRequest<CustomerRecord>(HttpMethod.Get, CUSTOMER_RECORDS_PATH, request);
         }
