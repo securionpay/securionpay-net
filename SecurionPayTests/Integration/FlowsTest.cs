@@ -42,7 +42,6 @@ namespace SecurionPayTests.Integration
                 Assert.IsTrue(charge.Refunded);
                 Assert.AreEqual(1, charge.Refunds.Count);
                 Assert.AreEqual(500, charge.Refunds.First().Amount);
-                Assert.IsFalse(charge.Refunds.First().Deleted);
                 Assert.AreEqual(500, charge.Amount);
             }
             catch (SecurionPayException exc)
