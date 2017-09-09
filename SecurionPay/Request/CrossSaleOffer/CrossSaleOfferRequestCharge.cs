@@ -16,7 +16,7 @@ namespace SecurionPay.Request.CrossSaleOffer
         public string Currency { get; set; }
 
         [JsonProperty("capture")]
-        public bool Capture { get; set; }
+        public bool? Capture { get; set; }
 
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;

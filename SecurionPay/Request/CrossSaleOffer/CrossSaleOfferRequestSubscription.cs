@@ -13,7 +13,7 @@ namespace SecurionPay.Request.CrossSaleOffer
         public string PlanId { get; set; }
 
         [JsonProperty("captureCharges")]
-        public bool CaptureCharges { get; set; }
+        public bool? CaptureCharges { get; set; }
 
         [JsonExtensionData]
         public IDictionary<string, JToken> Other;

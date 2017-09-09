@@ -27,6 +27,7 @@ namespace SecurionPay.Request
 
         [JsonProperty("addressCity")]
         public String AddressCity { get; set; }
+
         [JsonProperty("addressState")]
         public String AddressState { get; set; }
 
