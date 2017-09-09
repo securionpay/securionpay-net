@@ -36,6 +36,7 @@ namespace SecurionPay
         private const string CUSTOMER_RECORDS_PATH = "customer-records";
         private const string CUSTOMER_RECORD_FEES_PATH = "customer-records/{0}/fees";
         private const string CUSTOMER_RECORD_PROFITS_PATH = "customer-records/{0}/profits";
+        private const string DISPUTES_PATH= "disputes";
         private IApiClient _apiClient;
         private ISignService _signService;
 
@@ -463,6 +464,32 @@ namespace SecurionPay
             var url = CREDITS_PATH + "/" + updateRequest.CreditId;
             return await SendRequest<Credit>(HttpMethod.Post, url, updateRequest);
         }
+        #endregion
+
+        #region disputes
+
+        public async Task<Dispute> RetrieveDispute(string id)
+        {
+            var url = string.Format("{0}/{1}", DISPUTES_PATH, id);
+            return await SendRequest<Dispute>(HttpMethod.Get, url);
+        }
+
+        public async Task<ListResponse<Dispute>> ListDisputes(ListRequest request)
+        {
+            return await SendListRequest<Dispute>(HttpMethod.Get, DISPUTES_PATH, request);
+        }
+
+        public async Task<ListResponse<Dispute>> ListDisputes()
+        {
+            return await SendListRequest<Dispute>(HttpMethod.Get, DISPUTES_PATH);
+        }
+
+        public async Task<Dispute> UpdateDispute(DisputeUpdateRequest request)
+        {
+            var url = string.Format("{0}/{1}", DISPUTES_PATH, request.DisputeId);
+            return await SendRequest<Dispute>(HttpMethod.Post, url,request);
+        }
+
         #endregion
 
         #endregion

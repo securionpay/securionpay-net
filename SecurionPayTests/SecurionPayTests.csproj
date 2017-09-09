@@ -65,6 +65,7 @@
     <Compile Include="Integration\CreditsTests.cs" />
     <Compile Include="Integration\CrossSaleOfferTests.cs" />
     <Compile Include="Integration\CustomerTests.cs" />
+    <Compile Include="Integration\DisputeTests.cs" />
     <Compile Include="Integration\FlowsTest.cs" />
     <Compile Include="Integration\IntegrationTest.cs" />
     <Compile Include="Integration\SubscriptionTests.cs" />

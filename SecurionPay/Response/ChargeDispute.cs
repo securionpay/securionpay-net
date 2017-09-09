@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using SecurionPay.Common;
 using SecurionPay.Converters;
 using SecurionPay.Enums;
 using System;
@@ -9,11 +8,8 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class Dispute
+    public class ChargeDispute
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
         [JsonProperty("created")]
         [JsonConverter(typeof(DateConverter))]
         public DateTime Created { get; set; }
@@ -25,10 +21,13 @@ namespace SecurionPay.Response
         [JsonProperty("amount")]
         public int Amount { get; set; }
 
+        /// <summary>
+        /// Currency ISO Code
+        /// </summary>
         [JsonProperty("currency")]
-        public string Currency { get; set; }
+        public int Currency { get; set; }
 
-        [JsonProperty("Status")]
+        [JsonProperty("status")]
         [JsonConverter(typeof(SafeEnumConverter))]
         public DisputeStatus Status { get; set; }
 
@@ -38,14 +37,5 @@ namespace SecurionPay.Response
 
         [JsonProperty("acceptedAsLost")]
         public bool AcceptedAsLost { get; set; }
-
-        [JsonProperty("charge")]
-        public Charge Charge { get; set; }
-
-        [JsonProperty("evidence")]
-        public DisputeEvidence Evidence{ get; set; }
-
-        [JsonProperty("evidenceDetails")]
-        public DisputeEvidenceDetails EvidenceDetails { get; set; }
     }
 }
