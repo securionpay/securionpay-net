@@ -490,6 +490,12 @@ namespace SecurionPay
             return await SendRequest<Dispute>(HttpMethod.Post, url,request);
         }
 
+        public async Task<Dispute> CloseDispute(string id)
+        {
+            var url = string.Format("{0}/{1}/close", DISPUTES_PATH,id);
+            return await SendRequest<Dispute>(HttpMethod.Post, url);
+        }
+
         #endregion
 
         #endregion

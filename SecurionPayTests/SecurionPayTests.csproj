@@ -102,6 +102,7 @@
     <Compile Include="Units\CustomersTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Units\DisputeTests.cs" />
     <Compile Include="Units\EventsTests.cs">
       <SubType>Code</SubType>
     </Compile>
