@@ -5,9 +5,8 @@ using System.Text;
 
 namespace SecurionPay
 {
-    public interface IConfigurationProvider
+    public interface ISecretKeyProvider
     {
-        string GetApiUrl();
-        string GetUploadsUrl();
+        string GetSecretKey();
     }
 }

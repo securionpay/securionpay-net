@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay;
 using SecurionPay.Exception;
+using SecurionPay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,14 +18,12 @@ namespace SecurionPayTests.Integration
 
         public IntegrationTest()
         {
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var gatewayUrl=config.AppSettings.Settings["gateway_test_url"].Value;
-            var secretKey = config.AppSettings.Settings["gateway_test_key"].Value;
-            _gateway = new SecurionPayGateway(secretKey, gatewayUrl );
+            var configProvider = new TestConfigurationProvider();
+            var apiClient = new ApiClient(configProvider);
+            var signService = new SignService(configProvider);
+            _gateway = new SecurionPayGateway(apiClient, configProvider, signService);
             _random = new Random();
-
         }
-
 
         protected void HandleApiException(SecurionPayException exc)
         {

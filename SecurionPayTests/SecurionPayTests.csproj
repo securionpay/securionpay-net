@@ -69,6 +69,7 @@
     <Compile Include="Integration\FlowsTest.cs" />
     <Compile Include="Integration\IntegrationTest.cs" />
     <Compile Include="Integration\SubscriptionTests.cs" />
+    <Compile Include="Integration\TestConfigurationProvider.cs" />
     <Compile Include="ModelBuilders\AddressBuilder.cs" />
     <Compile Include="ModelBuilders\IBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

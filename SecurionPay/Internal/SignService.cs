@@ -8,16 +8,16 @@ namespace SecurionPay.Internal
 {
     public class SignService : ISignService
     {
-        IConfigurationProvider _configurationProvider;
+        ISecretKeyProvider _secretKeyProvider;
 
-        public SignService(IConfigurationProvider configurationProvider)
+        public SignService(ISecretKeyProvider secretKeyProvider)
         {
-            _configurationProvider = configurationProvider;
+            _secretKeyProvider = secretKeyProvider;
         }
 
         public string Sign(string data)
         {
-            var hash = new HMACSHA256(Encoding.UTF8.GetBytes(_configurationProvider.GetSecretKey()));
+            var hash = new HMACSHA256(Encoding.UTF8.GetBytes(_secretKeyProvider.GetSecretKey()));
             var hashedData = hash.ComputeHash(Encoding.UTF8.GetBytes(data));
             return BitConverter.ToString(hashedData).Replace("-", string.Empty).ToLower();
         }

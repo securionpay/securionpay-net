@@ -45,16 +45,16 @@ namespace SecurionPayTests.Units
                     }
                 })
                 .Returns(Task.Run(() => new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.BadGateway }));
-            var apiClient = new ApiClient("secret", "https://api.securionpay.com/", mock.Object);
+            var apiClient = new ApiClient("secret", mock.Object);
 
             try
             {
-                await apiClient.SendRequest<TestRequest>(HttpMethod.Put, "testAction", new TestParameter() { TestValue="t1"});
+                await apiClient.SendRequest<TestRequest>(HttpMethod.Put, "https://testAction.com", new TestParameter() { TestValue="t1"});
             }
             catch { }
             await semaphore.WaitAsync();
             Assert.AreEqual(request.Method,HttpMethod.Put);
-            Assert.AreEqual(request.RequestUri, "https://api.securionpay.com/testAction");
+            Assert.AreEqual(request.RequestUri, "https://testAction.com");
             var expectedHeaders = GetDesiredHeaders("secret", appVersion);
             Assert.IsTrue(request.Headers.All(x => expectedHeaders.Contains(x.Key + ": " + x.Value.First()) && expectedHeaders.Count == request.Headers.Count()));
             Assert.AreEqual(requestJson, "{\"TestValue\":\"t1\"}");

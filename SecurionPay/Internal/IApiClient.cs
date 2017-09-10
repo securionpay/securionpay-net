@@ -9,6 +9,6 @@ namespace SecurionPay
 {
     public interface IApiClient
     {
-        Task<T> SendRequest<T>(HttpMethod method, string action, object parameter);
+        Task<T> SendRequest<T>(HttpMethod method, string url, object parameter);
     }
 }

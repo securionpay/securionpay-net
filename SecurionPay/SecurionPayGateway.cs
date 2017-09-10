@@ -39,19 +39,22 @@ namespace SecurionPay
         private const string DISPUTES_PATH= "disputes";
         private IApiClient _apiClient;
         private ISignService _signService;
+        private IConfigurationProvider _configurationProvider;
 
         [Obsolete]
-        public SecurionPayGateway(string secretKey, string serverUrl = "https://api.securionpay.com/")
+        public SecurionPayGateway(string secretKey, string serverUrl = "https://api.securionpay.com/", string uploadsUrl = "https://uploads.securionpay.com")
         {
-            var configuration = new ConfigurationProvider(secretKey, serverUrl);
-            _apiClient = new ApiClient(configuration);
-            _signService = new SignService(configuration);
+            var configurationProvider = new ConfigurationProvider(secretKey, serverUrl, uploadsUrl);
+            _configurationProvider = configurationProvider;
+            _apiClient = new ApiClient(configurationProvider);
+            _signService = new SignService(configurationProvider);
         }
 
-        public SecurionPayGateway(IApiClient apiClient, ISignService signService)
+        public SecurionPayGateway(IApiClient apiClient, IConfigurationProvider configurationProvider, ISignService signService)
         {
             _apiClient = apiClient;
-            _signService = signService;
+            _signService = signService; 
+            _configurationProvider = configurationProvider;
         }
 
         #region public
@@ -599,7 +602,8 @@ namespace SecurionPay
 
         private async Task<T> SendRequest<T>(HttpMethod method, string action, object parameter)
         {
-            return await _apiClient.SendRequest<T>(method, action, parameter);
+            var url = new Uri(new Uri(_configurationProvider.GetApiUrl()), action);
+            return await _apiClient.SendRequest<T>(method, url.ToString(), parameter);
         }
 
         #endregion

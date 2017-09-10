@@ -49,6 +49,7 @@
     <Compile Include="Internal\ConfigurationProvider.cs" />
     <Compile Include="Internal\IApiClient.cs" />
     <Compile Include="IConfigurationProvider.cs" />
+    <Compile Include="ISecretKeyProvider.cs" />
     <Compile Include="Internal\ISignService.cs" />
     <Compile Include="Internal\SignService.cs" />
     <Compile Include="Request\Checkout\CheckoutRequestCharge.cs" />

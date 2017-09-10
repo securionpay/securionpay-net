@@ -26,7 +26,9 @@ namespace SecurionPayTests.Units.Tools
         {
             var apiClientMock = new Mock<IApiClient>();
             var signMock = new Mock<ISignService>();
-            SecurionPayGateway gateway = new SecurionPayGateway(apiClientMock.Object, signMock.Object);
+            var configMock = new Mock<IConfigurationProvider>();
+            configMock.Setup<string>(x => x.GetApiUrl()).Returns("https://example.com");
+            SecurionPayGateway gateway = new SecurionPayGateway(apiClientMock.Object, configMock.Object, signMock.Object);
 
             try
             {
@@ -34,7 +36,7 @@ namespace SecurionPayTests.Units.Tools
             }
             catch { }
 
-            apiClientMock.Verify<Task<TResponseType>>(api => api.SendRequest<TResponseType>(It.Is<HttpMethod>(method => method == expectedRequest.Method), It.Is<string>(action => action == expectedRequest.Action), It.Is<object>(obj=>obj==expectedRequest.Parameter)), Times.Once);
+            apiClientMock.Verify<Task<TResponseType>>(api => api.SendRequest<TResponseType>(It.Is<HttpMethod>(method => method == expectedRequest.Method), It.Is<string>(action => action == configMock.Object.GetApiUrl() +"/"+ expectedRequest.Action), It.Is<object>(obj=>obj==expectedRequest.Parameter)), Times.Once);
         }
     }
 }
