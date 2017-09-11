@@ -3,6 +3,7 @@ using SecurionPay.Common;
 using SecurionPay.Enums;
 using SecurionPay.Request;
 using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,13 @@ namespace SecurionPayTests.Integration
     [TestClass]
     public class DisputeTests : IntegrationTest
     {
+        private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task RetrieveDisputeTest()
         {
-            var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+            var customerRequest = _customerRequestBuilder.Build();
             var chargeWithDispute = await CreateChargeWithDispute(customerRequest);
             var dispute = await _gateway.RetrieveDispute(chargeWithDispute.Dispute.Id);
             Assert.AreEqual(customerRequest.Email, dispute.Evidence.CustomerEmail);
@@ -64,7 +68,7 @@ namespace SecurionPayTests.Integration
         {
             var customer = await _gateway.CreateCustomer(customerRequest);
 
-            var cardRequest = new CardRequest() { Number = "4242000000000018", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
+            var cardRequest = _cardRequestBuilder.WithNumberCausingDispute().Build();
             var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest };
             var charge = await _gateway.CreateCharge(chargeRequest);
             await Task.Delay(100000); //100sec wait
@@ -75,7 +79,7 @@ namespace SecurionPayTests.Integration
 
         private async Task<Charge> CreateChargeWithDispute()
         {
-            return await CreateChargeWithDispute(new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" });
+            return await CreateChargeWithDispute(_customerRequestBuilder.Build());
         }
     }
 }

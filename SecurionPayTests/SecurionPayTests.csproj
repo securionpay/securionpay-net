@@ -71,6 +71,8 @@
     <Compile Include="Integration\SubscriptionTests.cs" />
     <Compile Include="Integration\TestConfigurationProvider.cs" />
     <Compile Include="ModelBuilders\AddressBuilder.cs" />
+    <Compile Include="ModelBuilders\CardRequestBuilder.cs" />
+    <Compile Include="ModelBuilders\CustomerRequestBuilder.cs" />
     <Compile Include="ModelBuilders\IBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Units\ApiClientTests.cs">

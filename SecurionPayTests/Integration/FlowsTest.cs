@@ -3,6 +3,7 @@ using SecurionPay.Enums;
 using SecurionPay.Exception;
 using SecurionPay.Request;
 using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace SecurionPayTests.Integration
     [TestClass]
     public class FlowsTest : IntegrationTest
     {
+        private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         /// <summary>
         /// test for flow Token -> Charge -> Capture -> Refund
         /// </summary>
@@ -68,7 +72,7 @@ namespace SecurionPayTests.Integration
                 var chargeRequest = new ChargeRequest() { Amount = 1000, Currency = "PLN", Card = new CardRequest() { Id = token.Id }, Description = "sss" };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer", Card = new CardRequest() { Id = charge.Id } };
+                var customerRequest = _customerRequestBuilder.WithCard(_cardRequestBuilder.WithId(charge.Id)).Build(); 
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 var chargeRequest2 = new ChargeRequest() { Amount = 1000, Currency = "PLN", CustomerId = customer.Id, Description = "sss" };
@@ -96,7 +100,7 @@ namespace SecurionPayTests.Integration
                 var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
                 var plan = await _gateway.CreatePlan(planRequest);
 
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
@@ -125,10 +129,10 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
+                var cardRequest = _cardRequestBuilder.Build();
                 var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId=customer.Id,Card= cardRequest};
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
@@ -154,10 +158,10 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
+                var cardRequest = _cardRequestBuilder.WithCustomerId(customer.Id).Build();
                 var card = await _gateway.CreateCard(cardRequest);
 
                 card = await _gateway.RetrieveCard(customer.Id, card.Id);

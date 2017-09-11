@@ -14,7 +14,8 @@ namespace SecurionPayTests.Integration
     public class IntegrationTest
     {
         protected SecurionPayGateway _gateway;
-        protected Random _random;
+        protected Random _random=new Random();
+
 
         public IntegrationTest()
         {
@@ -22,7 +23,6 @@ namespace SecurionPayTests.Integration
             var apiClient = new ApiClient(configProvider);
             var signService = new SignService(configProvider);
             _gateway = new SecurionPayGateway(apiClient, configProvider, signService);
-            _random = new Random();
         }
 
         protected void HandleApiException(SecurionPayException exc)
@@ -34,11 +34,6 @@ namespace SecurionPayTests.Integration
                           exc.RequestAction)
 
             );
-        }
-
-        protected string GetRandomEmail()
-        {
-            return string.Format("test{0}@test.com", _random.Next(999999));
         }
 
         protected string CorrectCardExpiryYear

@@ -15,7 +15,9 @@ namespace SecurionPayTests.Integration
     [TestClass]
     public class ChargeTests : IntegrationTest
     {
-        AddressBuilder _addressBuilder = new AddressBuilder();
+        private AddressBuilder _addressBuilder = new AddressBuilder();
+        private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
 
         /// <summary>
         /// charge amount exceeds the available fund or the card's credit limit.
@@ -26,10 +28,10 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = new CardRequest() { Number = "4024007118468684", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
+                var cardRequest = _cardRequestBuilder.Build();
                 var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
@@ -49,10 +51,10 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = new CardRequest() { Number = "44444444", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
+                var cardRequest = _cardRequestBuilder.WithWrongNumber().Build();
                 var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
@@ -71,10 +73,10 @@ namespace SecurionPayTests.Integration
         public async Task ChargeCardByIdTest()
         {
 
-            var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+            var customerRequest = _customerRequestBuilder.Build();
             var customer = await _gateway.CreateCustomer(customerRequest);
 
-            var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
+            var cardRequest = _cardRequestBuilder.WithCustomerId(customer.Id).Build();
             var card = await _gateway.CreateCard(cardRequest);
 
             var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = new CardRequest() { Id = card.Id } };
@@ -93,10 +95,10 @@ namespace SecurionPayTests.Integration
         {
             var address = _addressBuilder.Build();
 
-            var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+            var customerRequest = _customerRequestBuilder.Build();
             var customer = await _gateway.CreateCustomer(customerRequest);
 
-            var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
+            var cardRequest = _cardRequestBuilder.WithCustomerId(customer.Id).Build();
             var card = await _gateway.CreateCard(cardRequest);
 
             var chargeRequest = new ChargeRequest()
@@ -123,10 +125,10 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
+                var cardRequest = _cardRequestBuilder.WithCustomerId(customer.Id).Build();
 
                 var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest, ThreeDSecure = new ThreeDSecure() { RequireAttempt = true } };
                 var charge = await _gateway.CreateCharge(chargeRequest);

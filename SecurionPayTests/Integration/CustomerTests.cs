@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Exception;
 using SecurionPay.Request;
+using SecurionPayTests.ModelBuilders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +13,15 @@ namespace SecurionPayTests.Integration
     [TestClass]
     public class CustomerTests : IntegrationTest
     {
+        CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
+        CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task CustomerWithNewCardTest()
         {
             try
             {
-                var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
-
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer",Card=cardRequest };
+                var customerRequest = _customerRequestBuilder.WithCard(_cardRequestBuilder).Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 Assert.AreEqual(1, customer.Cards.Count);
@@ -41,9 +43,8 @@ namespace SecurionPayTests.Integration
                 var token = await _gateway.CreateToken(createTokenRequest);
                 token = await _gateway.RetrieveToken(token.Id);
 
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer", Card = new CardRequest() { Id = token.Id } };
+                var customerRequest = _customerRequestBuilder.WithCard(_cardRequestBuilder.WithId(token.Id)).Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
-
 
                 Assert.AreEqual(1, customer.Cards.Count);
                 Assert.AreEqual("John Smith", customer.Cards.First().CardholderName);

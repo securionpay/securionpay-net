@@ -15,6 +15,9 @@ namespace SecurionPayTests.Integration
     [TestClass]
     public class SubscriptionTests : IntegrationTest
     {
+        CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
+        CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task SubscribeWithNewCardTest()
         {
@@ -23,10 +26,10 @@ namespace SecurionPayTests.Integration
                 var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
                 var plan = await _gateway.CreatePlan(planRequest);
 
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test cardholder" };
+                var cardRequest = _cardRequestBuilder.Build();
             
                 var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = cardRequest };
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
@@ -50,10 +53,10 @@ namespace SecurionPayTests.Integration
                 var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
                 var plan = await _gateway.CreatePlan(planRequest);
 
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test cardholder" };
+                var cardRequest = _cardRequestBuilder.WithCustomerId(customer.Id).Build();
 
                 var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = cardRequest, Billing = new Billing() { Address = address ,Name="name",Vat="123123"} };
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
@@ -78,10 +81,10 @@ namespace SecurionPayTests.Integration
                 var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
                 var plan = await _gateway.CreatePlan(planRequest);
 
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123",CardholderName="charge cardholder name" };
+                var cardRequest = _cardRequestBuilder.Build();
                 var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", Card =cardRequest };
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
