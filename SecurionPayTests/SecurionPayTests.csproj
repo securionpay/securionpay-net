@@ -119,6 +119,7 @@
     <Compile Include="Units\Tools\MatchResult.cs" />
     <Compile Include="Units\Tools\RequestTester.cs" />
     <Compile Include="Units\Tools\RequestDescriptor.cs" />
+    <Compile Include="Utils\CardRequestExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SecurionPay\SecurionPay.csproj">

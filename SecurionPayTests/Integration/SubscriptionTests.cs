@@ -92,7 +92,7 @@ namespace SecurionPayTests.Integration
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
                 customer = await _gateway.RetrieveCustomer(customer.Id);
-                Assert.AreEqual("charge cardholder name", customer.Cards.First(c => c.Id == customer.DefaultCardId).CardholderName);
+                Assert.AreEqual(cardRequest.CardholderName, customer.Cards.First(c => c.Id == customer.DefaultCardId).CardholderName);
             }
             catch (SecurionPayException exc)
             {

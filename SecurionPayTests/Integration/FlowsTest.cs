@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SecurionPayTests.Utils;
 
 namespace SecurionPayTests.Integration
 {
@@ -166,10 +167,10 @@ namespace SecurionPayTests.Integration
 
                 card = await _gateway.RetrieveCard(customer.Id, card.Id);
 
-                Assert.AreEqual("4242", card.Last4);
-                Assert.AreEqual("12", card.ExpMonth);
-                Assert.AreEqual("2055", card.ExpYear);
-                Assert.AreEqual("test test", card.CardholderName);
+                Assert.AreEqual(cardRequest.GetLast4(), card.Last4);
+                Assert.AreEqual(cardRequest.ExpMonth, card.ExpMonth);
+                Assert.AreEqual(cardRequest.ExpYear, card.ExpYear);
+                Assert.AreEqual(cardRequest.CardholderName, card.CardholderName);
 
                 var chargeReqest = new ChargeRequest() { Amount=1000,Currency="EUR",CustomerId=card.CustomerId};
                 var charge =await _gateway.CreateCharge(chargeReqest);

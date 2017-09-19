@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
 using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace SecurionPayTests.Units
     [TestClass]
     public class CreditTests : BaseUnitTestsSet
     {
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task CreateCreditTest()
         {
@@ -42,7 +45,7 @@ namespace SecurionPayTests.Units
             var creditRequest = new CreditWithCardRequest()
             {
                 CustomerId = customerId,
-                Card = new CardRequest() { CustomerId = customerId, Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" },
+                Card = _cardRequestBuilder.Build(),
                 Amount = 100,
                 Currency = "EUR"
             };

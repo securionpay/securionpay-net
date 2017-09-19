@@ -8,12 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using SecurionPay.Request;
 using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 
 namespace SecurionPayTests.Units
 {
     [TestClass]
     public class CustomersTests:BaseUnitTestsSet
     {
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task CreateCustomerTest()
         {
@@ -38,7 +41,7 @@ namespace SecurionPayTests.Units
         public async Task CreateCustomerWithCardTest()
         {
             var requestTester = GetRequestTester();
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
+            var cardRequest = _cardRequestBuilder.Build();
             var customerRequest = new CustomerRequest() { Card = cardRequest, Email = "test@example.com", Description = "description" };
             await requestTester.TestMethod<Customer>(
                 async (api) =>
@@ -78,7 +81,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
+            var cardRequest = _cardRequestBuilder.Build();
             var customerUpdaterequest = new CustomerUpdateRequest() {CustomerId= customerId, Card= cardRequest,DefaultCardId="2" };
             await requestTester.TestMethod<Customer>(
                 async (api) =>

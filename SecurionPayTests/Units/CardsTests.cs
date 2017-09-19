@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
 using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,14 @@ namespace SecurionPayTests.Units
     [TestClass]
     public class CardsTests:BaseUnitTestsSet
     {
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task CreateCardTest()
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            var cardRequest = new CardRequest() { CustomerId= customerId, Number="404129331232" , ExpMonth="6" , ExpYear="2015" , CardholderName="John Smith" };
+            var cardRequest = _cardRequestBuilder.WithCustomerId(customerId).Build();
             await requestTester.TestMethod<Card>(
                 async (api) =>
                 {

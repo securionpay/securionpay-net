@@ -8,18 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using SecurionPay.Request;
 using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 
 namespace SecurionPayTests.Units
 {
     [TestClass]
     public class SubscriptionsTests:BaseUnitTestsSet
     {
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task CreateSubscriptionWithCardTest()
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
+            var cardRequest = _cardRequestBuilder.Build();
             var subscriptionRequest = new SubscriptionRequest() { CustomerId= customerId ,Card= cardRequest,Quantity=1000,PlanId="1" };
             await requestTester.TestMethod<Subscription>(
                 async (api) =>
@@ -83,7 +86,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var customerId = "c1";
             var subscriptionId = "s1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
+            var cardRequest = _cardRequestBuilder.Build();
             var subscriptionUpdateRequest = new SubscriptionUpdateRequest() { CustomerId= customerId ,Card= cardRequest ,Quantity=1000,SubscriptionId= subscriptionId };
             await requestTester.TestMethod<Subscription>(
                 async (api) =>
@@ -105,7 +108,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var customerId = "c1";
             var subscriptionId = "s1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
+            var cardRequest = _cardRequestBuilder.Build();
             var subscriptionCancelRequest = new SubscriptionCancelRequest() { CustomerId = customerId,SubscriptionId = subscriptionId ,AtPeriodEnd=true};
             await requestTester.TestMethod<Subscription>(
                 async (api) =>

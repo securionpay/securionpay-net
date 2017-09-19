@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
 using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace SecurionPayTests.Units
     [TestClass]
     public class ChargeTests:BaseUnitTestsSet
     {
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task CreateChargeWithTokenTest()
         {
