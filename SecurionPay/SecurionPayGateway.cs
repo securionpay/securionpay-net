@@ -15,6 +15,7 @@ using SecurionPay.Request.CrossSaleOffer;
 using System.Security.Cryptography;
 using SecurionPay.Internal;
 using SecurionPay.Request.Checkout;
+using System.IO;
 
 namespace SecurionPay
 {
@@ -36,6 +37,7 @@ namespace SecurionPay
         private const string CUSTOMER_RECORDS_PATH = "customer-records";
         private const string CUSTOMER_RECORD_FEES_PATH = "customer-records/{0}/fees";
         private const string CUSTOMER_RECORD_PROFITS_PATH = "customer-records/{0}/profits";
+        private const string FILES_PATH = "files";
         private const string DISPUTES_PATH= "disputes";
         private IApiClient _apiClient;
         private ISignService _signService;
@@ -501,6 +503,15 @@ namespace SecurionPay
 
         #endregion
 
+        #region uploads
+
+        public async Task<FileUpload> CreateFileUpload(FileUploadRequest request)
+        {
+            return await SendUploadRequest<FileUpload>(HttpMethod.Post, FILES_PATH, request);
+        }
+
+        #endregion
+
         #endregion
 
         #region private
@@ -606,8 +617,14 @@ namespace SecurionPay
             return await _apiClient.SendRequest<T>(method, url.ToString(), parameter);
         }
 
+        private async Task<T> SendUploadRequest<T>(HttpMethod method, string action, FileUploadRequest request)
+        {
+            var url = new Uri(new Uri(_configurationProvider.GetUploadsUrl()), action);
+            var form = new Dictionary<string, string>() { { "purpose", request.Purpose.ToString() } };
+
+            return await _apiClient.SendMultiPartRequest<T>(method, url.ToString(), form,request.File , "file");
+        }
+
         #endregion
-
-
     }
 }

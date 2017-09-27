@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Enums\DisputeReason.cs" />
     <Compile Include="Enums\DisputeStatus.cs" />
+    <Compile Include="Enums\FileUploadPurpose.cs" />
     <Compile Include="Enums\LiabilityShift.cs" />
     <Compile Include="Internal\ApiClient.cs" />
     <Compile Include="Converters\DateConverter.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Common\Address.cs" />
     <Compile Include="Common\Billing.cs" />
     <Compile Include="Request\DisputeUpdateRequest.cs" />
+    <Compile Include="Request\FileUploadRequest.cs" />
     <Compile Include="Request\ListRequest.cs" />
     <Compile Include="Request\ThreeDSecure.cs" />
     <Compile Include="Response\Credit.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Response\Dispute.cs" />
     <Compile Include="Common\DisputeEvidence.cs" />
     <Compile Include="Response\DisputeEvidenceDetails.cs" />
+    <Compile Include="Response\FileUpload.cs" />
     <Compile Include="Response\FromCrossSale.cs" />
     <Compile Include="Common\Shipping.cs" />
     <Compile Include="Response\ThreeDSecureInfo.cs" />

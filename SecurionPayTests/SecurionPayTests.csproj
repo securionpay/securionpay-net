@@ -70,6 +70,7 @@
     <Compile Include="Integration\IntegrationTest.cs" />
     <Compile Include="Integration\SubscriptionTests.cs" />
     <Compile Include="Integration\TestConfigurationProvider.cs" />
+    <Compile Include="Integration\UploadTests.cs" />
     <Compile Include="ModelBuilders\AddressBuilder.cs" />
     <Compile Include="ModelBuilders\CardRequestBuilder.cs" />
     <Compile Include="ModelBuilders\CustomerRequestBuilder.cs" />
@@ -131,6 +132,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="TestUploadFiles\Test.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
