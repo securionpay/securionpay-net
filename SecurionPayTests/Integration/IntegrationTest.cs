@@ -20,7 +20,8 @@ namespace SecurionPayTests.Integration
         public IntegrationTest()
         {
             var configProvider = new TestConfigurationProvider();
-            var apiClient = new ApiClient(configProvider);
+            var mimeMapper = new FileExtensionToMimeMapper();
+            var apiClient = new ApiClient(configProvider, mimeMapper);
             var signService = new SignService(configProvider);
             _gateway = new SecurionPayGateway(apiClient, configProvider, signService);
         }

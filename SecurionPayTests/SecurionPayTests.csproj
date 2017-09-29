@@ -75,6 +75,7 @@
     <Compile Include="ModelBuilders\CardRequestBuilder.cs" />
     <Compile Include="ModelBuilders\CustomerRequestBuilder.cs" />
     <Compile Include="ModelBuilders\IBuilder.cs" />
+    <Compile Include="ModelBuilders\TokenRequestBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Units\ApiClientTests.cs">
       <SubType>Code</SubType>
@@ -128,9 +129,15 @@
       <Name>SecurionPay</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="App.config" />
+    <Content Include="TestUploadFiles\img.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="TestUploadFiles\Test.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

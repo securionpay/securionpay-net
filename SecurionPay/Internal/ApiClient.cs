@@ -18,13 +18,14 @@ namespace SecurionPay
         private string _privateAuthToken;
         private string _version = "2.3.0";
         private HttpClient client;
+        private IFileExtensionToMimeMapper _fileExtensionToMimeMapper;
 
-        public ApiClient(ISecretKeyProvider secretKeyProvider)
-            : this(secretKeyProvider.GetSecretKey())
+        public ApiClient(ISecretKeyProvider secretKeyProvider, IFileExtensionToMimeMapper fileExtensionToMimeMapper)
+            : this(secretKeyProvider.GetSecretKey(), fileExtensionToMimeMapper)
         {
         }
 
-        public ApiClient(string secretKey, HttpMessageHandler customHttpMessageHandler = null)
+        public ApiClient(string secretKey,IFileExtensionToMimeMapper fileExtensionToMimeMapper,HttpMessageHandler customHttpMessageHandler = null)
         {
             var tokenBytes = Encoding.UTF8.GetBytes(secretKey + ":");
             _privateAuthToken = Convert.ToBase64String(tokenBytes);
@@ -36,6 +37,7 @@ namespace SecurionPay
             {
                 client = new HttpClient(customHttpMessageHandler);
             }
+            _fileExtensionToMimeMapper = fileExtensionToMimeMapper;
         }
 
         public async Task<T> SendRequest<T>(HttpMethod method, string url, object parameter)
@@ -70,19 +72,28 @@ namespace SecurionPay
             HttpRequestMessage request = new HttpRequestMessage(method, url);
 
             var content = new MultipartFormDataContent();
-
-            var fileContent = new ByteArrayContent(fileBody);
-            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            {
-                FileName = fileName
-            };
-            content.Add(fileContent);
-
             foreach (var formEntry in form)
             {
-                content.Add(new StringContent(formEntry.Value), formEntry.Key);
+                var stringContent = new StringContent(formEntry.Value);
+                stringContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    Name = string.Format("\"{0}\"",formEntry.Key)
+                };
+                content.Add(stringContent, formEntry.Key);
             }
 
+            var fileContent = new ByteArrayContent(fileBody);
+            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            {
+                Name = "\"file\"",
+                FileName = string.Format("\"{0}\"",fileName)
+            };
+
+            var mimeType = _fileExtensionToMimeMapper.GetMimeType(fileName);
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
+            content.Add(fileContent);
+
+ 
             request.Content = content;
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _privateAuthToken);

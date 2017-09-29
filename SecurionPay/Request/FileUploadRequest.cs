@@ -16,5 +16,7 @@ namespace SecurionPay.Request
         public FileUploadPurpose Purpose { get; set; }
 
         public byte[] File { get; set; }
+
+        public string FileName { get; set; }
     }
 }

@@ -48,8 +48,10 @@
     <Compile Include="Internal\ApiClient.cs" />
     <Compile Include="Converters\DateConverter.cs" />
     <Compile Include="Internal\ConfigurationProvider.cs" />
+    <Compile Include="Internal\FileExtensionToMimeMapper.cs" />
     <Compile Include="Internal\IApiClient.cs" />
     <Compile Include="IConfigurationProvider.cs" />
+    <Compile Include="Internal\IFileExtensionToMimeMapper.cs" />
     <Compile Include="ISecretKeyProvider.cs" />
     <Compile Include="Internal\ISignService.cs" />
     <Compile Include="Internal\SignService.cs" />

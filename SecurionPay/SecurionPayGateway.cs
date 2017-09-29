@@ -16,6 +16,7 @@ using System.Security.Cryptography;
 using SecurionPay.Internal;
 using SecurionPay.Request.Checkout;
 using System.IO;
+using SecurionPay.Converters;
 
 namespace SecurionPay
 {
@@ -48,7 +49,7 @@ namespace SecurionPay
         {
             var configurationProvider = new ConfigurationProvider(secretKey, serverUrl, uploadsUrl);
             _configurationProvider = configurationProvider;
-            _apiClient = new ApiClient(configurationProvider);
+            _apiClient = new ApiClient(configurationProvider,new FileExtensionToMimeMapper());
             _signService = new SignService(configurationProvider);
         }
 
@@ -620,9 +621,9 @@ namespace SecurionPay
         private async Task<T> SendUploadRequest<T>(HttpMethod method, string action, FileUploadRequest request)
         {
             var url = new Uri(new Uri(_configurationProvider.GetUploadsUrl()), action);
-            var form = new Dictionary<string, string>() { { "purpose", request.Purpose.ToString() } };
+            var form = new Dictionary<string, string>() { { "purpose", JsonConvert.SerializeObject(request.Purpose,new SafeEnumConverter()).Trim('"') } };
 
-            return await _apiClient.SendMultiPartRequest<T>(method, url.ToString(), form,request.File , "file");
+            return await _apiClient.SendMultiPartRequest<T>(method, url.ToString(), form, request.File, request.FileName);
         }
 
         #endregion

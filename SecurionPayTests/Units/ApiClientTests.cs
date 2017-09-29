@@ -2,6 +2,7 @@
 using Moq;
 using Moq.Protected;
 using SecurionPay;
+using SecurionPay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,8 @@ namespace SecurionPayTests.Units
                     }
                 })
                 .Returns(Task.Run(() => new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.BadGateway }));
-            var apiClient = new ApiClient("secret", mock.Object);
+            var mapperMock = new Mock<IFileExtensionToMimeMapper>();
+            var apiClient = new ApiClient("secret",mapperMock.Object, mock.Object);
 
             try
             {
