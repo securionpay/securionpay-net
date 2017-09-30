@@ -14,5 +14,7 @@ namespace SecurionPayTests.Units.Tools
         public string Action { get; set; }
 
         public object Parameter { get; set; }
+
+        public bool UseUploadEndpoint { get; set; }
     }
 }
