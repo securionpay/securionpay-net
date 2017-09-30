@@ -80,10 +80,10 @@ namespace SecurionPayTests.Integration
                 var customerRequest = _customerRequestBuilder.WithCard(_cardRequestBuilder.WithId(charge.Id)).Build(); 
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var chargeRequest2 = new ChargeRequest() { Amount = 1000, Currency = "PLN", CustomerId = customer.Id, Description = "sss" };
+                var chargeRequest2 = new ChargeRequestBuilder().WithCustomerId(customer.Id).Build();
                 charge = await _gateway.CreateCharge(chargeRequest2);
 
-                Assert.AreEqual(1000, charge.Amount);
+                Assert.AreEqual(chargeRequest2.Amount, charge.Amount);
                 Assert.AreEqual(customer.Id, charge.CustomerId);
 
             }

@@ -16,13 +16,14 @@ namespace SecurionPayTests.Units
     public class ChargeTests:BaseUnitTestsSet
     {
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+        private ChargeRequestBuilder _chargeRequestBuilder = new ChargeRequestBuilder();
 
         [TestMethod]
-        public async Task CreateChargeWithTokenTest()
+        public async Task CreateChargeTest()
         {
             var requestTester = GetRequestTester();
-            var tokenId = "1";
-            var chargeRequest = new ChargeRequest() { Amount = 1000, Currency = "PLN", Card = new CardRequest() { Id = tokenId }, Description = "sss", Captured = false };
+
+            var chargeRequest = _chargeRequestBuilder.Build();
             await requestTester.TestMethod<Charge>(
                 async (api) =>
                 {
@@ -37,26 +38,6 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
-        public async Task CreateChargeWithCardTest()
-        {
-            var requestTester = GetRequestTester();
-
-            var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123" };
-            var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = "1", Card = cardRequest };
-            await requestTester.TestMethod<Charge>(
-                async (api) =>
-                {
-                    await api.CreateCharge(chargeRequest);
-                },
-                new RequestDescriptor()
-                {
-                    Method = HttpMethod.Post,
-                    Action = "charges",
-                    Parameter = chargeRequest
-                }
-            );
-        }
 
         [TestMethod]
         public async Task CaptureChargeTest()
