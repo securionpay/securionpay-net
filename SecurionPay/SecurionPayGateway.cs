@@ -511,6 +511,17 @@ namespace SecurionPay
             return await SendUploadRequest<FileUpload>(HttpMethod.Post, FILES_PATH, request);
         }
 
+        public async Task<FileUpload> RetrieveFileUpload(string id)
+        {
+            var url = FILES_PATH + "/" + id;
+            return await SendRequest<FileUpload>(HttpMethod.Get, url, null,_configurationProvider.GetUploadsUrl());
+        }
+
+        public async Task<ListResponse<FileUpload>> ListFileUpload()
+        {
+            return await SendListRequest<FileUpload>(HttpMethod.Get, FILES_PATH, _configurationProvider.GetUploadsUrl());
+        }
+
         #endregion
 
         #endregion
@@ -519,7 +530,12 @@ namespace SecurionPay
 
         private async Task<ListResponse<TList>> SendListRequest<TList>(HttpMethod httpMethod, string path)
         {
-            SecurionpayList securionpayList = await SendRequest<SecurionpayList>(httpMethod, path);
+            return await SendListRequest<TList>(httpMethod, path, _configurationProvider.GetApiUrl());
+        }
+
+        private async Task<ListResponse<TList>> SendListRequest<TList>(HttpMethod httpMethod, string path,string baseUrl)
+        {
+            SecurionpayList securionpayList = await SendRequest<SecurionpayList>(httpMethod, path,null,baseUrl);
             return DeserializeList<TList>(securionpayList);
         }
 
@@ -614,7 +630,12 @@ namespace SecurionPay
 
         private async Task<T> SendRequest<T>(HttpMethod method, string action, object parameter)
         {
-            var url = new Uri(new Uri(_configurationProvider.GetApiUrl()), action);
+            return await SendRequest<T>(method, action, parameter, _configurationProvider.GetApiUrl());
+        }
+
+        private async Task<T> SendRequest<T>(HttpMethod method, string action, object parameter,string baseUrl)
+        {
+            var url = new Uri(new Uri(baseUrl), action);
             return await _apiClient.SendRequest<T>(method, url.ToString(), parameter);
         }
 
