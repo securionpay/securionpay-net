@@ -9,9 +9,23 @@ namespace SecurionPayTests.ModelBuilders
 {
     public class TokenRequestBuilder : IBuilder<TokenRequest>
     {
+        private string _cardNumber = "4242424242424242";
+
         public TokenRequest Build()
         {
-            throw new NotImplementedException();
+            return new TokenRequest()
+            {
+                Number = _cardNumber,
+                ExpMonth = "12",
+                ExpYear = GetCorrectCardExpiryYear(),
+                Cvc = "123",
+                CardholderName = "test cardholder" 
+            };
+        }
+
+        private string GetCorrectCardExpiryYear()
+        {
+            return (DateTime.Today.Year + 1).ToString();
         }
     }
 }

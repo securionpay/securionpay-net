@@ -73,6 +73,7 @@
     <Compile Include="Integration\UploadTests.cs" />
     <Compile Include="ModelBuilders\AddressBuilder.cs" />
     <Compile Include="ModelBuilders\CardRequestBuilder.cs" />
+    <Compile Include="ModelBuilders\ChargeRequestBuilder.cs" />
     <Compile Include="ModelBuilders\CustomerRequestBuilder.cs" />
     <Compile Include="ModelBuilders\IBuilder.cs" />
     <Compile Include="ModelBuilders\TokenRequestBuilder.cs" />

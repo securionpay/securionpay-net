@@ -17,6 +17,7 @@ namespace SecurionPayTests.Integration
     {
         private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+        private ChargeRequestBuilder _chargeRequestBuilder = new ChargeRequestBuilder();
 
         [TestMethod]
         public async Task RetrieveDisputeTest()
@@ -68,8 +69,10 @@ namespace SecurionPayTests.Integration
         {
             var customer = await _gateway.CreateCustomer(customerRequest);
 
-            var cardRequest = _cardRequestBuilder.WithNumberCausingDispute().Build();
-            var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest };
+            var chargeRequest = _chargeRequestBuilder.WithCustomerId(customer.Id)
+                                                     .WithCard(_cardRequestBuilder.WithNumberCausingDispute())
+                                                     .Build();
+
             var charge = await _gateway.CreateCharge(chargeRequest);
             await Task.Delay(100000); //100sec wait
             var chargeWithDispute = await _gateway.RetrieveCharge(charge.Id);

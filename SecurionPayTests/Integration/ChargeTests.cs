@@ -18,6 +18,7 @@ namespace SecurionPayTests.Integration
         private AddressBuilder _addressBuilder = new AddressBuilder();
         private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+        private ChargeRequestBuilder _chargeRequestBuilder = new ChargeRequestBuilder();
 
         /// <summary>
         /// charge amount exceeds the available fund or the card's credit limit.
@@ -31,8 +32,7 @@ namespace SecurionPayTests.Integration
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = _cardRequestBuilder.Build();
-                var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest };
+                var chargeRequest = _chargeRequestBuilder.WithCustomerId(customer.Id).WithCard(_cardRequestBuilder).Build(); 
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
             }
@@ -54,8 +54,7 @@ namespace SecurionPayTests.Integration
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = _cardRequestBuilder.WithWrongNumber().Build();
-                var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest };
+                var chargeRequest = _chargeRequestBuilder.WithCustomerId(customer.Id).WithCard(_cardRequestBuilder.WithWrongNumber()).Build(); 
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
             }
@@ -79,7 +78,7 @@ namespace SecurionPayTests.Integration
             var cardRequest = _cardRequestBuilder.WithCustomerId(customer.Id).Build();
             var card = await _gateway.CreateCard(cardRequest);
 
-            var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = new CardRequest() { Id = card.Id } };
+            var chargeRequest = _chargeRequestBuilder.WithCustomerId(customer.Id).WithCard(_cardRequestBuilder.WithId(card.Id)).Build();
             var charge = await _gateway.CreateCharge(chargeRequest);
 
             Assert.AreEqual(2000, charge.Amount);
@@ -101,19 +100,16 @@ namespace SecurionPayTests.Integration
             var cardRequest = _cardRequestBuilder.WithCustomerId(customer.Id).Build();
             var card = await _gateway.CreateCard(cardRequest);
 
-            var chargeRequest = new ChargeRequest()
-            {
-                Amount = 2000,
-                Currency = "EUR",
-                CustomerId = customer.Id,
-                Card = new CardRequest() { Id = card.Id},
-                Shipping = new Shipping() { Name = "shipping name", Address = address },
-                Billing = new Billing() { Name = "Billing name", Address = address ,Vat="76663827374"}
-            };
+            var chargeRequest = _chargeRequestBuilder.WithCustomerId(customer.Id)
+                                                     .WithCard(_cardRequestBuilder.WithId(card.Id))
+                                                     .WithShipping()
+                                                     .WithBilling()
+                                                     .Build();
+
             var charge = await _gateway.CreateCharge(chargeRequest);
 
-            Assert.AreEqual("shipping name", charge.Shipping.Name);
-            Assert.AreEqual("Billing name", charge.Billing.Name);
+            Assert.AreEqual(chargeRequest.Shipping.Name, charge.Shipping.Name);
+            Assert.AreEqual(chargeRequest.Billing.Name, charge.Billing.Name);
         }
 
         /// <summary>
@@ -128,9 +124,10 @@ namespace SecurionPayTests.Integration
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = _cardRequestBuilder.WithCustomerId(customer.Id).Build();
-
-                var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId = customer.Id, Card = cardRequest, ThreeDSecure = new ThreeDSecure() { RequireAttempt = true } };
+                var chargeRequest = _chargeRequestBuilder.WithCustomerId(customer.Id)
+                                                         .With3DSecure(new ThreeDSecure() { RequireAttempt = true })
+                                                         .WithCard(_cardRequestBuilder.WithCustomerId(customer.Id))
+                                                         .Build();
                 var charge = await _gateway.CreateCharge(chargeRequest);
             }
             catch (SecurionPayException exc)

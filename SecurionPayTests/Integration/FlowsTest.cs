@@ -18,6 +18,8 @@ namespace SecurionPayTests.Integration
     {
         private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+        private TokenRequestBuilder _tokenRequestBuilder = new TokenRequestBuilder();
+        private ChargeRequestBuilder _chargeRequestBuilder = new ChargeRequestBuilder();
 
         /// <summary>
         /// test for flow Token -> Charge -> Capture -> Refund
@@ -28,11 +30,13 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = _tokenRequestBuilder.Build();
                 var token = await _gateway.CreateToken(createTokenRequest);
                 token = await _gateway.RetrieveToken(token.Id);
 
-                var chargeRequest = new ChargeRequest() { Amount = 1000, Currency = "PLN", Card = new CardRequest() { Id = token.Id }, Description = "sss", Captured = false };
+                var chargeRequest = _chargeRequestBuilder.WithCard(_cardRequestBuilder.WithId(token.Id))
+                                                         .WithIsCaptured(false)
+                                                         .Build();
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
                 var capture = new CaptureRequest() { ChargeId = charge.Id };
@@ -47,7 +51,7 @@ namespace SecurionPayTests.Integration
                 Assert.IsTrue(charge.Refunded);
                 Assert.AreEqual(1, charge.Refunds.Count);
                 Assert.AreEqual(500, charge.Refunds.First().Amount);
-                Assert.AreEqual(500, charge.Amount);
+                Assert.AreEqual(chargeRequest.Amount - 500, charge.Amount);
             }
             catch (SecurionPayException exc)
             {
@@ -66,11 +70,11 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = _tokenRequestBuilder.Build();
                 var token = await _gateway.CreateToken(createTokenRequest);
                 token = await _gateway.RetrieveToken(token.Id);
 
-                var chargeRequest = new ChargeRequest() { Amount = 1000, Currency = "PLN", Card = new CardRequest() { Id = token.Id }, Description = "sss" };
+                var chargeRequest = _chargeRequestBuilder.WithCard(_cardRequestBuilder.WithId(token.Id)).Build();
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
                 var customerRequest = _customerRequestBuilder.WithCard(_cardRequestBuilder.WithId(charge.Id)).Build(); 
@@ -104,7 +108,7 @@ namespace SecurionPayTests.Integration
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = _tokenRequestBuilder.Build();
                 var token = await _gateway.CreateToken(createTokenRequest);
 
 
@@ -133,11 +137,13 @@ namespace SecurionPayTests.Integration
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = _cardRequestBuilder.Build();
-                var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", CustomerId=customer.Id,Card= cardRequest};
+                var chargeRequest = _chargeRequestBuilder.WithCard(_cardRequestBuilder)
+                                                         .WithCustomerId(customer.Id)
+                                                         .Build();
+
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
-                var chargeRequest2 = new ChargeRequest(){Amount=1000,Currency="EUR",CustomerId=charge.CustomerId};
+                var chargeRequest2 = new ChargeRequest() { Amount = 1000, Currency = chargeRequest.Currency, CustomerId = charge.CustomerId };
                 var charge2 = await _gateway.CreateCharge(chargeRequest2);
 
                 Assert.AreEqual(1000,charge2.Amount);
@@ -172,10 +178,11 @@ namespace SecurionPayTests.Integration
                 Assert.AreEqual(cardRequest.ExpYear, card.ExpYear);
                 Assert.AreEqual(cardRequest.CardholderName, card.CardholderName);
 
-                var chargeReqest = new ChargeRequest() { Amount=1000,Currency="EUR",CustomerId=card.CustomerId};
+                var chargeReqest = _chargeRequestBuilder.WithCustomerId(customer.Id)
+                                                        .Build();
                 var charge =await _gateway.CreateCharge(chargeReqest);
 
-                Assert.AreEqual(1000, charge.Amount);
+                Assert.AreEqual(chargeReqest.Amount, charge.Amount);
                 
             }
             catch (SecurionPayException exc)

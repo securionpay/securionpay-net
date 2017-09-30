@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SecurionPayTests.Utils;
 
 namespace SecurionPayTests.Integration
 {
@@ -15,6 +16,7 @@ namespace SecurionPayTests.Integration
     {
         private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+        private TokenRequestBuilder _tokenRequestBuilder = new TokenRequestBuilder();
 
         /// <summary>
         /// test for creating and listing credits
@@ -25,7 +27,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = _tokenRequestBuilder.Build();
                 var token = await _gateway.CreateToken(createTokenRequest);
 
                 var creditRequest = new CreditRequest()
@@ -53,7 +55,7 @@ namespace SecurionPayTests.Integration
         public async Task CreateCreditWithTokenAndRetireveCreditTest()
         {
             try {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = _tokenRequestBuilder.Build();
                 var token = await _gateway.CreateToken(createTokenRequest);
 
                 var creditRequest = new CreditRequest()
@@ -71,7 +73,7 @@ namespace SecurionPayTests.Integration
                 Assert.AreEqual(createTokenRequest.CardholderName, retrievedCredit.Card.CardholderName);
                 Assert.AreEqual(createTokenRequest.ExpMonth, retrievedCredit.Card.ExpMonth);
                 Assert.AreEqual(createTokenRequest.ExpYear, retrievedCredit.Card.ExpYear);
-                Assert.AreEqual("0007", retrievedCredit.Card.Last4);
+                Assert.AreEqual(createTokenRequest.GetLast4(), retrievedCredit.Card.Last4);
             }
             catch (SecurionPayException exc)
             {
@@ -163,7 +165,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = _tokenRequestBuilder.Build();
                 var token = await _gateway.CreateToken(createTokenRequest);
 
                 var creditRequest = new CreditRequest()

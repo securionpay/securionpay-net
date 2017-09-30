@@ -15,6 +15,7 @@ namespace SecurionPayTests.Integration
     {
         CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+        TokenRequestBuilder _tokenRequestBuilder = new TokenRequestBuilder();
 
         [TestMethod]
         public async Task CustomerWithNewCardTest()
@@ -39,7 +40,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = CorrectCardExpiryYear, Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = _tokenRequestBuilder.Build();
                 var token = await _gateway.CreateToken(createTokenRequest);
                 token = await _gateway.RetrieveToken(token.Id);
 
@@ -47,7 +48,7 @@ namespace SecurionPayTests.Integration
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
                 Assert.AreEqual(1, customer.Cards.Count);
-                Assert.AreEqual("John Smith", customer.Cards.First().CardholderName);
+                Assert.AreEqual(createTokenRequest.CardholderName, customer.Cards.First().CardholderName);
 
             }
             catch (SecurionPayException exc)

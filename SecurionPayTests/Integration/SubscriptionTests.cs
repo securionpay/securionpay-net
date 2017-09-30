@@ -17,6 +17,7 @@ namespace SecurionPayTests.Integration
     {
         CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+        ChargeRequestBuilder _chargeRequestBuilder = new ChargeRequestBuilder();
 
         [TestMethod]
         public async Task SubscribeWithNewCardTest()
@@ -84,15 +85,14 @@ namespace SecurionPayTests.Integration
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = _cardRequestBuilder.Build();
-                var chargeRequest = new ChargeRequest() { Amount = 2000, Currency = "EUR", Card =cardRequest };
+                var chargeRequest = _chargeRequestBuilder.WithCard(_cardRequestBuilder).Build();
                 var charge = await _gateway.CreateCharge(chargeRequest);
 
                 var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = new CardRequest() { Id = charge.Id } };
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
                 customer = await _gateway.RetrieveCustomer(customer.Id);
-                Assert.AreEqual(cardRequest.CardholderName, customer.Cards.First(c => c.Id == customer.DefaultCardId).CardholderName);
+                Assert.AreEqual(chargeRequest.Card.CardholderName, customer.Cards.First(c => c.Id == customer.DefaultCardId).CardholderName);
             }
             catch (SecurionPayException exc)
             {

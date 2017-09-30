@@ -11,7 +11,16 @@ namespace SecurionPayTests.Utils
     {
         public static string GetLast4(this CardRequest request)
         {
-            var number = request.Number;
+            return GetLast4(request.Number);
+        }
+
+        public static string GetLast4(this TokenRequest request)
+        {
+            return GetLast4(request.Number);
+        }
+
+        private static string GetLast4(string number)
+        {
             var numberLength = number.Length;
             return number.Substring(numberLength - 4);
         }
