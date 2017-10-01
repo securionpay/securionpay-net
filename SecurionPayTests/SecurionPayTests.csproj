@@ -68,6 +68,7 @@
     <Compile Include="Integration\DisputeTests.cs" />
     <Compile Include="Integration\FlowsTest.cs" />
     <Compile Include="Integration\IntegrationTest.cs" />
+    <Compile Include="Integration\ListWithFilterTests.cs" />
     <Compile Include="Integration\SubscriptionTests.cs" />
     <Compile Include="Integration\TestConfigurationProvider.cs" />
     <Compile Include="Integration\UploadTests.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Units\Tools\MatchResult.cs" />
     <Compile Include="Units\Tools\RequestTester.cs" />
     <Compile Include="Units\Tools\RequestDescriptor.cs" />
+    <Compile Include="Units\UnixDateConverterTests.cs" />
     <Compile Include="Units\UploadTests.cs" />
     <Compile Include="Utils\CardRequestExtensions.cs" />
   </ItemGroup>

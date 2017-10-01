@@ -564,6 +564,7 @@ namespace SecurionPay
 
         private string GenerateGetPath(object parameters, string parentName = null)
         {
+
             StringBuilder path = new StringBuilder();
             var type = parameters.GetType();
             foreach (var property in type.GetProperties())
@@ -601,13 +602,31 @@ namespace SecurionPay
             var propertyName = GetPropertyName(property);
             if (parentName != null)
             {
-                return parentName + "[" + propertyName + "]=" + Uri.EscapeDataString(value.ToString()) + "&";
+                var converterValue = ConvertValue(value);
+                return parentName + "[" + propertyName + "]=" + converterValue + "&";
             }
             else
             {
                 return propertyName + "=" + Uri.EscapeDataString(value.ToString()) + "&";
             }
 
+        }
+
+        private object ConvertValue(object value)
+        {
+            string stringValue=null;
+
+            if (value is DateTime)
+            {
+                var converter = new UnixDateConverter();
+                var localDate = (DateTime)value;
+                stringValue = converter.ToUnixTimeStamp(localDate.ToUniversalTime()).ToString();
+            }
+            else
+            {
+                stringValue = value.ToString();
+            }
+            return Uri.EscapeDataString(stringValue);
         }
 
         private string GetPropertyName(PropertyInfo property)

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SecurionPay.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +9,32 @@ namespace SecurionPay.Request
 {
     public class CreatedFilter
     {
+        /// <summary>
+        /// return objects created after given timestamp
+        /// </summary>
         [JsonProperty("gt")]
-        public long? Gt { get; set; }
+        [JsonConverter(typeof(DateConverter))]
+        public DateTime? Gt { get; set; }
 
+        /// <summary>
+        /// return objects created after or exactly on given timestamp
+        /// </summary>
         [JsonProperty("gte")]
-        public long? Gte { get; set; }
+        [JsonConverter(typeof(DateConverter))]
+        public DateTime? Gte { get; set; }
 
+        /// <summary>
+        ///  return objects created before given timestamp
+        /// </summary>
         [JsonProperty("lt")]
-        public long? Lt { get; set; }
+        [JsonConverter(typeof(DateConverter))]
+        public DateTime? Lt { get; set; }
 
+        /// <summary>
+        /// return objects created before or exactly on given timestamp
+        /// </summary>
         [JsonProperty("lte")]
-        public long? Lte { get; set; }
+        [JsonConverter(typeof(DateConverter))]
+        public DateTime? Lte { get; set; }
     }
 }
