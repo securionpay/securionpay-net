@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 namespace SecurionPay.Request
 {
-    public class ChargeRequest
+    public class ChargeRequest : BaseRequest
     {
         [JsonProperty("amount")]
         public int? Amount { get; set; }
@@ -37,9 +37,6 @@ namespace SecurionPay.Request
 
         [JsonProperty("card")]
         public CardRequest Card { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
 
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }

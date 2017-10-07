@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class WithCrossSale
+    public class WithCrossSale : BaseResponse
     {
         [JsonProperty("offerId")]
         public string OfferId { get; set; }
@@ -23,8 +23,5 @@ namespace SecurionPay.Response
 
         [JsonProperty("currency")]
         public string Currency { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

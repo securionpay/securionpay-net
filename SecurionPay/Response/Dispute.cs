@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class Dispute
+    public class Dispute : BaseResponse
     {
         [JsonProperty("id")]
         public string Id { get; set; }

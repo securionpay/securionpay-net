@@ -5,7 +5,7 @@ using System;
 
 namespace SecurionPay.Response
 {
-    public class Event
+    public class Event : BaseResponse
     {
         [JsonProperty("id")]
         public string Id { get; set; }

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 namespace SecurionPay.Request
 {
-    public class PlanRequest
+    public class PlanRequest : BaseRequest
     {
         [JsonProperty("amount")]
         public int? Amount { get;  set; }
@@ -39,7 +39,5 @@ namespace SecurionPay.Request
         [JsonProperty("recursTo")]
         public String RecursTo { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

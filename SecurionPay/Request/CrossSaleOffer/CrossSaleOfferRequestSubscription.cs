@@ -7,15 +7,12 @@ using System.Text;
 
 namespace SecurionPay.Request.CrossSaleOffer
 {
-    public class CrossSaleOfferRequestSubscription
+    public class CrossSaleOfferRequestSubscription : BaseRequest
     {
         [JsonProperty("planId")]
         public string PlanId { get; set; }
 
         [JsonProperty("captureCharges")]
         public bool? CaptureCharges { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

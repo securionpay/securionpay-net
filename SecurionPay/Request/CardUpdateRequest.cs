@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 namespace SecurionPay.Request
 {
-    public class CardUpdateRequest
+    public class CardUpdateRequest : BaseRequest
     {
         [JsonIgnore]
         public String CardId { get; set; }
@@ -40,7 +40,5 @@ namespace SecurionPay.Request
         [JsonProperty("addressLine2")]
         public String AddressLine2 { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

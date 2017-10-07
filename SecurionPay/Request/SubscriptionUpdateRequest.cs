@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 namespace SecurionPay.Request
 {
-    public class SubscriptionUpdateRequest
+    public class SubscriptionUpdateRequest : BaseRequest
     {
         [JsonIgnore]
         public String SubscriptionId { get; set; }
@@ -37,9 +37,6 @@ namespace SecurionPay.Request
 
         [JsonProperty("billing")]
         public Billing Billing { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
 
     }
 }

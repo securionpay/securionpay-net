@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class ChargeDispute
+    public class ChargeDispute : BaseResponse
     {
         [JsonProperty("created")]
         [JsonConverter(typeof(DateConverter))]

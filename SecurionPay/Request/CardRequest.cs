@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SecurionPay.Request
 {
-    public class CardRequest
+    public class CardRequest : BaseRequest
     {
         /// <summary>
         /// Id of exisiting card, card token or charge id when used in ChargeCustomer.
@@ -51,8 +51,5 @@ namespace SecurionPay.Request
 
         [JsonProperty("fraudCheckData")]
         public FraudCheckDataRequest FraudCheckData { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

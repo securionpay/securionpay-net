@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 namespace SecurionPay.Response
 {
-    public class Token
+    public class Token : BaseResponse
     {
         [JsonProperty("id")]
         public String Id { get; set; }
@@ -56,9 +56,6 @@ namespace SecurionPay.Response
 
         [JsonProperty("fraudCheckData")]
         public FraudCheckData FraudCheckData { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
 
         [JsonProperty("fingerprint")]
         public String Fingerprint { get; set; }

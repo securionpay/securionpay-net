@@ -4,12 +4,9 @@ using System;
 using System.Collections.Generic;
 namespace SecurionPay.Request
 {
-    public class CaptureRequest
+    public class CaptureRequest : BaseRequest
     {
         [JsonIgnore]
         public String ChargeId { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

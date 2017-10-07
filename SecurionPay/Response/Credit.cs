@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class Credit
+    public class Credit : BaseResponse
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -47,7 +47,5 @@ namespace SecurionPay.Response
         [JsonProperty("failureMessage")]
         public string FailureMessage { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

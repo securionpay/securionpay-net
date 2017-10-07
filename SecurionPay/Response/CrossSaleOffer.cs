@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class CrossSaleOffer
+    public class CrossSaleOffer : BaseResponse
     {
         [JsonProperty("id")]
         public string Id { get; set; }

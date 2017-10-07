@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 namespace SecurionPay.Request
 {
-    public class CustomerUpdateRequest
+    public class CustomerUpdateRequest : BaseRequest
     {
         [JsonIgnore]
         public String CustomerId { get; set; }
@@ -23,8 +23,5 @@ namespace SecurionPay.Request
 
         [JsonProperty("defaultCardId")]
         public String DefaultCardId { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

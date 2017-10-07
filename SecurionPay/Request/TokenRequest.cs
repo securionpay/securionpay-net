@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 namespace SecurionPay.Request
 {
-    public class TokenRequest
+    public class TokenRequest : BaseRequest
     {
         [JsonProperty("number")]
         public String Number { get; set; }
@@ -41,8 +41,5 @@ namespace SecurionPay.Request
 
         [JsonProperty("fraudCheckData")]
         public FraudCheckDataRequest FraudCheckData { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

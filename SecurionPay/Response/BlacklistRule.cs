@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class BlacklistRule
+    public class BlacklistRule : BaseResponse
     {
 
         [JsonProperty("id")]
@@ -49,9 +49,5 @@ namespace SecurionPay.Response
 
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
-
     }
 }

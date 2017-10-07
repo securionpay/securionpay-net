@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SecurionPay.Request
 {
-    public class CustomerRecordRequest
+    public class CustomerRecordRequest : BaseRequest
     {
         [JsonProperty("email")]
         public string Email { get; set; }

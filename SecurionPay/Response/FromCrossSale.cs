@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class FromCrossSale
+    public class FromCrossSale : BaseResponse
     {
         [JsonProperty("offerId")]
         public string OfferId { get; set; }
@@ -15,7 +15,5 @@ namespace SecurionPay.Response
         [JsonProperty("partnerId")]
         public string PartnerId { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

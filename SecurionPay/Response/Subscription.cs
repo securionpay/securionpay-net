@@ -10,7 +10,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class Subscription
+    public class Subscription : BaseResponse
     {
         [JsonProperty("id")]
         public String Id { get; set; }

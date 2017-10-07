@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SecurionPay.Request
 {
-    public class CreditUpdateRequest
+    public class CreditUpdateRequest : BaseRequest
     {
         [JsonIgnore]
         public string CreditId { get; set; }

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class Charge
+    public class Charge : BaseResponse
     {
 
         [JsonProperty("id")]
@@ -52,7 +52,7 @@ namespace SecurionPay.Response
         public bool Disputed { get; set; }
 
         [JsonProperty("dispute")]
-        //public ChargeDispute Dispute { get; set; }
+        //TODO public ChargeDispute Dispute { get; set; }
         public Dispute Dispute { get; set; }
 
         [JsonProperty("fraudDetails")]
@@ -82,9 +82,6 @@ namespace SecurionPay.Response
 
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
 
     }
 }

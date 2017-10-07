@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SecurionPay.Request
 {
-    public class DisputeUpdateRequest
+    public class DisputeUpdateRequest : BaseRequest
     {
         [JsonIgnore]
         public string DisputeId { get; set; }

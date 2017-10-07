@@ -56,6 +56,7 @@
     <Compile Include="ISecretKeyProvider.cs" />
     <Compile Include="Internal\ISignService.cs" />
     <Compile Include="Internal\SignService.cs" />
+    <Compile Include="Request\BaseRequest.cs" />
     <Compile Include="Request\Checkout\CheckoutRequestCharge.cs" />
     <Compile Include="Request\Checkout\CheckoutRequest.cs" />
     <Compile Include="Request\Checkout\CheckoutRequestCustomCharge.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Request\FileUploadRequest.cs" />
     <Compile Include="Request\ListRequest.cs" />
     <Compile Include="Request\ThreeDSecure.cs" />
+    <Compile Include="Response\BaseResponse.cs" />
     <Compile Include="Response\Credit.cs" />
     <Compile Include="Response\CrossSaleOffer.cs" />
     <Compile Include="Enums\CrossSaleOfferTemplate.cs" />

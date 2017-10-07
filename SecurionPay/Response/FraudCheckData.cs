@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class FraudCheckData
+    public class FraudCheckData : BaseResponse
     {
 
         [JsonProperty("ipCountry")]
@@ -25,7 +25,5 @@ namespace SecurionPay.Response
         [JsonProperty("acceptLanguage")]
         public String AcceptLanguage { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

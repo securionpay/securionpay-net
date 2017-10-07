@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 namespace SecurionPay.Request
 {
-    public class ChargeUpdateRequest
+    public class ChargeUpdateRequest : BaseRequest
     {
         [JsonIgnore]
         public String ChargeId { get;  set; }
@@ -25,7 +25,5 @@ namespace SecurionPay.Request
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

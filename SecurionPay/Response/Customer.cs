@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class Customer
+    public class Customer : BaseResponse
     {
         [JsonProperty("id")]
         public String Id { get; set; }
@@ -39,8 +39,5 @@ namespace SecurionPay.Response
 
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

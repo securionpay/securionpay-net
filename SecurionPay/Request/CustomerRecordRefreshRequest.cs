@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SecurionPay.Request
 {
-    public class CustomerRecordRefreshRequest
+    public class CustomerRecordRefreshRequest : BaseRequest
     {
         [JsonIgnore]
         public string CustomerRecordId { get; set; }

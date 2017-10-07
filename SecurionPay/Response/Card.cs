@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class Card
+    public class Card : BaseResponse
     {
         [JsonProperty("id")]
         public String Id { get; set; }
@@ -73,9 +73,6 @@ namespace SecurionPay.Response
 
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
 
     }
 }
