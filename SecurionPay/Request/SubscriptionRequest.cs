@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SecurionPay.Common;
+using SecurionPay.Converters;
 using System;
 using System.Collections.Generic;
 namespace SecurionPay.Request
@@ -17,7 +18,8 @@ namespace SecurionPay.Request
         public int? Quantity { get; set; }
 
         [JsonProperty("trialEnd")]
-        public long? TrialEnd { get; set; }
+        [JsonConverter(typeof(DateConverter))]
+        public DateTime? TrialEnd { get; set; }
 
         [JsonProperty("card")]
         public CardRequest Card { get; set; }

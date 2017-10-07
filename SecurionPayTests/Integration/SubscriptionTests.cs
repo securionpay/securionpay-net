@@ -32,7 +32,7 @@ namespace SecurionPayTests.Integration
 
                 var cardRequest = _cardRequestBuilder.Build();
             
-                var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = cardRequest };
+                var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id,TrialEnd=DateTime.Now.AddDays(10), Card = cardRequest };
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
                 customer = await _gateway.RetrieveCustomer(customer.Id);
