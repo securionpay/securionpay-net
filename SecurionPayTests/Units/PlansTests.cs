@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
 using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,13 @@ namespace SecurionPayTests.Units
     [TestClass]
     public class PlansTests : BaseUnitTestsSet
     {
+        PlanRequestBuilder _planRequestBuilder = new PlanRequestBuilder();
+
         [TestMethod]
         public async Task CreatePlanTest()
         {
             var requestTester = GetRequestTester();
-            var planRequest = new PlanRequest() { Amount=100, Currency="USD" };
+            var planRequest = _planRequestBuilder.Build();
             await requestTester.TestMethod<Plan>(
                 async (api) =>
                 {

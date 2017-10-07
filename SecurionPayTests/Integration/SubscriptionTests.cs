@@ -18,14 +18,14 @@ namespace SecurionPayTests.Integration
         CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
         ChargeRequestBuilder _chargeRequestBuilder = new ChargeRequestBuilder();
+        PlanRequestBuilder _planRequestBuilder = new PlanRequestBuilder();
 
         [TestMethod]
         public async Task SubscribeWithNewCardTest()
         {
             try
             {
-                var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
-                var plan = await _gateway.CreatePlan(planRequest);
+                var plan = await _gateway.CreatePlan(_planRequestBuilder.Build());
 
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
@@ -36,7 +36,7 @@ namespace SecurionPayTests.Integration
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
                 customer = await _gateway.RetrieveCustomer(customer.Id);
-                Assert.AreEqual("test cardholder", customer.Cards.First(c => c.Id == customer.DefaultCardId).CardholderName);
+                Assert.AreEqual(cardRequest.CardholderName, customer.Cards.First(c => c.Id == customer.DefaultCardId).CardholderName);
 
             }
             catch (SecurionPayException exc)
@@ -50,8 +50,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
-                var plan = await _gateway.CreatePlan(planRequest);
+                var plan = await _gateway.CreatePlan(_planRequestBuilder.Build());
 
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
@@ -75,8 +74,7 @@ namespace SecurionPayTests.Integration
             var address = new AddressBuilder().Build();
             try
             {
-                var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
-                var plan = await _gateway.CreatePlan(planRequest);
+                var plan = await _gateway.CreatePlan(_planRequestBuilder.Build());
 
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
@@ -103,8 +101,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
-                var plan = await _gateway.CreatePlan(planRequest);
+                var plan = await _gateway.CreatePlan(_planRequestBuilder.Build());
 
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);

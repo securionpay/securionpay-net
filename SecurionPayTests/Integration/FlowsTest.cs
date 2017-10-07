@@ -20,6 +20,7 @@ namespace SecurionPayTests.Integration
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
         private TokenRequestBuilder _tokenRequestBuilder = new TokenRequestBuilder();
         private ChargeRequestBuilder _chargeRequestBuilder = new ChargeRequestBuilder();
+        private PlanRequestBuilder _planRequestBuilder = new PlanRequestBuilder();
 
         /// <summary>
         /// test for flow Token -> Charge -> Capture -> Refund
@@ -102,8 +103,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
-                var plan = await _gateway.CreatePlan(planRequest);
+                var plan = await _gateway.CreatePlan(_planRequestBuilder.Build());
 
                 var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
