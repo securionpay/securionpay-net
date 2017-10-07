@@ -52,8 +52,7 @@ namespace SecurionPay.Response
         public bool Disputed { get; set; }
 
         [JsonProperty("dispute")]
-        //TODO public ChargeDispute Dispute { get; set; }
-        public Dispute Dispute { get; set; }
+        public ChargeDispute Dispute { get; set; }
 
         [JsonProperty("fraudDetails")]
         public FraudDetails FraudDetails { get; set; }

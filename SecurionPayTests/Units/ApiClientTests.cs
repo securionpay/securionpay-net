@@ -17,8 +17,6 @@ namespace SecurionPayTests.Units
     [TestClass]
     public class ApiClientTests
     {
-
-        //todo one test per feature
         [TestMethod]
         public async Task ApiClientBuildsCorrectRequestTest()
         {
