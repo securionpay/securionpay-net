@@ -15,6 +15,6 @@ namespace SecurionPay.Request
         public bool RequireEnrolledCard { get; set; }
 
         [JsonProperty("requireSuccessfulLiabilityShiftForEnrolledCard")]
-        public bool RequireSuccessfulLiabilityShiftForEnrolledCard { get; set; }
+        public bool? RequireSuccessfulLiabilityShiftForEnrolledCard { get; set; }
     }
 }

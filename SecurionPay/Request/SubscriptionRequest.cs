@@ -25,7 +25,7 @@ namespace SecurionPay.Request
         public CardRequest Card { get; set; }
 
         [JsonProperty("captureCharges")]
-        public bool CaptureCharges { get; set; }
+        public bool? CaptureCharges { get; set; }
 
         [JsonProperty("shipping")]
         public Shipping Shipping { get; set; }

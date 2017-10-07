@@ -46,6 +46,30 @@ namespace SecurionPayTests.Integration
         }
 
         [TestMethod]
+        public async Task SubscribeCaptureChargesByDefaultTest()
+        {
+            try
+            {
+                var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
+                var plan = await _gateway.CreatePlan(planRequest);
+
+                var customerRequest = _customerRequestBuilder.Build();
+                var customer = await _gateway.CreateCustomer(customerRequest);
+
+                var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, TrialEnd = DateTime.Now.AddDays(10) };
+                var subscription = await _gateway.CreateSubscription(subscriptionRequest);
+
+                customer = await _gateway.RetrieveCustomer(customer.Id);
+                Assert.IsTrue(subscription.CaptureCharges);
+
+            }
+            catch (SecurionPayException exc)
+            {
+                HandleApiException(exc);
+            }
+        }
+
+        [TestMethod]
         public async Task SubscribeWithAdressesTest()
         {
             var address = new AddressBuilder().Build();

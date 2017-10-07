@@ -12,7 +12,7 @@ namespace SecurionPay.Request.Checkout
         public string PlanId { get; set; }
 
         [JsonProperty("captureCharges")]
-        public bool CaptureCharges { get; set; }
+        public bool? CaptureCharges { get; set; }
 
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }
