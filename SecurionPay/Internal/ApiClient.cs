@@ -17,27 +17,18 @@ namespace SecurionPay
     {
         private string _privateAuthToken;
         private string _version = "2.3.0";
-        private HttpClient _client;
+        private IHttpClient _client;
         private IFileExtensionToMimeMapper _fileExtensionToMimeMapper;
 
-        public ApiClient(ISecretKeyProvider secretKeyProvider, IFileExtensionToMimeMapper fileExtensionToMimeMapper)
-            : this(secretKeyProvider.GetSecretKey(), fileExtensionToMimeMapper)
+        public ApiClient(IHttpClient httpClient, ISecretKeyProvider secretKeyProvider, IFileExtensionToMimeMapper fileExtensionToMimeMapper)
         {
-        }
-
-        public ApiClient(string secretKey,IFileExtensionToMimeMapper fileExtensionToMimeMapper,HttpMessageHandler customHttpMessageHandler = null)
-        {
+            var secretKey = secretKeyProvider.GetSecretKey();
             var tokenBytes = Encoding.UTF8.GetBytes(secretKey + ":");
             _privateAuthToken = Convert.ToBase64String(tokenBytes);
-            if (customHttpMessageHandler == null)
-            {
-                _client = new HttpClient();
-            }
-            else
-            {
-                _client = new HttpClient(customHttpMessageHandler);
-            }
             _fileExtensionToMimeMapper = fileExtensionToMimeMapper;
+            _client = httpClient;
+            _client.SetAuthorizationHeader(new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", _privateAuthToken));
+            _client.AddHeader("User-Agent", string.Format("SecurionPay-DOTNET/{0}", _version));
         }
 
         public async Task<T> SendRequest<T>(HttpMethod method, string url, object parameter)
@@ -50,8 +41,6 @@ namespace SecurionPay
                 request.Content = new StringContent(requestJson, Encoding.UTF8, "application/json");
             }
 
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", _privateAuthToken);
-            _client.DefaultRequestHeaders.Add("User-Agent", string.Format("SecurionPay-DOTNET/{0}", _version));
             HttpResponseMessage response = await _client.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -96,8 +85,6 @@ namespace SecurionPay
  
             request.Content = content;
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _privateAuthToken);
-            _client.DefaultRequestHeaders.Add("User-Agent", string.Format("SecurionPay-DOTNET/{0}", _version));
             HttpResponseMessage response = await _client.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {

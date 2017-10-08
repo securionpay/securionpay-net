@@ -48,6 +48,8 @@
     <Compile Include="Internal\ApiClient.cs" />
     <Compile Include="Converters\DateConverter.cs" />
     <Compile Include="Internal\ConfigurationProvider.cs" />
+    <Compile Include="Internal\HttpClient.cs" />
+    <Compile Include="Internal\IHttpClient.cs" />
     <Compile Include="Internal\UnixDateConverter.cs" />
     <Compile Include="Internal\FileExtensionToMimeMapper.cs" />
     <Compile Include="Internal\IApiClient.cs" />

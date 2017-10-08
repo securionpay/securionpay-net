@@ -49,7 +49,7 @@ namespace SecurionPay
         {
             var configurationProvider = new ConfigurationProvider(secretKey, serverUrl, uploadsUrl);
             _configurationProvider = configurationProvider;
-            _apiClient = new ApiClient(configurationProvider,new FileExtensionToMimeMapper());
+            _apiClient = new ApiClient(new SecurionPay.Internal.HttpClient(),configurationProvider,new FileExtensionToMimeMapper());
             _signService = new SignService(configurationProvider);
         }
 

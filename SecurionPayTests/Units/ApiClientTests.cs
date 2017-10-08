@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -18,21 +19,15 @@ namespace SecurionPayTests.Units
     public class ApiClientTests
     {
         [TestMethod]
-        public async Task ApiClientBuildsCorrectRequestTest()
+        public async Task ApiClientBuildsRequestWithCorrectContentTest()
         {
             SemaphoreSlim semaphore = new SemaphoreSlim(0);
-            var assemblyVersion = Assembly.Load("SecurionPay").GetName().Version;
-            var appVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
-
-            var mock = new Mock<HttpMessageHandler>();
-            HttpRequestMessage request=null;
-            string requestJson = null;
-            mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .Callback<HttpRequestMessage, CancellationToken>(async (httpRequestMessage, ct) =>
+            var httpclientMock = new Mock<IHttpClient>();
+            string requestJson=null;
+            httpclientMock.Setup(x => x.SendAsync(It.IsAny<HttpRequestMessage>())).Callback<HttpRequestMessage>(async (httpRequestMessage) =>
                 {
                     try
                     {
-                        request = httpRequestMessage;
                         if (httpRequestMessage.Content != null)
                         {
                             requestJson = await httpRequestMessage.Content.ReadAsStringAsync();
@@ -42,34 +37,56 @@ namespace SecurionPayTests.Units
                     {
                         semaphore.Release();
                     }
-                })
-                .Returns(Task.Run(() => new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.BadGateway }));
-            var mapperMock = new Mock<IFileExtensionToMimeMapper>();
-            var apiClient = new ApiClient("secret",mapperMock.Object, mock.Object);
+                }).Returns(Task.Run(() => new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.OK,Content = new ByteArrayContent(new byte[1]) }));
 
-            try
-            {
-                await apiClient.SendRequest<TestRequest>(HttpMethod.Put, "https://testAction.com", new TestParameter() { TestValue="t1"});
-            }
-            catch { }
+            var mapperMock = new Mock<IFileExtensionToMimeMapper>();
+            var keyProviderMock = new Mock<ISecretKeyProvider>();
+            var apiClient = new ApiClient(httpclientMock.Object, keyProviderMock.Object, mapperMock.Object);
+
+            await apiClient.SendRequest<TestRequest>(HttpMethod.Put, "https://testAction.com", new TestParameter() { TestValue="t1"});
             await semaphore.WaitAsync();
-            Assert.AreEqual(request.Method,HttpMethod.Put);
-            Assert.AreEqual(request.RequestUri, "https://testAction.com");
-            var expectedHeaders = GetDesiredHeaders("secret", appVersion);
-            Assert.IsTrue(request.Headers.All(x => expectedHeaders.Contains(x.Key + ": " + x.Value.First()) && expectedHeaders.Count == request.Headers.Count()));
+
             Assert.AreEqual(requestJson, "{\"TestValue\":\"t1\"}");
 
         }
 
-        private List<string> GetDesiredHeaders(string secretKey,string version)
+        [TestMethod]
+        public async Task ApiClientBuildsRequestWithCorrectUrlAndMethodTest()
         {
-            return new List<string>() { string.Format("Authorization: Basic {0}", Base64Encode(secretKey + ":")), string.Format("User-Agent: SecurionPay-DOTNET/{0}", version) };
+
+            var httpclientMock = new Mock<IHttpClient>();
+            httpclientMock.Setup(x => x.SendAsync(It.IsAny<HttpRequestMessage>())).Returns(Task.Run(() => new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.OK, Content = new ByteArrayContent(new byte[1]) }));
+
+            var mapperMock = new Mock<IFileExtensionToMimeMapper>();
+            var keyProviderMock = new Mock<ISecretKeyProvider>();
+            var apiClient = new ApiClient(httpclientMock.Object, keyProviderMock.Object, mapperMock.Object);
+
+            await apiClient.SendRequest<TestRequest>(HttpMethod.Put, "https://testAction.com", new TestParameter());
+
+
+            httpclientMock.Verify(client => client.SendAsync(It.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Put &&
+                                                                                                  message.RequestUri == new Uri("https://testAction.com"))));
         }
 
-        private string Base64Encode(string plainText)
+        [TestMethod]
+        public async Task ApiClientBuildsRequestWithCorrectHeadersTest()
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+            var assemblyVersion = Assembly.Load("SecurionPay").GetName().Version;
+            var appVersion = string.Format("{0}.{1}.{2}", assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
+
+            var httpclientMock = new Mock<IHttpClient>();
+            httpclientMock.Setup(x => x.SendAsync(It.IsAny<HttpRequestMessage>())).Returns(Task.Run(() => new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.OK, Content = new ByteArrayContent(new byte[1]) }));
+
+            var mapperMock = new Mock<IFileExtensionToMimeMapper>();
+            var keyProviderMock = new Mock<ISecretKeyProvider>();
+            keyProviderMock.Setup(provider => provider.GetSecretKey()).Returns("key");
+            var apiClient = new ApiClient(httpclientMock.Object, keyProviderMock.Object, mapperMock.Object);
+
+            await apiClient.SendRequest<TestRequest>(HttpMethod.Put, "https://testAction.com", new TestParameter());
+
+            httpclientMock.Verify(client => client.SetAuthorizationHeader(It.Is<AuthenticationHeaderValue>(header => header.Scheme == "Basic" && header.Parameter == "a2V5Og==")));
+            httpclientMock.Verify(client => client.AddHeader(It.Is<string>(name => name == "User-Agent"), It.Is<string>(value => value == string.Format("SecurionPay-DOTNET/{0}", appVersion))));
+
         }
 
         private class TestRequest

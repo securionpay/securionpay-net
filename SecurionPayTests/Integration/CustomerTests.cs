@@ -13,9 +13,9 @@ namespace SecurionPayTests.Integration
     [TestClass]
     public class CustomerTests : IntegrationTest
     {
-        CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
-        CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
-        TokenRequestBuilder _tokenRequestBuilder = new TokenRequestBuilder();
+        private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+        private TokenRequestBuilder _tokenRequestBuilder = new TokenRequestBuilder();
 
         [TestMethod]
         public async Task CustomerWithNewCardTest()
