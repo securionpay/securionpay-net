@@ -44,6 +44,7 @@
     <Compile Include="Enums\DisputeReason.cs" />
     <Compile Include="Enums\DisputeStatus.cs" />
     <Compile Include="Enums\FileUploadPurpose.cs" />
+    <Compile Include="Enums\FileUploadType.cs" />
     <Compile Include="Enums\LiabilityShift.cs" />
     <Compile Include="Internal\ApiClient.cs" />
     <Compile Include="Converters\DateConverter.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Request\Checkout\CustomAmount.cs" />
     <Compile Include="Request\CreditRequest.cs" />
     <Compile Include="Request\CreditUpdateRequest.cs" />
-    <Compile Include="Request\CreditWithCardRequest.cs" />
     <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequestCharge.cs" />
     <Compile Include="Request\CrossSaleOffer\CrossSaleOfferListRequest.cs" />
     <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequest.cs" />

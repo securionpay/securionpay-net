@@ -15,7 +15,7 @@ namespace SecurionPay.Request
         public string Currency { get; set; }
 
         [JsonProperty("card")]
-        public string CardId { get; set; }
+        public CardRequest Card { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }

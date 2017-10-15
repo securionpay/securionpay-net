@@ -18,7 +18,7 @@ namespace SecurionPay.Enums
         NewChargeback,
 
         [EnumMember(Value = "RETRIEVAL_REQUEST_RESPONSE_UNDER_REVIEW")]
-        retrievalRequestResponseUnderReview,
+        RetrievalRequestResponseUnderReview,
 
         [EnumMember(Value = "CHARGEBACK_RESPONSE_UNDER_REVIEW")]
         ChargebackResponseUnderReview,

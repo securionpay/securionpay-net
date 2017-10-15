@@ -454,11 +454,6 @@ namespace SecurionPay
             return await SendRequest<Credit>(HttpMethod.Post, CREDITS_PATH, request);
         }
 
-        public async Task<Credit> CreateCredit(CreditWithCardRequest request)
-        {
-            return await SendRequest<Credit>(HttpMethod.Post, CREDITS_PATH, request);
-        }
-
         public async Task<Credit> RetrieveCredit(string creditId)
         {
             var url = CREDITS_PATH + "/" + creditId;

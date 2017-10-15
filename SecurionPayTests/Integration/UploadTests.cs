@@ -25,7 +25,7 @@ namespace SecurionPayTests.Integration
         public async Task UploadImageTest()
         {
             var response = await Upload("img.jpg", FileUploadPurpose.DisputeEvidence);
-            Assert.AreEqual(response.Type, "jpg");
+            Assert.AreEqual(response.Type, FileUploadType.JPG);
             Assert.AreEqual(response.Purpose, FileUploadPurpose.DisputeEvidence);
         }
 
@@ -37,7 +37,7 @@ namespace SecurionPayTests.Integration
         public async Task UploadPdfTest()
         {
             var response = await Upload("test.pdf", FileUploadPurpose.DisputeEvidence);
-            Assert.AreEqual(response.Type, "pdf");
+            Assert.AreEqual(response.Type, FileUploadType.PDF);
             Assert.AreEqual(response.Purpose, FileUploadPurpose.DisputeEvidence);
         }
 

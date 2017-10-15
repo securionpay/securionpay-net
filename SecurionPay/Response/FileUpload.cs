@@ -25,7 +25,8 @@ namespace SecurionPay.Response
         public int Size { get; set; }
 
         [JsonProperty("type")]
-        public string Type { get; set; }
+        [JsonConverter(typeof(SafeEnumConverter))]
+        public FileUploadType Type { get; set; }
 
         [JsonProperty("url")]
         public string Url { get; set; }

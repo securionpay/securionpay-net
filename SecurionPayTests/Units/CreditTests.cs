@@ -22,7 +22,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            var creditRequest = new CreditRequest() { CustomerId = customerId, CardId="1" ,Amount=100,Currency="EUR"};
+            var creditRequest = new CreditRequest() { CustomerId = customerId, Card = _cardRequestBuilder.WithId("1").Build(), Amount=100,Currency="EUR"};
             await requestTester.TestMethod<Credit>(
                 async (api) =>
                 {
@@ -42,7 +42,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            var creditRequest = new CreditWithCardRequest()
+            var creditRequest = new CreditRequest()
             {
                 CustomerId = customerId,
                 Card = _cardRequestBuilder.Build(),

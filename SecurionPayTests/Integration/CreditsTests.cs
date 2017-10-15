@@ -35,7 +35,7 @@ namespace SecurionPayTests.Integration
                     Amount = 100,
                     Currency = "EUR",
                     Description = "desc",
-                    CardId = token.Id
+                    Card = _cardRequestBuilder.WithId(token.Id).Build()
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
                 var credits = await _gateway.ListCredits();
@@ -63,7 +63,7 @@ namespace SecurionPayTests.Integration
                     Amount = 100,
                     Currency = "EUR",
                     Description = "desc",
-                    CardId = token.Id
+                    Card = _cardRequestBuilder.WithId(token.Id).Build()
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
                 var retrievedCredit = await _gateway.RetrieveCredit(newCredit.Id);
@@ -101,7 +101,7 @@ namespace SecurionPayTests.Integration
                     Amount = 100,
                     Currency = "EUR",
                     Description = "desc",
-                    CardId = card.Id,
+                    Card = _cardRequestBuilder.WithId(card.Id).Build(),
                     CustomerId = customer.Id
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
@@ -134,7 +134,7 @@ namespace SecurionPayTests.Integration
 
                 var cardRequest = _cardRequestBuilder.Build();
 
-                var creditRequest = new CreditWithCardRequest()
+                var creditRequest = new CreditRequest()
                 {
                     Amount = 100,
                     Currency = "EUR",
@@ -173,7 +173,7 @@ namespace SecurionPayTests.Integration
                     Amount = 100,
                     Currency = "EUR",
                     Description = "desc",
-                    CardId = token.Id
+                    Card = _cardRequestBuilder.WithId(token.Id).Build()
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
 
