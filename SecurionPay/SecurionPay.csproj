@@ -51,6 +51,7 @@
     <Compile Include="Internal\ConfigurationProvider.cs" />
     <Compile Include="Internal\HttpClient.cs" />
     <Compile Include="Internal\IHttpClient.cs" />
+    <Compile Include="Internal\ReflectionExtensions.cs" />
     <Compile Include="Internal\UnixDateConverter.cs" />
     <Compile Include="Internal\FileExtensionToMimeMapper.cs" />
     <Compile Include="Internal\IApiClient.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="Response\CustomerRecord.cs" />
     <Compile Include="Response\CustomerRecordFee.cs" />
     <Compile Include="Response\CustomerRecordProfit.cs" />
-    <Compile Include="Response\ChargeDispute.cs" />
     <Compile Include="Response\Dispute.cs" />
     <Compile Include="Common\DisputeEvidence.cs" />
     <Compile Include="Response\DisputeEvidenceDetails.cs" />

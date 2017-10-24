@@ -62,7 +62,6 @@ namespace SecurionPayTests.Integration
             var chargeWithDispute = await CreateChargeWithDispute();
             var dispute = await _gateway.CloseDispute(chargeWithDispute.Dispute.Id);
             Assert.IsTrue(dispute.AcceptedAsLost);
-            Assert.AreEqual(dispute.Status, DisputeStatus.ChargebackRepresentedUnsuccessfully);
         }
 
         private async Task<Charge> CreateChargeWithDispute(CustomerRequest customerRequest)

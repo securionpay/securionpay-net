@@ -130,12 +130,6 @@
     <Compile Include="Utils\CardRequestExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SecurionPay\SecurionPay.csproj">
-      <Project>{9318d796-2a9c-4313-9d14-9c5d3e215c31}</Project>
-      <Name>SecurionPay</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="TestUploadFiles\img.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -148,6 +142,12 @@
     <None Include="TestUploadFiles\Test.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SecurionPay\SecurionPay.csproj">
+      <Project>{9318d796-2a9c-4313-9d14-9c5d3e215c31}</Project>
+      <Name>SecurionPay</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

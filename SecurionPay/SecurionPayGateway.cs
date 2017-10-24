@@ -49,7 +49,7 @@ namespace SecurionPay
         {
             var configurationProvider = new ConfigurationProvider(secretKey, serverUrl, uploadsUrl);
             _configurationProvider = configurationProvider;
-            _apiClient = new ApiClient(new SecurionPay.Internal.HttpClient(),configurationProvider,new FileExtensionToMimeMapper());
+            _apiClient = new ApiClient(new SecurionPay.Internal.HttpClient(), configurationProvider, new FileExtensionToMimeMapper());
             _signService = new SignService(configurationProvider);
         }
 
@@ -568,7 +568,7 @@ namespace SecurionPay
 
                 if (value != null && !IsIgnored(property))
                 {
-                    if (property.PropertyType.IsClass && !(value is string))
+                    if (property.PropertyType.IsClass() && !(value is string))
                     {
                         path.Append(GenerateGetPath(value, GetPropertyName(property)));
                     }

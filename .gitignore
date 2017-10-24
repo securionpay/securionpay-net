@@ -4,3 +4,5 @@ bin
 obj
 .project
 /TestResults/
+*.suo
+*.user
