@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay;
 using SecurionPay.Exception;
+using SecurionPay.Internal;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,18 +13,18 @@ namespace SecurionPayTests.Integration
     public class IntegrationTest
     {
         protected SecurionPayGateway _gateway;
-        protected Random _random;
+        protected Random _random=new Random();
+
 
         public IntegrationTest()
         {
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var gatewayUrl=config.AppSettings.Settings["gateway_test_url"].Value;
-            var secretKey = config.AppSettings.Settings["gateway_test_key"].Value;
-            _gateway = new SecurionPayGateway(secretKey, gatewayUrl );
-            _random = new Random();
-
+            var configProvider = new TestConfigurationProvider();
+            var mimeMapper = new FileExtensionToMimeMapper();
+            var httpClient = new HttpClient();
+            var apiClient = new ApiClient(httpClient,configProvider, mimeMapper);
+            var signService = new SignService(configProvider);
+            _gateway = new SecurionPayGateway(apiClient, configProvider, signService);
         }
-
 
         protected void HandleApiException(SecurionPayException exc)
         {
@@ -37,9 +37,12 @@ namespace SecurionPayTests.Integration
             );
         }
 
-        protected string GetRandomEmail()
+        protected string CorrectCardExpiryYear
         {
-            return string.Format("test{0}@test.com", _random.Next(999999));
+            get
+            {
+                return (DateTime.Today.Year + 1).ToString();
+            }
         }
 
     }

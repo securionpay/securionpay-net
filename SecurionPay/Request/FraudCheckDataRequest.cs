@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SecurionPay.Request
 {
-    public class FraudCheckDataRequest
+    public class FraudCheckDataRequest : BaseRequest
     {
         [JsonProperty("ipAddress")]
         public String IpAddress { get; set; }
@@ -20,8 +20,5 @@ namespace SecurionPay.Request
 
         [JsonProperty("acceptLanguage")]
         public String AcceptLanguage { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

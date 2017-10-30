@@ -13,6 +13,10 @@ using SecurionPay.Request;
 using SecurionPay.Exception;
 using SecurionPay.Request.CrossSaleOffer;
 using System.Security.Cryptography;
+using SecurionPay.Internal;
+using SecurionPay.Request.Checkout;
+using System.IO;
+using SecurionPay.Converters;
 
 namespace SecurionPay
 {
@@ -21,40 +25,39 @@ namespace SecurionPay
     /// </summary>
     public class SecurionPayGateway
     {
-        private const string CHARGES_PATH = "/charges";
-        private const string CREDITS_PATH = "/credits";
-        private const string TOKENS_PATH = "/tokens";
-        private const string CUSTOMERS_PATH = "/customers";
-        private const string CARDS_PATH = "/customers/{0}/cards";
-        private const string PLANS_PATH = "/plans";
-        private const string SUBSCRIPTIONS_PATH = "/customers/{0}/subscriptions";
-        private const string EVENTS_PATH = "/events";
-        private const string BLACKLIST_RULE_PATH = "/blacklist";
-        private const string CROSS_SALE_OFFER_PATH = "/cross-sale-offers";
-        private const string CUSTOMER_RECORDS_PATH = "/customer-records";
-        private const string CUSTOMER_RECORD_FEES_PATH = "/customer-records/{0}/fees";
-        private const string CUSTOMER_RECORD_PROFITS_PATH = "/customer-records/{0}/profits";
-        private string _serverUrl = "";
-        private string _privateAuthToken;
-        private string _version="2.2.1";
-        private string _secretKey;
-        HttpClient client;
+        private const string CHARGES_PATH = "charges";
+        private const string CREDITS_PATH = "credits";
+        private const string TOKENS_PATH = "tokens";
+        private const string CUSTOMERS_PATH = "customers";
+        private const string CARDS_PATH = "customers/{0}/cards";
+        private const string PLANS_PATH = "plans";
+        private const string SUBSCRIPTIONS_PATH = "customers/{0}/subscriptions";
+        private const string EVENTS_PATH = "events";
+        private const string BLACKLIST_RULE_PATH = "blacklist";
+        private const string CROSS_SALE_OFFER_PATH = "cross-sale-offers";
+        private const string CUSTOMER_RECORDS_PATH = "customer-records";
+        private const string CUSTOMER_RECORD_FEES_PATH = "customer-records/{0}/fees";
+        private const string CUSTOMER_RECORD_PROFITS_PATH = "customer-records/{0}/profits";
+        private const string FILES_PATH = "files";
+        private const string DISPUTES_PATH= "disputes";
+        private IApiClient _apiClient;
+        private ISignService _signService;
+        private IConfigurationProvider _configurationProvider;
 
-        public SecurionPayGateway(string secretKey, string serverUrl = "https://api.securionpay.com/", HttpMessageHandler customHttpMessageHandler = null)
+        [Obsolete]
+        public SecurionPayGateway(string secretKey, string serverUrl = "https://api.securionpay.com/", string uploadsUrl = "https://uploads.securionpay.com")
         {
-            _serverUrl = serverUrl;
-            var tokenBytes = Encoding.UTF8.GetBytes(secretKey + ":");
-            _privateAuthToken = Convert.ToBase64String(tokenBytes);
-            _secretKey = secretKey;
-            if (customHttpMessageHandler == null)
-            {
-                client = new HttpClient();
-            }
-            else
-            {
-                client = new HttpClient(customHttpMessageHandler);
-            }
-            client.BaseAddress = new Uri(_serverUrl);
+            var configurationProvider = new ConfigurationProvider(secretKey, serverUrl, uploadsUrl);
+            _configurationProvider = configurationProvider;
+            _apiClient = new ApiClient(new SecurionPay.Internal.HttpClient(), configurationProvider, new FileExtensionToMimeMapper());
+            _signService = new SignService(configurationProvider);
+        }
+
+        public SecurionPayGateway(IApiClient apiClient, IConfigurationProvider configurationProvider, ISignService signService)
+        {
+            _apiClient = apiClient;
+            _signService = signService; 
+            _configurationProvider = configurationProvider;
         }
 
         #region public
@@ -282,7 +285,7 @@ namespace SecurionPay
             return await SendListRequest<Event>(HttpMethod.Get, EVENTS_PATH);
         }
 
-        public async Task<ListResponse<Event>> ListEvents(EventListRequest request)
+        public async Task<ListResponse<Event>> ListEvents(ListRequest request)
         {
             return await SendListRequest<Event>(HttpMethod.Get, EVENTS_PATH, request);
         }
@@ -362,9 +365,7 @@ namespace SecurionPay
         {
             string data = JsonConvert.SerializeObject(checkoutRequest, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore });
 
-            var hash = new HMACSHA256(Encoding.UTF8.GetBytes(_secretKey));
-            var hashedData = hash.ComputeHash(Encoding.UTF8.GetBytes(data));
-            string signature = BitConverter.ToString(hashedData).Replace("-", string.Empty).ToLower();
+            var signature = _signService.Sign(data);
 
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(signature + "|" + data));
         }
@@ -397,7 +398,7 @@ namespace SecurionPay
 
         }
 
-        public async Task<ListResponse<CustomerRecord>> ListCustomerRecords(CustomerRecordListRequest request)
+        public async Task<ListResponse<CustomerRecord>> ListCustomerRecords(ListRequest request)
         {
             return await SendListRequest<CustomerRecord>(HttpMethod.Get, CUSTOMER_RECORDS_PATH, request);
         }
@@ -453,11 +454,6 @@ namespace SecurionPay
             return await SendRequest<Credit>(HttpMethod.Post, CREDITS_PATH, request);
         }
 
-        public async Task<Credit> CreateCredit(CreditWithCardRequest request)
-        {
-            return await SendRequest<Credit>(HttpMethod.Post, CREDITS_PATH, request);
-        }
-
         public async Task<Credit> RetrieveCredit(string creditId)
         {
             var url = CREDITS_PATH + "/" + creditId;
@@ -471,13 +467,70 @@ namespace SecurionPay
         }
         #endregion
 
+        #region disputes
+
+        public async Task<Dispute> RetrieveDispute(string id)
+        {
+            var url = string.Format("{0}/{1}", DISPUTES_PATH, id);
+            return await SendRequest<Dispute>(HttpMethod.Get, url);
+        }
+
+        public async Task<ListResponse<Dispute>> ListDisputes(ListRequest request)
+        {
+            return await SendListRequest<Dispute>(HttpMethod.Get, DISPUTES_PATH, request);
+        }
+
+        public async Task<ListResponse<Dispute>> ListDisputes()
+        {
+            return await SendListRequest<Dispute>(HttpMethod.Get, DISPUTES_PATH);
+        }
+
+        public async Task<Dispute> UpdateDispute(DisputeUpdateRequest request)
+        {
+            var url = string.Format("{0}/{1}", DISPUTES_PATH, request.DisputeId);
+            return await SendRequest<Dispute>(HttpMethod.Post, url,request);
+        }
+
+        public async Task<Dispute> CloseDispute(string id)
+        {
+            var url = string.Format("{0}/{1}/close", DISPUTES_PATH,id);
+            return await SendRequest<Dispute>(HttpMethod.Post, url);
+        }
+
+        #endregion
+
+        #region uploads
+
+        public async Task<FileUpload> CreateFileUpload(FileUploadRequest request)
+        {
+            return await SendUploadRequest<FileUpload>(HttpMethod.Post, FILES_PATH, request);
+        }
+
+        public async Task<FileUpload> RetrieveFileUpload(string id)
+        {
+            var url = FILES_PATH + "/" + id;
+            return await SendRequest<FileUpload>(HttpMethod.Get, url, null,_configurationProvider.GetUploadsUrl());
+        }
+
+        public async Task<ListResponse<FileUpload>> ListFileUpload()
+        {
+            return await SendListRequest<FileUpload>(HttpMethod.Get, FILES_PATH, _configurationProvider.GetUploadsUrl());
+        }
+
+        #endregion
+
         #endregion
 
         #region private
 
         private async Task<ListResponse<TList>> SendListRequest<TList>(HttpMethod httpMethod, string path)
         {
-            SecurionpayList securionpayList = await SendRequest<SecurionpayList>(httpMethod, path);
+            return await SendListRequest<TList>(httpMethod, path, _configurationProvider.GetApiUrl());
+        }
+
+        private async Task<ListResponse<TList>> SendListRequest<TList>(HttpMethod httpMethod, string path,string baseUrl)
+        {
+            SecurionpayList securionpayList = await SendRequest<SecurionpayList>(httpMethod, path,null,baseUrl);
             return DeserializeList<TList>(securionpayList);
         }
 
@@ -506,6 +559,7 @@ namespace SecurionPay
 
         private string GenerateGetPath(object parameters, string parentName = null)
         {
+
             StringBuilder path = new StringBuilder();
             var type = parameters.GetType();
             foreach (var property in type.GetProperties())
@@ -514,7 +568,7 @@ namespace SecurionPay
 
                 if (value != null && !IsIgnored(property))
                 {
-                    if (property.PropertyType.IsClass && !(value is string))
+                    if (property.PropertyType.IsClass() && !(value is string))
                     {
                         path.Append(GenerateGetPath(value, GetPropertyName(property)));
                     }
@@ -543,13 +597,31 @@ namespace SecurionPay
             var propertyName = GetPropertyName(property);
             if (parentName != null)
             {
-                return parentName + "[" + propertyName + "]=" + Uri.EscapeDataString(value.ToString()) + "&";
+                var converterValue = ConvertValue(value);
+                return parentName + "[" + propertyName + "]=" + converterValue + "&";
             }
             else
             {
                 return propertyName + "=" + Uri.EscapeDataString(value.ToString()) + "&";
             }
 
+        }
+
+        private object ConvertValue(object value)
+        {
+            string stringValue=null;
+
+            if (value is DateTime)
+            {
+                var converter = new UnixDateConverter();
+                var localDate = (DateTime)value;
+                stringValue = converter.ToUnixTimeStamp(localDate.ToUniversalTime()).ToString();
+            }
+            else
+            {
+                stringValue = value.ToString();
+            }
+            return Uri.EscapeDataString(stringValue);
         }
 
         private string GetPropertyName(PropertyInfo property)
@@ -572,35 +644,23 @@ namespace SecurionPay
 
         private async Task<T> SendRequest<T>(HttpMethod method, string action, object parameter)
         {
+            return await SendRequest<T>(method, action, parameter, _configurationProvider.GetApiUrl());
+        }
 
-            HttpRequestMessage request = new HttpRequestMessage(method, _serverUrl + action);
-            if (parameter != null)
-            {
-                var requestJson = JsonConvert.SerializeObject(parameter, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-                request.Content = new StringContent(requestJson, Encoding.UTF8, "application/json");
-            }
+        private async Task<T> SendRequest<T>(HttpMethod method, string action, object parameter,string baseUrl)
+        {
+            var url = new Uri(new Uri(baseUrl), action);
+            return await _apiClient.SendRequest<T>(method, url.ToString(), parameter);
+        }
 
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", _privateAuthToken);
-            client.DefaultRequestHeaders.Add("User-Agent", string.Format("SecurionPay-DOTNET/{0}", _version));
-            HttpResponseMessage response = await client.SendAsync(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var apiResponseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(apiResponseString);
-            }
-            else
-            {
-                ErrorResponse errorResponse;
-                var apiErrorRsponseString = await response.Content.ReadAsStringAsync();
-                errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(apiErrorRsponseString);
-                throw new SecurionPayException(errorResponse.Error, typeof(T).Name, action);
-            }
+        private async Task<T> SendUploadRequest<T>(HttpMethod method, string action, FileUploadRequest request)
+        {
+            var url = new Uri(new Uri(_configurationProvider.GetUploadsUrl()), action);
+            var form = new Dictionary<string, string>() { { "purpose", JsonConvert.SerializeObject(request.Purpose,new SafeEnumConverter()).Trim('"') } };
 
-
+            return await _apiClient.SendMultiPartRequest<T>(method, url.ToString(), form, request.File, request.FileName);
         }
 
         #endregion
-
-
     }
 }

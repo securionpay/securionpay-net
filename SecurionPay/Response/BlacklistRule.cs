@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class BlacklistRule
+    public class BlacklistRule : BaseResponse
     {
 
         [JsonProperty("id")]
@@ -19,13 +19,9 @@ namespace SecurionPay.Response
         [JsonConverter(typeof(DateConverter))]
         public DateTime Created { get; set; }
 
-        [JsonProperty("deleted")]
-        public bool Deleted { get; set; }
-
         [JsonProperty("ruleType")]
         [JsonConverter(typeof(SafeEnumConverter))]
         public BlacklistRuleType RuleType { get; set; }
-
 
         [JsonProperty("fingerprint")]
         public String Fingerprint { get; set; }
@@ -51,8 +47,7 @@ namespace SecurionPay.Response
         [JsonProperty("acceptLanguage")]
         public String AcceptLanguage { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
-
+        [JsonProperty("deleted")]
+        public bool Deleted { get; set; }
     }
 }

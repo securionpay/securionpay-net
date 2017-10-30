@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
+using SecurionPay.Response;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var eventId = "1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Event>(
                 async (api) =>
                 {
                     await api.RetrieveEvent(eventId);
@@ -27,9 +28,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = string.Format( "{0}/events/{1}", GatewayAdress ,eventId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = string.Format( "events/{0}" ,eventId),
+                    Parameter = null
                 }
             );
         }
@@ -39,7 +39,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
 
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
                 async (api) =>
                 {
                     await api.ListEvents();
@@ -47,9 +47,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = string.Format("{0}/events", GatewayAdress),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = "events",
+                    Parameter = null
                 }
             );
         }

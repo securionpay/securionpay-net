@@ -7,20 +7,24 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using SecurionPay.Request;
+using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 
 namespace SecurionPayTests.Units
 {
     [TestClass]
     public class SubscriptionsTests:BaseUnitTestsSet
     {
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task CreateSubscriptionWithCardTest()
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
+            var cardRequest = _cardRequestBuilder.Build();
             var subscriptionRequest = new SubscriptionRequest() { CustomerId= customerId ,Card= cardRequest,Quantity=1000,PlanId="1" };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Subscription>(
                 async (api) =>
                 {
                     await api.CreateSubscription(subscriptionRequest);
@@ -28,9 +32,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = string.Format("{0}/customers/{1}/subscriptions", GatewayAdress, customerId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(subscriptionRequest)
+                    Action = string.Format("customers/{0}/subscriptions", customerId),
+                    Parameter = subscriptionRequest
                 }
             );
         }
@@ -42,7 +45,7 @@ namespace SecurionPayTests.Units
             var customerId = "1";
             var tokenId = "1";
             var subscriptionRequest = new SubscriptionRequest() { CustomerId = customerId, Card = new CardRequest() { Id = tokenId }, Quantity = 1000, PlanId = "1" };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Subscription>(
                 async (api) =>
                 {
                     await api.CreateSubscription(subscriptionRequest);
@@ -50,9 +53,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = string.Format("{0}/customers/{1}/subscriptions", GatewayAdress, customerId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(subscriptionRequest)
+                    Action = string.Format("customers/{0}/subscriptions", customerId),
+                    Parameter = subscriptionRequest
                 }
             );
         }
@@ -64,7 +66,7 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var customerId = "c1";
             var subscriptionId = "s1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Subscription>(
                 async (api) =>
                 {
                     await api.RetrieveSubscription(customerId,subscriptionId);
@@ -72,9 +74,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = string.Format("{0}/customers/{1}/subscriptions/{2}", GatewayAdress, customerId, subscriptionId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = string.Format("customers/{0}/subscriptions/{1}", customerId, subscriptionId),
+                    Parameter = null
                 }
             );
         }
@@ -85,9 +86,9 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var customerId = "c1";
             var subscriptionId = "s1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
+            var cardRequest = _cardRequestBuilder.Build();
             var subscriptionUpdateRequest = new SubscriptionUpdateRequest() { CustomerId= customerId ,Card= cardRequest ,Quantity=1000,SubscriptionId= subscriptionId };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Subscription>(
                 async (api) =>
                 {
                     await api.UpdateSubscription(subscriptionUpdateRequest);
@@ -95,9 +96,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = string.Format("{0}/customers/{1}/subscriptions/{2}", GatewayAdress, customerId, subscriptionId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(subscriptionUpdateRequest)
+                    Action = string.Format("customers/{0}/subscriptions/{1}", customerId, subscriptionId),
+                    Parameter = subscriptionUpdateRequest
                 }
             );
         }
@@ -108,9 +108,9 @@ namespace SecurionPayTests.Units
             var requestTester = GetRequestTester();
             var customerId = "c1";
             var subscriptionId = "s1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
+            var cardRequest = _cardRequestBuilder.Build();
             var subscriptionCancelRequest = new SubscriptionCancelRequest() { CustomerId = customerId,SubscriptionId = subscriptionId ,AtPeriodEnd=true};
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Subscription>(
                 async (api) =>
                 {
                     await api.CancelSubscription(subscriptionCancelRequest);
@@ -118,9 +118,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Delete,
-                    Address = string.Format("{0}/customers/{1}/subscriptions/{2}", GatewayAdress, customerId, subscriptionId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(subscriptionCancelRequest)
+                    Action = string.Format("customers/{0}/subscriptions/{1}", customerId, subscriptionId),
+                    Parameter = subscriptionCancelRequest
                 }
             );
         }
@@ -130,7 +129,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var customerId = "c1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
                 async (api) =>
                 {
                     await api.ListSubscriptions(customerId);
@@ -138,9 +137,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = string.Format("{0}/customers/{1}/subscriptions", GatewayAdress, customerId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = string.Format("customers/{0}/subscriptions", customerId),
+                    Parameter = null
                 }
             );
         }

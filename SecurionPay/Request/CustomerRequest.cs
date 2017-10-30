@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SecurionPay.Request
 {
-    public class CustomerRequest
+    public class CustomerRequest : BaseRequest
     {
         [JsonProperty("email")]
         public String Email { get; set; }
@@ -19,7 +19,5 @@ namespace SecurionPay.Request
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

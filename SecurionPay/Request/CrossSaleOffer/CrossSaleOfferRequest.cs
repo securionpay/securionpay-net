@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SecurionPay.Request.CrossSaleOffer
 {
-    public class CrossSaleOfferRequest
+    public class CrossSaleOfferRequest : BaseRequest
     {
         [JsonProperty("charge")]
         public CrossSaleOfferRequestCharge Charge { get; set; }
@@ -47,10 +47,6 @@ namespace SecurionPay.Request.CrossSaleOffer
 
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
-
 
     }
 }

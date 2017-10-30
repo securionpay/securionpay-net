@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class Customer
+    public class Customer : BaseResponse
     {
         [JsonProperty("id")]
         public String Id { get; set; }
@@ -26,7 +26,7 @@ namespace SecurionPay.Response
         [JsonProperty("defaultCardId")]
         public String DefaultCardId { get; set; }
 
-        public Card getDefaultCard()
+        public Card GetDefaultCard()
         {
             return Cards.FirstOrDefault(x => x.Id == DefaultCardId);
         }
@@ -34,13 +34,10 @@ namespace SecurionPay.Response
         [JsonProperty("cards")]
         public List<Card> Cards { get; set; }
 
-        [JsonProperty("metadata")]
-        public Dictionary<String, String> Metadata { get; set; }
-
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
+        [JsonProperty("metadata")]
+        public Dictionary<String, String> Metadata { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class CustomerRecordProfit
+    public class CustomerRecordProfit : BaseResponse
     {
         [JsonProperty("id")]
         private string Id { get; set; }

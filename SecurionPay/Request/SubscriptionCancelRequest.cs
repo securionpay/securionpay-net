@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SecurionPay.Request
 {
-    public class SubscriptionCancelRequest
+    public class SubscriptionCancelRequest : BaseRequest
     {
         [JsonIgnore]
         public String SubscriptionId;
@@ -17,7 +17,5 @@ namespace SecurionPay.Request
         [JsonProperty("atPeriodEnd")]
         public bool? AtPeriodEnd;
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
     }
 }

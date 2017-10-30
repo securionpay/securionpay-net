@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class Refund
+    public class Refund : BaseResponse
     {
         [JsonProperty("amount")]
         public int Amount { get; set; }
@@ -18,9 +18,6 @@ namespace SecurionPay.Response
         [JsonProperty("created")]
         [JsonConverter(typeof(DateConverter))]
         public DateTime Created { get; set; }
-
-        [JsonProperty("deleted")]
-        public bool Deleted { get; set; }
     }
 }
 

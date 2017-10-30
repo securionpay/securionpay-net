@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SecurionPay.Request
 {
-    public class CreditRequest
+    public class CreditRequest : BaseRequest
     {
         [JsonProperty("amount")]
         public decimal Amount { get; set; }
@@ -15,7 +15,7 @@ namespace SecurionPay.Request
         public string Currency { get; set; }
 
         [JsonProperty("card")]
-        public string CardId { get; set; }
+        public CardRequest Card { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }

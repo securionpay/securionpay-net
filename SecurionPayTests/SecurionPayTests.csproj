@@ -64,36 +64,90 @@
     <Compile Include="Integration\ChargeTests.cs" />
     <Compile Include="Integration\CreditsTests.cs" />
     <Compile Include="Integration\CrossSaleOfferTests.cs" />
+    <Compile Include="Integration\CustomerTests.cs" />
+    <Compile Include="Integration\DisputeTests.cs" />
     <Compile Include="Integration\FlowsTest.cs" />
     <Compile Include="Integration\IntegrationTest.cs" />
+    <Compile Include="Integration\ListWithFilterTests.cs" />
+    <Compile Include="Integration\SubscriptionTests.cs" />
+    <Compile Include="Integration\TestConfigurationProvider.cs" />
+    <Compile Include="Integration\UploadTests.cs" />
+    <Compile Include="ModelBuilders\AddressBuilder.cs" />
+    <Compile Include="ModelBuilders\CardRequestBuilder.cs" />
+    <Compile Include="ModelBuilders\ChargeRequestBuilder.cs" />
+    <Compile Include="ModelBuilders\CustomerRequestBuilder.cs" />
+    <Compile Include="ModelBuilders\IBuilder.cs" />
+    <Compile Include="ModelBuilders\PlanRequestBuilder.cs" />
+    <Compile Include="ModelBuilders\TokenRequestBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Units\BaseUnitTestsSet.cs" />
-    <Compile Include="Units\BlackListTests.cs" />
-    <Compile Include="Units\CardsTests.cs" />
-    <Compile Include="Units\ChargeTests.cs" />
-    <Compile Include="Units\CheckoutRequestTests.cs" />
-    <Compile Include="Units\CreditTests.cs" />
-    <Compile Include="Units\CrossSaleOfferTests.cs" />
-    <Compile Include="Units\CustomerRecordsTests.cs" />
-    <Compile Include="Units\CustomersTests.cs" />
-    <Compile Include="Units\EventsTests.cs" />
-    <Compile Include="Units\PlansTests.cs" />
-    <Compile Include="Units\SubscriptionsTests.cs" />
+    <Compile Include="Units\ApiClientTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\BaseUnitTestsSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\BlackListTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CardsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\ChargeTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CheckoutRequestTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CreditTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CrossSaleOfferTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CustomerRecordsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\CustomersTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\DisputeTests.cs" />
+    <Compile Include="Units\EventsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\PlansTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units\SignServiceTests.cs" />
+    <Compile Include="Units\SubscriptionsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Units\TokensTests.cs" />
     <Compile Include="Units\Tools\MatchResult.cs" />
     <Compile Include="Units\Tools\RequestTester.cs" />
     <Compile Include="Units\Tools\RequestDescriptor.cs" />
+    <Compile Include="Units\UnixDateConverterTests.cs" />
+    <Compile Include="Units\UploadTests.cs" />
+    <Compile Include="Utils\CardRequestExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestUploadFiles\img.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="TestUploadFiles\Test.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SecurionPay\SecurionPay.csproj">
       <Project>{9318d796-2a9c-4313-9d14-9c5d3e215c31}</Project>
       <Name>SecurionPay</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

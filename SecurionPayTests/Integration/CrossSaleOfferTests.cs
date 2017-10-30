@@ -4,6 +4,7 @@ using SecurionPay.Exception;
 using SecurionPay.Request;
 using SecurionPay.Request.CrossSaleOffer;
 using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace SecurionPayTests.Integration
     [TestClass]
     public class CrossSaleOfferTests : IntegrationTest
     {
+        private PlanRequestBuilder _planRequestBuilder = new PlanRequestBuilder();
+
         [TestMethod]
         public async Task CreateCrossSaleOfferTest()
         {
@@ -41,8 +44,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var planRequest = new PlanRequest() { Amount = 1000, Currency = "EUR", Interval = Interval.Month, Name = "Test plan" + _random.Next(999) };
-                var plan = await _gateway.CreatePlan(planRequest);
+                var plan = await _gateway.CreatePlan(_planRequestBuilder.Build());
                 var createRequest = GetCreateRequest();
                 createRequest.Subscription = new CrossSaleOfferRequestSubscription()
                 {

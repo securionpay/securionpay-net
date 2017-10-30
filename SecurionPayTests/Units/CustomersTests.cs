@@ -7,18 +7,22 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using SecurionPay.Request;
+using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 
 namespace SecurionPayTests.Units
 {
     [TestClass]
     public class CustomersTests:BaseUnitTestsSet
     {
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task CreateCustomerTest()
         {
             var requestTester = GetRequestTester();
             var customerRequest = new CustomerRequest() { Email="test@example.com",Description="description"};
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Customer>(
                 async (api) =>
                 {
                     await api.CreateCustomer(customerRequest);
@@ -26,9 +30,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + "/customers",
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(customerRequest)
+                    Action = "customers",
+                    Parameter = customerRequest
                 }
             );
         }
@@ -38,9 +41,9 @@ namespace SecurionPayTests.Units
         public async Task CreateCustomerWithCardTest()
         {
             var requestTester = GetRequestTester();
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
-            var customerRequest = new CustomerRequest() { Card= cardRequest, Email = "test@example.com", Description = "description" };
-            await requestTester.TestMethod(
+            var cardRequest = _cardRequestBuilder.Build();
+            var customerRequest = new CustomerRequest() { Card = cardRequest, Email = "test@example.com", Description = "description" };
+            await requestTester.TestMethod<Customer>(
                 async (api) =>
                 {
                     await api.CreateCustomer(customerRequest);
@@ -48,9 +51,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + "/customers",
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(customerRequest)
+                    Action = "customers",
+                    Parameter = customerRequest
                 }
             );
         }
@@ -60,7 +62,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Customer>(
                 async (api) =>
                 {
                     await api.RetrieveCustomer(customerId);
@@ -68,9 +70,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address =  string.Format("{0}/customers/{1}", GatewayAdress,customerId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action =  string.Format("customers/{0}",customerId),
+                    Parameter = null
                 }
             );
         }
@@ -80,9 +81,9 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            var cardRequest = new CardRequest() { Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" };
+            var cardRequest = _cardRequestBuilder.Build();
             var customerUpdaterequest = new CustomerUpdateRequest() {CustomerId= customerId, Card= cardRequest,DefaultCardId="2" };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Customer>(
                 async (api) =>
                 {
                     await api.UpdateCustomer(customerUpdaterequest);
@@ -90,9 +91,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = string.Format("{0}/customers/{1}", GatewayAdress, customerId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(customerUpdaterequest)
+                    Action = string.Format("customers/{0}", customerId),
+                    Parameter = customerUpdaterequest
                 }
             );
         }
@@ -102,7 +102,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<DeleteResponse>(
                 async (api) =>
                 {
                     await api.DeleteCustomer(customerId);
@@ -110,9 +110,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Delete,
-                    Address = string.Format("{0}/customers/{1}", GatewayAdress, customerId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = string.Format("customers/{0}", customerId),
+                    Parameter = null
                 }
             );
         }
@@ -121,7 +120,7 @@ namespace SecurionPayTests.Units
         public async Task ListCustomerTest()
         {
             var requestTester = GetRequestTester();
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
                 async (api) =>
                 {
                     await api.ListCustomers();
@@ -129,9 +128,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = string.Format("{0}/customers", GatewayAdress),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = "customers",
+                    Parameter = null
                 }
             );
         }

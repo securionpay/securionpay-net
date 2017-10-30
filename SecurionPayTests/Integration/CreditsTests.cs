@@ -1,17 +1,23 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Exception;
 using SecurionPay.Request;
+using SecurionPayTests.ModelBuilders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SecurionPayTests.Utils;
 
 namespace SecurionPayTests.Integration
 {
     [TestClass]
     public class CreditsTests : IntegrationTest
     {
+        private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+        private TokenRequestBuilder _tokenRequestBuilder = new TokenRequestBuilder();
+
         /// <summary>
         /// test for creating and listing credits
         /// </summary>
@@ -21,7 +27,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = "2016", Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = _tokenRequestBuilder.Build();
                 var token = await _gateway.CreateToken(createTokenRequest);
 
                 var creditRequest = new CreditRequest()
@@ -29,7 +35,7 @@ namespace SecurionPayTests.Integration
                     Amount = 100,
                     Currency = "EUR",
                     Description = "desc",
-                    CardId = token.Id
+                    Card = _cardRequestBuilder.WithId(token.Id).Build()
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
                 var credits = await _gateway.ListCredits();
@@ -49,7 +55,7 @@ namespace SecurionPayTests.Integration
         public async Task CreateCreditWithTokenAndRetireveCreditTest()
         {
             try {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = "2016", Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = _tokenRequestBuilder.Build();
                 var token = await _gateway.CreateToken(createTokenRequest);
 
                 var creditRequest = new CreditRequest()
@@ -57,7 +63,7 @@ namespace SecurionPayTests.Integration
                     Amount = 100,
                     Currency = "EUR",
                     Description = "desc",
-                    CardId = token.Id
+                    Card = _cardRequestBuilder.WithId(token.Id).Build()
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
                 var retrievedCredit = await _gateway.RetrieveCredit(newCredit.Id);
@@ -67,7 +73,7 @@ namespace SecurionPayTests.Integration
                 Assert.AreEqual(createTokenRequest.CardholderName, retrievedCredit.Card.CardholderName);
                 Assert.AreEqual(createTokenRequest.ExpMonth, retrievedCredit.Card.ExpMonth);
                 Assert.AreEqual(createTokenRequest.ExpYear, retrievedCredit.Card.ExpYear);
-                Assert.AreEqual("0007", retrievedCredit.Card.Last4);
+                Assert.AreEqual(createTokenRequest.GetLast4(), retrievedCredit.Card.Last4);
             }
             catch (SecurionPayException exc)
             {
@@ -84,10 +90,10 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = new CardRequest() { CustomerId = customer.Id, Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
+                var cardRequest = _cardRequestBuilder.WithCustomerId(customer.Id).Build();
                 var card = await _gateway.CreateCard(cardRequest);
 
                 var creditRequest = new CreditRequest()
@@ -95,7 +101,7 @@ namespace SecurionPayTests.Integration
                     Amount = 100,
                     Currency = "EUR",
                     Description = "desc",
-                    CardId = card.Id,
+                    Card = _cardRequestBuilder.WithId(card.Id).Build(),
                     CustomerId = customer.Id
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
@@ -123,12 +129,12 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var customerRequest = new CustomerRequest() { Email = GetRandomEmail(), Description = "test customer" };
+                var customerRequest = _customerRequestBuilder.Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                var cardRequest = new CardRequest() { Number = "4242424242424242", ExpMonth = "12", ExpYear = "2055", Cvc = "123", CardholderName = "test test" };
+                var cardRequest = _cardRequestBuilder.Build();
 
-                var creditRequest = new CreditWithCardRequest()
+                var creditRequest = new CreditRequest()
                 {
                     Amount = 100,
                     Currency = "EUR",
@@ -159,7 +165,7 @@ namespace SecurionPayTests.Integration
         {
             try
             {
-                var createTokenRequest = new TokenRequest() { Number = "4012000100000007", ExpMonth = "11", ExpYear = "2016", Cvc = "432", CardholderName = "John Smith" };
+                var createTokenRequest = _tokenRequestBuilder.Build();
                 var token = await _gateway.CreateToken(createTokenRequest);
 
                 var creditRequest = new CreditRequest()
@@ -167,7 +173,7 @@ namespace SecurionPayTests.Integration
                     Amount = 100,
                     Currency = "EUR",
                     Description = "desc",
-                    CardId = token.Id
+                    Card = _cardRequestBuilder.WithId(token.Id).Build()
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
 

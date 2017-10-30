@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecurionPay.Request;
+using SecurionPay.Response;
+using SecurionPayTests.ModelBuilders;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -13,13 +15,15 @@ namespace SecurionPayTests.Units
     [TestClass]
     public class CreditTests : BaseUnitTestsSet
     {
+        private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
+
         [TestMethod]
         public async Task CreateCreditTest()
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            var creditRequest = new CreditRequest() { CustomerId = customerId, CardId="1" ,Amount=100,Currency="EUR"};
-            await requestTester.TestMethod(
+            var creditRequest = new CreditRequest() { CustomerId = customerId, Card = _cardRequestBuilder.WithId("1").Build(), Amount=100,Currency="EUR"};
+            await requestTester.TestMethod<Credit>(
                 async (api) =>
                 {
                     await api.CreateCredit(creditRequest);
@@ -27,9 +31,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + "/credits",
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(creditRequest)
+                    Action = "credits",
+                    Parameter = creditRequest
                 }
             );
         }
@@ -39,14 +42,14 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var customerId = "1";
-            var creditRequest = new CreditWithCardRequest()
+            var creditRequest = new CreditRequest()
             {
                 CustomerId = customerId,
-                Card = new CardRequest() { CustomerId = customerId, Number = "404129331232", ExpMonth = "6", ExpYear = "2015", CardholderName = "John Smith" },
+                Card = _cardRequestBuilder.Build(),
                 Amount = 100,
                 Currency = "EUR"
             };
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Credit>(
                 async (api) =>
                 {
                     await api.CreateCredit(creditRequest);
@@ -54,9 +57,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = GatewayAdress + "/credits",
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(creditRequest)
+                    Action = "credits",
+                    Parameter = creditRequest
                 }
             );
         }
@@ -66,7 +68,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
             var creditId = "1";
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Credit>(
                 async (api) =>
                 {
                     await api.RetrieveCredit(creditId);
@@ -74,9 +76,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address =  string.Format("{0}/credits/{1}",GatewayAdress, creditId),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = string.Format("credits/{0}", creditId),
+                    Parameter = null
                 }
             );
         }
@@ -88,7 +89,7 @@ namespace SecurionPayTests.Units
             var creditId = "1";
             var updateCreditRequest = new CreditUpdateRequest() { CreditId = creditId, Description = "new description" };
 
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<Credit>(
                 async (api) =>
                 {
                     await api.UpdateCredit(updateCreditRequest);
@@ -96,9 +97,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Post,
-                    Address = string.Format("{0}/credits/{1}", GatewayAdress, creditId),
-                    Header = GetDesiredHeader(),
-                    Content = ToJson(updateCreditRequest)
+                    Action = string.Format("credits/{0}", creditId),
+                    Parameter = updateCreditRequest
                 }
             );
         }
@@ -108,7 +108,7 @@ namespace SecurionPayTests.Units
         {
             var requestTester = GetRequestTester();
 
-            await requestTester.TestMethod(
+            await requestTester.TestMethod<SecurionpayList>(
                 async (api) =>
                 {
                     await api.ListCredits();
@@ -116,9 +116,8 @@ namespace SecurionPayTests.Units
                 new RequestDescriptor()
                 {
                     Method = HttpMethod.Get,
-                    Address = string.Format("{0}/credits", GatewayAdress),
-                    Header = GetDesiredHeader(),
-                    Content = null
+                    Action = "credits",
+                    Parameter = null
                 }
             );
         }

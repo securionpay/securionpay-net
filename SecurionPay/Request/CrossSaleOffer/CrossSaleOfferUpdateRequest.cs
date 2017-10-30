@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SecurionPay.Request.CrossSaleOffer
 {
-    public class CrossSaleOfferUpdateRequest
+    public class CrossSaleOfferUpdateRequest : BaseRequest
     {
         [JsonIgnore]
         public string CrossSaleOfferId { get; set; }
@@ -43,12 +43,12 @@ namespace SecurionPay.Request.CrossSaleOffer
         public string TermsAndConditionsUrl { get; set; }
 
         [JsonProperty("visibleForAllPartners")]
-        public bool VisibleForAllPartners { get; set; }
+        public bool? VisibleForAllPartners { get; set; }
 
         [JsonProperty("visibleForPartnerIds")]
         public List<string> VisibleForPartnerIds { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, JToken> Other;
+        [JsonProperty("metadata")]
+        public Dictionary<String, String> Metadata { get; set; }
     }
 }

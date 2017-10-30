@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SecurionPay.Response
 {
-    public class CrossSaleOffer
+    public class CrossSaleOffer : BaseResponse
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -56,6 +56,9 @@ namespace SecurionPay.Response
 
         [JsonProperty("visibleForPartnerIds")]
         public List<string> VisibleForPartnerIds { get; set; }
+
+        [JsonProperty("metadata")]
+        public Dictionary<String, String> Metadata { get; set; }
 
     }
 }

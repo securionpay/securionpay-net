@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using SecurionPay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -13,7 +15,7 @@ namespace SecurionPay.Converters
         private string fallback = "Unrecognized";
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (!objectType.IsEnum)
+            if (!objectType.IsEnumeration())
             {
                 objectType = Nullable.GetUnderlyingType(objectType);
                 if (objectType==null)
