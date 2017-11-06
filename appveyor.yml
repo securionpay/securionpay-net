@@ -1,6 +1,6 @@
 before_build:
-  - nuget restore
+  - nuget restore SecurionPay.sln
   - ps: .\setup_integration_tests.ps1 "https://api.securionpay.com/" "https://uploads.securionpay.com" "pr_test_FjW0q2HMs40Jj3KGua5294sp"
 
-  build:
-    project: SecurionPay.sln     # path to Visual Studio solution or project
+build:
+  project: SecurionPay.sln     # path to Visual Studio solution or project
