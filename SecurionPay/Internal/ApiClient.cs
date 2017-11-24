@@ -16,7 +16,7 @@ namespace SecurionPay
     public class ApiClient : IApiClient
     {
         private string _privateAuthToken;
-        private string _version = "2.3.0";
+        private string _version = "2.3.2";
         private IHttpClient _client;
         private IFileExtensionToMimeMapper _fileExtensionToMimeMapper;
 
