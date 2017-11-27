@@ -18,6 +18,8 @@ namespace SecurionPayTests.Integration
         private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
         private ChargeRequestBuilder _chargeRequestBuilder = new ChargeRequestBuilder();
+        private int _maxRetries = 10;
+        private TimeSpan _retryInterval = TimeSpan.FromSeconds(10);
 
         [TestMethod]
         public async Task RetrieveDisputeTest()
@@ -72,9 +74,17 @@ namespace SecurionPayTests.Integration
                                                      .WithCard(_cardRequestBuilder.WithNumberCausingDispute())
                                                      .Build();
 
-            var charge = await _gateway.CreateCharge(chargeRequest);
-            await Task.Delay(100000); //100sec wait
-            var chargeWithDispute = await _gateway.RetrieveCharge(charge.Id);
+            int retryCount = 0;
+            Charge chargeWithDispute;
+            do
+            {
+                var charge = await _gateway.CreateCharge(chargeRequest);
+                await Task.Delay((int)_retryInterval.TotalMilliseconds);
+                chargeWithDispute = await _gateway.RetrieveCharge(charge.Id);
+                retryCount++;
+            } 
+            while (retryCount <= _maxRetries && !chargeWithDispute.Disputed);
+
             Assert.IsTrue(chargeWithDispute.Disputed);
             return chargeWithDispute;
         }

@@ -56,5 +56,27 @@ namespace SecurionPayTests.Integration
                 HandleApiException(exc);
             }
         }
+
+        [TestMethod]
+        public async Task ListCustomersWithGivenEmailTest()
+        {
+            try
+            {
+                var customerRequest = _customerRequestBuilder.Build();
+                var customer = await _gateway.CreateCustomer(customerRequest);
+
+                var customerListRequest = new CustomerListRequest()
+                {
+                    Email = customerRequest.Email
+                };
+                var list = await _gateway.ListCustomers(customerListRequest);
+                Assert.IsTrue(list.List.Count > 0);
+                Assert.IsTrue(list.List.All(item => item.Email == customerRequest.Email));
+            }
+            catch (SecurionPayException exc)
+            {
+                HandleApiException(exc);
+            }
+        }
     }
 }

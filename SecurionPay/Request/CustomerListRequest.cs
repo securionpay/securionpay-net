@@ -11,5 +11,8 @@ namespace SecurionPay.Request
     {
         [JsonProperty("deleted")]
         public bool? Deleted { get; set; }
+
+        [JsonProperty("email")]
+        public string Email { get; set; }
     }
 }
