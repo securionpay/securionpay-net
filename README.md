@@ -1,5 +1,7 @@
 # SecurionPay .NET Library
 
+[![Build](https://github.com/securionpay/securionpay-net/actions/workflows/build.yml/badge.svg)](https://github.com/securionpay/securionpay-net/actions/workflows/build.yml)
+
 If you don't already have SecurionPay account you can create it [here](https://securionpay.com/signup). 
 
 ## Instalation 

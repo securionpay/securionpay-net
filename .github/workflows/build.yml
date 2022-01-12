@@ -1,0 +1,97 @@
+name: dotnet package
+
+on: [push]
+
+jobs:
+
+  build:
+    name: Build lib
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: 2.1.x
+      - name: Create NuGet package
+        run: dotnet pack SecurionPay -c Release
+      - name: Upload NuGet package as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: nuget-package
+          path: SecurionPay/bin/Release/SecurionPay.*.nupkg
+          if-no-files-found: error
+          retention-days: 30
+
+  test:
+    needs: build
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: |
+            2.1.x
+            3.1.x
+            5.0.x
+      - name: Run tests
+        run: dotnet test
+
+  nuget-publish:
+    if: startsWith(github.event.ref, 'refs/tags/v')
+    needs: [build, test]
+    name: Publish package to nuget.org
+    runs-on: ubuntu-latest
+    env:
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+    steps:
+      - uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: 2.1.x
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2      
+        with:
+          name: nuget-package
+      - name: Publish package dto NuGet
+        run: >-
+          dotnet nuget push SecurionPay.*.nupkg 
+            --api-key $NUGET_API_KEY
+            --source https://api.nuget.org/v3/index.json
+
+  create-release:
+    if: startsWith(github.event.ref, 'refs/tags/v')
+    needs: [build, test]
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: nuget-package
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+      # Work around for https://github.com/actions/upload-release-asset/issues/47
+      - run: |
+          ARTIFACT_PATHNAME=$(ls SecurionPay.*.nupkg | head -n 1)
+          echo "ARTIFACT_PATHNAME=$ARTIFACT_PATHNAME" >> $GITHUB_ENV
+          ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
+          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.ARTIFACT_PATHNAME }}
+          asset_name: ${{ env.ARTIFACT_NAME }}
+          asset_content_type: application/zip
