@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using Moq.Protected;
 using SecurionPay;
@@ -15,10 +15,9 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class ApiClientTests
+        public class ApiClientTests
     {
-        [TestMethod]
+        [Fact]
         public async Task ApiClientBuildsRequestWithCorrectContentTest()
         {
             SemaphoreSlim semaphore = new SemaphoreSlim(0);
@@ -46,11 +45,11 @@ namespace SecurionPayTests.Units
             await apiClient.SendRequest<TestRequest>(HttpMethod.Put, "https://testAction.com", new TestParameter() { TestValue="t1"});
             await semaphore.WaitAsync();
 
-            Assert.AreEqual(requestJson, "{\"TestValue\":\"t1\"}");
+            Assert.Equal("{\"TestValue\":\"t1\"}", requestJson);
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ApiClientBuildsRequestWithCorrectUrlAndMethodTest()
         {
 
@@ -68,7 +67,7 @@ namespace SecurionPayTests.Units
                                                                                                   message.RequestUri == new Uri("https://testAction.com"))));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ApiClientBuildsRequestWithCorrectHeadersTest()
         {
             var assemblyVersion = Assembly.Load("SecurionPay").GetName().Version;

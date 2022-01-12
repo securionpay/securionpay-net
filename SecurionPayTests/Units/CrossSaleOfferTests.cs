@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Enums;
 using SecurionPay.Request.CrossSaleOffer;
 using SecurionPay.Response;
@@ -12,10 +12,9 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class CrossSaleOfferTests : BaseUnitTestsSet
+        public class CrossSaleOfferTests : BaseUnitTestsSet
     {
-        [TestMethod]
+        [Fact]
         public async Task CreateCrossSaleOfferWithChargeTest()
         {
             var requestTester = GetRequestTester();
@@ -48,7 +47,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateCrossSaleOfferWithSubscriptionTest()
         {
             var requestTester = GetRequestTester();
@@ -80,7 +79,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task RetrierveCrossSaleOfferTest()
         {
             var requestTester = GetRequestTester();
@@ -99,7 +98,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task UpdateCrossSaleOfferTest()
         {
             var requestTester = GetRequestTester();
@@ -125,7 +124,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task DeleteCrossSaleOfferTest()
         {
             var requestTester = GetRequestTester();
@@ -144,7 +143,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListCrossSaleOfferTest()
         {
             var requestTester = GetRequestTester();
@@ -162,7 +161,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListFromPartnerCrossSaleOfferTest()
         {
             var requestTester = GetRequestTester();

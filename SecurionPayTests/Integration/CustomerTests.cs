@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Exception;
 using SecurionPay.Request;
 using SecurionPayTests.ModelBuilders;
@@ -10,14 +10,13 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Integration
 {
-    [TestClass]
-    public class CustomerTests : IntegrationTest
+        public class CustomerTests : IntegrationTest
     {
         private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
         private TokenRequestBuilder _tokenRequestBuilder = new TokenRequestBuilder();
 
-        [TestMethod]
+        [Fact]
         public async Task CustomerWithNewCardTest()
         {
             try
@@ -25,8 +24,8 @@ namespace SecurionPayTests.Integration
                 var customerRequest = _customerRequestBuilder.WithCard(_cardRequestBuilder).Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                Assert.AreEqual(1, customer.Cards.Count);
-                Assert.AreEqual(customerRequest.Card.CardholderName, customer.Cards.First().CardholderName);
+                Assert.Single(customer.Cards);
+                Assert.Equal(customerRequest.Card.CardholderName, customer.Cards.First().CardholderName);
 
             }
             catch (SecurionPayException exc)
@@ -35,7 +34,7 @@ namespace SecurionPayTests.Integration
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CustomerWithCardTokenTest()
         {
             try
@@ -47,8 +46,8 @@ namespace SecurionPayTests.Integration
                 var customerRequest = _customerRequestBuilder.WithCard(_cardRequestBuilder.WithId(token.Id)).Build();
                 var customer = await _gateway.CreateCustomer(customerRequest);
 
-                Assert.AreEqual(1, customer.Cards.Count);
-                Assert.AreEqual(createTokenRequest.CardholderName, customer.Cards.First().CardholderName);
+                Assert.Single(customer.Cards);
+                Assert.Equal(createTokenRequest.CardholderName, customer.Cards.First().CardholderName);
 
             }
             catch (SecurionPayException exc)
@@ -57,7 +56,7 @@ namespace SecurionPayTests.Integration
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListCustomersWithGivenEmailTest()
         {
             try
@@ -70,8 +69,8 @@ namespace SecurionPayTests.Integration
                     Email = customerRequest.Email
                 };
                 var list = await _gateway.ListCustomers(customerListRequest);
-                Assert.IsTrue(list.List.Count > 0);
-                Assert.IsTrue(list.List.All(item => item.Email == customerRequest.Email));
+                Assert.True(list.List.Count > 0);
+                Assert.True(list.List.All(item => item.Email == customerRequest.Email));
             }
             catch (SecurionPayException exc)
             {

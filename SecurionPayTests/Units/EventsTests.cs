@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Request;
 using SecurionPay.Response;
 using SecurionPayTests.Units.Tools;
@@ -11,11 +11,10 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class EventsTests : BaseUnitTestsSet
+        public class EventsTests : BaseUnitTestsSet
     {
 
-        [TestMethod]
+        [Fact]
         public async Task RetrieveEventsTest()
         {
             var requestTester = GetRequestTester();
@@ -34,7 +33,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListEventsTest()
         {
             var requestTester = GetRequestTester();

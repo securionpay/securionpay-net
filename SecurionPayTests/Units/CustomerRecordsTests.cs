@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Request;
 using SecurionPay.Response;
 using SecurionPayTests.Units.Tools;
@@ -11,10 +11,9 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class CustomerRecordsTests : BaseUnitTestsSet
+        public class CustomerRecordsTests : BaseUnitTestsSet
     {
-        [TestMethod]
+        [Fact]
         public async Task CreateCustomerRecordTest()
         {
             var requestTester = GetRequestTester();
@@ -37,7 +36,7 @@ namespace SecurionPayTests.Units
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task RefreshCustomerRecordTest()
         {
             var requestTester = GetRequestTester();
@@ -62,7 +61,7 @@ namespace SecurionPayTests.Units
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task RetrieveCustomerRecordTest()
         {
             var requestTester = GetRequestTester();
@@ -81,7 +80,7 @@ namespace SecurionPayTests.Units
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListCustomerRecordTest()
         {
             var requestTester = GetRequestTester();
@@ -99,7 +98,7 @@ namespace SecurionPayTests.Units
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListCustomerRecordFeeTest()
         {
             var requestTester = GetRequestTester();
@@ -118,7 +117,7 @@ namespace SecurionPayTests.Units
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task RetrieveCustomerRecordFeeTest()
         {
             var requestTester = GetRequestTester();
@@ -138,7 +137,7 @@ namespace SecurionPayTests.Units
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListCustomerRecordProfitsTest()
         {
             var requestTester = GetRequestTester();
@@ -157,7 +156,7 @@ namespace SecurionPayTests.Units
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task RetrieveCustomerRecordProfitTest()
         {
             var requestTester = GetRequestTester();

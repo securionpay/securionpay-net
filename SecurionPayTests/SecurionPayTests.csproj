@@ -1,145 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3471913F-9197-430A-82C7-A6B6EB2E581C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SecurionPayTests</RootNamespace>
-    <AssemblyName>SecurionPayTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net5.0</TargetFrameworks>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  
   <ItemGroup>
-    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Net.Http" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.9.0"/>
+
+    <PackageReference Include="DotNetEnv" Version="2.2.0" />
+    <PackageReference Include="Moq" Version="4.16.1" />
+
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    
+    <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="17.0.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" Condition="'$(TargetFramework)' == 'netcoreapp2.1'" />
   </ItemGroup>
-  <Choose>
-    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
+  
   <ItemGroup>
-    <Compile Include="Integration\ChargeTests.cs" />
-    <Compile Include="Integration\CreditsTests.cs" />
-    <Compile Include="Integration\CrossSaleOfferTests.cs" />
-    <Compile Include="Integration\CustomerTests.cs" />
-    <Compile Include="Integration\DisputeTests.cs" />
-    <Compile Include="Integration\FlowsTest.cs" />
-    <Compile Include="Integration\IntegrationTest.cs" />
-    <Compile Include="Integration\ListWithFilterTests.cs" />
-    <Compile Include="Integration\SubscriptionTests.cs" />
-    <Compile Include="Integration\TestConfigurationProvider.cs" />
-    <Compile Include="Integration\UploadTests.cs" />
-    <Compile Include="ModelBuilders\AddressBuilder.cs" />
-    <Compile Include="ModelBuilders\CardRequestBuilder.cs" />
-    <Compile Include="ModelBuilders\ChargeRequestBuilder.cs" />
-    <Compile Include="ModelBuilders\CustomerRequestBuilder.cs" />
-    <Compile Include="ModelBuilders\IBuilder.cs" />
-    <Compile Include="ModelBuilders\PlanRequestBuilder.cs" />
-    <Compile Include="ModelBuilders\TokenRequestBuilder.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Units\ApiClientTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\BaseUnitTestsSet.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\BlackListTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\CardsTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\ChargeTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\CheckoutRequestTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\CreditTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\CrossSaleOfferTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\CustomerRecordsTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\CustomersTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\DisputeTests.cs" />
-    <Compile Include="Units\EventsTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\PlansTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\SignServiceTests.cs" />
-    <Compile Include="Units\SubscriptionsTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Units\TokensTests.cs" />
-    <Compile Include="Units\Tools\MatchResult.cs" />
-    <Compile Include="Units\Tools\RequestTester.cs" />
-    <Compile Include="Units\Tools\RequestDescriptor.cs" />
-    <Compile Include="Units\UnixDateConverterTests.cs" />
-    <Compile Include="Units\UploadTests.cs" />
-    <Compile Include="Utils\CardRequestExtensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="TestUploadFiles\img.jpg">
+    <Content Include="TestUploadFiles/img.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-    <None Include="TestUploadFiles\Test.pdf">
+    <None Include="App.config"/>
+    <None Include="TestUploadFiles/test.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -149,31 +39,4 @@
       <Name>SecurionPay</Name>
     </ProjectReference>
   </ItemGroup>
-  <Choose>
-    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

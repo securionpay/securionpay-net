@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Common;
 using SecurionPay.Enums;
 using SecurionPay.Request;
@@ -12,8 +12,7 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Integration
 {
-    [TestClass]
-    public class DisputeTests : IntegrationTest
+        public class DisputeTests : IntegrationTest
     {
         private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
@@ -21,25 +20,25 @@ namespace SecurionPayTests.Integration
         private int _maxRetries = 10;
         private TimeSpan _retryInterval = TimeSpan.FromSeconds(10);
 
-        [TestMethod]
+        [Fact]
         public async Task RetrieveDisputeTest()
         {
             var customerRequest = _customerRequestBuilder.Build();
             var chargeWithDispute = await CreateChargeWithDispute(customerRequest);
             var dispute = await _gateway.RetrieveDispute(chargeWithDispute.Dispute.Id);
-            Assert.AreEqual(customerRequest.Email, dispute.Evidence.CustomerEmail);
-            Assert.IsFalse(dispute.AcceptedAsLost);
+            Assert.Equal(customerRequest.Email, dispute.Evidence.CustomerEmail);
+            Assert.False(dispute.AcceptedAsLost);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListDisputesTest()
         {
             await CreateChargeWithDispute();
             var disputes = await _gateway.ListDisputes();
-            Assert.IsTrue(disputes.List.Count > 0);
+            Assert.True(disputes.List.Count > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task UpdateDisputeTest()
         {
             var chargeWithDispute = await CreateChargeWithDispute();
@@ -54,16 +53,16 @@ namespace SecurionPayTests.Integration
             };
 
             var editedDispute = await _gateway.UpdateDispute(updateRequest);
-            Assert.AreEqual(editedDispute.Evidence.CustomerEmail,"text@example.com");
-            Assert.IsFalse(dispute.AcceptedAsLost);
+            Assert.Equal("text@example.com", editedDispute.Evidence.CustomerEmail);
+            Assert.False(dispute.AcceptedAsLost);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CloseDisputeTest()
         {
             var chargeWithDispute = await CreateChargeWithDispute();
             var dispute = await _gateway.CloseDispute(chargeWithDispute.Dispute.Id);
-            Assert.IsTrue(dispute.AcceptedAsLost);
+            Assert.True(dispute.AcceptedAsLost);
         }
 
         private async Task<Charge> CreateChargeWithDispute(CustomerRequest customerRequest)
@@ -85,7 +84,7 @@ namespace SecurionPayTests.Integration
             } 
             while (retryCount <= _maxRetries && !chargeWithDispute.Disputed);
 
-            Assert.IsTrue(chargeWithDispute.Disputed);
+            Assert.True(chargeWithDispute.Disputed);
             return chargeWithDispute;
         }
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Request;
 using SecurionPay.Response;
 using SecurionPayTests.ModelBuilders;
@@ -12,12 +12,11 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class CreditTests : BaseUnitTestsSet
+        public class CreditTests : BaseUnitTestsSet
     {
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
 
-        [TestMethod]
+        [Fact]
         public async Task CreateCreditTest()
         {
             var requestTester = GetRequestTester();
@@ -37,7 +36,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateCreditWithCartdTest()
         {
             var requestTester = GetRequestTester();
@@ -63,7 +62,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task RetrieveCreditTest()
         {
             var requestTester = GetRequestTester();
@@ -82,7 +81,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task UpdateCreditTest()
         {
             var requestTester = GetRequestTester();
@@ -103,7 +102,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListCreditsTest()
         {
             var requestTester = GetRequestTester();

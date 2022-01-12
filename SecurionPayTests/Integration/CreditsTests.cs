@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Exception;
 using SecurionPay.Request;
 using SecurionPayTests.ModelBuilders;
@@ -11,8 +11,7 @@ using SecurionPayTests.Utils;
 
 namespace SecurionPayTests.Integration
 {
-    [TestClass]
-    public class CreditsTests : IntegrationTest
+        public class CreditsTests : IntegrationTest
     {
         private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
@@ -22,7 +21,7 @@ namespace SecurionPayTests.Integration
         /// test for creating and listing credits
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task CreateCreditWithTokenAndListCreditsTest()
         {
             try
@@ -39,7 +38,7 @@ namespace SecurionPayTests.Integration
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
                 var credits = await _gateway.ListCredits();
-                Assert.IsNotNull(credits.List.FirstOrDefault(c => c.Id == newCredit.Id));
+                Assert.NotNull(credits.List.FirstOrDefault(c => c.Id == newCredit.Id));
             }
             catch (SecurionPayException exc)
             {
@@ -51,7 +50,7 @@ namespace SecurionPayTests.Integration
         /// test for creating and retireving credits
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task CreateCreditWithTokenAndRetireveCreditTest()
         {
             try {
@@ -67,13 +66,13 @@ namespace SecurionPayTests.Integration
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
                 var retrievedCredit = await _gateway.RetrieveCredit(newCredit.Id);
-                Assert.AreEqual(creditRequest.Amount, retrievedCredit.Amount);
-                Assert.AreEqual(creditRequest.Currency, retrievedCredit.Currency);
-                Assert.AreEqual(creditRequest.Description, retrievedCredit.Description);
-                Assert.AreEqual(createTokenRequest.CardholderName, retrievedCredit.Card.CardholderName);
-                Assert.AreEqual(createTokenRequest.ExpMonth, retrievedCredit.Card.ExpMonth);
-                Assert.AreEqual(createTokenRequest.ExpYear, retrievedCredit.Card.ExpYear);
-                Assert.AreEqual(createTokenRequest.GetLast4(), retrievedCredit.Card.Last4);
+                Assert.Equal(creditRequest.Amount, retrievedCredit.Amount);
+                Assert.Equal(creditRequest.Currency, retrievedCredit.Currency);
+                Assert.Equal(creditRequest.Description, retrievedCredit.Description);
+                Assert.Equal(createTokenRequest.CardholderName, retrievedCredit.Card.CardholderName);
+                Assert.Equal(createTokenRequest.ExpMonth, retrievedCredit.Card.ExpMonth);
+                Assert.Equal(createTokenRequest.ExpYear, retrievedCredit.Card.ExpYear);
+                Assert.Equal(createTokenRequest.GetLast4(), retrievedCredit.Card.Last4);
             }
             catch (SecurionPayException exc)
             {
@@ -85,7 +84,7 @@ namespace SecurionPayTests.Integration
         /// test for creating credit with cardId and customerId
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task CreateWithCardIdAndCustomerIdTest()
         {
             try
@@ -106,13 +105,13 @@ namespace SecurionPayTests.Integration
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
                 var retrievedCredit = await _gateway.RetrieveCredit(newCredit.Id);
-                Assert.AreEqual(creditRequest.CustomerId, retrievedCredit.CustomerId);
+                Assert.Equal(creditRequest.CustomerId, retrievedCredit.CustomerId);
 
-                Assert.AreEqual(card.Id, retrievedCredit.Card.Id);
-                Assert.AreEqual(cardRequest.CardholderName, retrievedCredit.Card.CardholderName);
-                Assert.AreEqual(cardRequest.ExpMonth, retrievedCredit.Card.ExpMonth);
-                Assert.AreEqual(cardRequest.ExpYear, retrievedCredit.Card.ExpYear);
-                Assert.AreEqual("4242", retrievedCredit.Card.Last4);
+                Assert.Equal(card.Id, retrievedCredit.Card.Id);
+                Assert.Equal(cardRequest.CardholderName, retrievedCredit.Card.CardholderName);
+                Assert.Equal(cardRequest.ExpMonth, retrievedCredit.Card.ExpMonth);
+                Assert.Equal(cardRequest.ExpYear, retrievedCredit.Card.ExpYear);
+                Assert.Equal("4242", retrievedCredit.Card.Last4);
             }
             catch (SecurionPayException exc)
             {
@@ -124,7 +123,7 @@ namespace SecurionPayTests.Integration
         /// test for creating credit with card details
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task CreateWithCardDetailsTest()
         {
             try
@@ -144,11 +143,11 @@ namespace SecurionPayTests.Integration
                 };
                 var newCredit = await _gateway.CreateCredit(creditRequest);
                 var retrievedCredit = await _gateway.RetrieveCredit(newCredit.Id);
-                Assert.AreEqual(creditRequest.CustomerId, retrievedCredit.CustomerId);
-                Assert.AreEqual(cardRequest.CardholderName, retrievedCredit.Card.CardholderName);
-                Assert.AreEqual(cardRequest.ExpMonth, retrievedCredit.Card.ExpMonth);
-                Assert.AreEqual(cardRequest.ExpYear, retrievedCredit.Card.ExpYear);
-                Assert.AreEqual("4242", retrievedCredit.Card.Last4);
+                Assert.Equal(creditRequest.CustomerId, retrievedCredit.CustomerId);
+                Assert.Equal(cardRequest.CardholderName, retrievedCredit.Card.CardholderName);
+                Assert.Equal(cardRequest.ExpMonth, retrievedCredit.Card.ExpMonth);
+                Assert.Equal(cardRequest.ExpYear, retrievedCredit.Card.ExpYear);
+                Assert.Equal("4242", retrievedCredit.Card.Last4);
             }
             catch (SecurionPayException exc)
             {
@@ -160,7 +159,7 @@ namespace SecurionPayTests.Integration
         /// test for updatingCredits
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task UpdateCreditTest()
         {
             try
@@ -183,7 +182,7 @@ namespace SecurionPayTests.Integration
                     Description = "new description"
                 };
                 var updatedCredit = await _gateway.UpdateCredit(creditUpdateRequest);
-                Assert.AreEqual(creditUpdateRequest.Description, updatedCredit.Description);
+                Assert.Equal(creditUpdateRequest.Description, updatedCredit.Description);
             }
             catch (SecurionPayException exc)
             {

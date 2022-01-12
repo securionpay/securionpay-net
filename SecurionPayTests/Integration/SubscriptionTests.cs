@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Common;
 using SecurionPay.Enums;
 using SecurionPay.Exception;
@@ -12,15 +12,14 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Integration
 {
-    [TestClass]
-    public class SubscriptionTests : IntegrationTest
+        public class SubscriptionTests : IntegrationTest
     {
         CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
         ChargeRequestBuilder _chargeRequestBuilder = new ChargeRequestBuilder();
         PlanRequestBuilder _planRequestBuilder = new PlanRequestBuilder();
 
-        [TestMethod]
+        [Fact]
         public async Task SubscribeWithNewCardTest()
         {
             try
@@ -36,7 +35,7 @@ namespace SecurionPayTests.Integration
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
                 customer = await _gateway.RetrieveCustomer(customer.Id);
-                Assert.AreEqual(cardRequest.CardholderName, customer.Cards.First(c => c.Id == customer.DefaultCardId).CardholderName);
+                Assert.Equal(cardRequest.CardholderName, customer.Cards.First(c => c.Id == customer.DefaultCardId).CardholderName);
 
             }
             catch (SecurionPayException exc)
@@ -45,7 +44,7 @@ namespace SecurionPayTests.Integration
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task SubscribeCaptureChargesByDefaultTest()
         {
             try
@@ -59,7 +58,7 @@ namespace SecurionPayTests.Integration
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
                 customer = await _gateway.RetrieveCustomer(customer.Id);
-                Assert.IsTrue(subscription.CaptureCharges);
+                Assert.True(subscription.CaptureCharges);
 
             }
             catch (SecurionPayException exc)
@@ -68,7 +67,7 @@ namespace SecurionPayTests.Integration
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task SubscribeWithAdressesTest()
         {
             var address = new AddressBuilder().Build();
@@ -84,10 +83,10 @@ namespace SecurionPayTests.Integration
                 var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = cardRequest, Billing = new Billing() { Address = address ,Name="name",Vat="123123"} };
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
-                Assert.AreEqual(subscription.Billing.Address.FirstLine, address.FirstLine);
-                Assert.AreEqual(subscription.Billing.Address.City, address.City);
-                Assert.AreEqual(subscription.Billing.Address.CountryISOCode, address.CountryISOCode);
-                Assert.AreEqual(subscription.Billing.Address.State, address.State);
+                Assert.Equal(subscription.Billing.Address.FirstLine, address.FirstLine);
+                Assert.Equal(subscription.Billing.Address.City, address.City);
+                Assert.Equal(subscription.Billing.Address.CountryISOCode, address.CountryISOCode);
+                Assert.Equal(subscription.Billing.Address.State, address.State);
 
             }
             catch (SecurionPayException exc)
@@ -96,7 +95,7 @@ namespace SecurionPayTests.Integration
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task SubscribeWithCardFromChargeTest()
         {
             try
@@ -113,7 +112,7 @@ namespace SecurionPayTests.Integration
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
                 customer = await _gateway.RetrieveCustomer(customer.Id);
-                Assert.AreEqual(chargeRequest.Card.CardholderName, customer.Cards.First(c => c.Id == customer.DefaultCardId).CardholderName);
+                Assert.Equal(chargeRequest.Card.CardholderName, customer.Cards.First(c => c.Id == customer.DefaultCardId).CardholderName);
             }
             catch (SecurionPayException exc)
             {

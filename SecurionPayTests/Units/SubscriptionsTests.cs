@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPayTests.Units.Tools;
 using System;
 using System.Collections.Generic;
@@ -12,12 +12,11 @@ using SecurionPayTests.ModelBuilders;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class SubscriptionsTests:BaseUnitTestsSet
+        public class SubscriptionsTests:BaseUnitTestsSet
     {
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
 
-        [TestMethod]
+        [Fact]
         public async Task CreateSubscriptionWithCardTest()
         {
             var requestTester = GetRequestTester();
@@ -38,7 +37,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateSubscriptionWithTokenTest()
         {
             var requestTester = GetRequestTester();
@@ -60,7 +59,7 @@ namespace SecurionPayTests.Units
         }
 
 
-        [TestMethod]
+        [Fact]
         public async Task RetrieveSubscriptionTest()
         {
             var requestTester = GetRequestTester();
@@ -80,7 +79,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task UpdateSubscriptionTest()
         {
             var requestTester = GetRequestTester();
@@ -102,7 +101,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CancelSubscriptionTest()
         {
             var requestTester = GetRequestTester();
@@ -124,7 +123,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListSubscriptionsTest()
         {
             var requestTester = GetRequestTester();

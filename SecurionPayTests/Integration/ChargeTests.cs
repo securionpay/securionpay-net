@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Common;
 using SecurionPay.Enums;
 using SecurionPay.Exception;
@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Integration
 {
-    [TestClass]
     public class ChargeTests : IntegrationTest
     {
         private AddressBuilder _addressBuilder = new AddressBuilder();
@@ -24,7 +23,7 @@ namespace SecurionPayTests.Integration
         /// charge amount exceeds the available fund or the card's credit limit.
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task ChargeCardWithInsufficientFoundsTest()
         {
             try
@@ -38,7 +37,7 @@ namespace SecurionPayTests.Integration
             }
             catch (SecurionPayException exc)
             {
-                Assert.AreEqual(ErrorCode.InsufficientFunds, exc.Error.Code);
+                Assert.Equal(ErrorCode.InsufficientFunds, exc.Error.Code);
             }
         }
 
@@ -46,7 +45,7 @@ namespace SecurionPayTests.Integration
         /// charge card with wrong number
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task ChargeCardWithWrongNumberTest()
         {
             try
@@ -60,7 +59,7 @@ namespace SecurionPayTests.Integration
             }
             catch (SecurionPayException exc)
             {
-                Assert.AreEqual(ErrorCode.InvalidNumber, exc.Error.Code);
+                Assert.Equal(ErrorCode.InvalidNumber, exc.Error.Code);
             }
         }
 
@@ -68,7 +67,7 @@ namespace SecurionPayTests.Integration
         /// charge exisiting card provided by cardId
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task ChargeCardByIdTest()
         {
 
@@ -81,15 +80,15 @@ namespace SecurionPayTests.Integration
             var chargeRequest = _chargeRequestBuilder.WithCustomerId(customer.Id).WithCard(_cardRequestBuilder.WithId(card.Id)).Build();
             var charge = await _gateway.CreateCharge(chargeRequest);
 
-            Assert.AreEqual(2000, charge.Amount);
-            Assert.AreEqual(card.Id, charge.Card.Id);
+            Assert.Equal(2000, charge.Amount);
+            Assert.Equal(card.Id, charge.Card.Id);
         }
 
         /// <summary>
         /// charge exisiting card provided by cardId
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task ChargeWithShippingAndBillingTest()
         {
             var address = _addressBuilder.Build();
@@ -108,15 +107,15 @@ namespace SecurionPayTests.Integration
 
             var charge = await _gateway.CreateCharge(chargeRequest);
 
-            Assert.AreEqual(chargeRequest.Shipping.Name, charge.Shipping.Name);
-            Assert.AreEqual(chargeRequest.Billing.Name, charge.Billing.Name);
+            Assert.Equal(chargeRequest.Shipping.Name, charge.Shipping.Name);
+            Assert.Equal(chargeRequest.Billing.Name, charge.Billing.Name);
         }
 
         /// <summary>
         /// charge exisiting card provided by cardId
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task ForceToUseThreeDSecureTest()
         {
             try
@@ -132,7 +131,7 @@ namespace SecurionPayTests.Integration
             }
             catch (SecurionPayException exc)
             {
-                Assert.AreEqual("3D Secure attempt is required.", exc.Error.Message);
+                Assert.Equal("3D Secure attempt is required.", exc.Error.Message);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Enums;
 using SecurionPay.Request;
 using SecurionPay.Response;
@@ -14,38 +14,37 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Integration
 {
-    [TestClass]
-    public class UploadTests : IntegrationTest
+        public class UploadTests : IntegrationTest
     {
         /// <summary>
         /// test for upload file
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task UploadImageTest()
         {
             var response = await Upload("img.jpg", FileUploadPurpose.DisputeEvidence);
-            Assert.AreEqual(response.Type, FileUploadType.JPG);
-            Assert.AreEqual(response.Purpose, FileUploadPurpose.DisputeEvidence);
+            Assert.Equal(FileUploadType.JPG, response.Type);
+            Assert.Equal(FileUploadPurpose.DisputeEvidence, response.Purpose);
         }
 
         /// <summary>
         /// test for upload file
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task UploadPdfTest()
         {
             var response = await Upload("test.pdf", FileUploadPurpose.DisputeEvidence);
-            Assert.AreEqual(response.Type, FileUploadType.PDF);
-            Assert.AreEqual(response.Purpose, FileUploadPurpose.DisputeEvidence);
+            Assert.Equal(FileUploadType.PDF, response.Type);
+            Assert.Equal(FileUploadPurpose.DisputeEvidence, response.Purpose);
         }
 
         /// <summary>
         /// test for upload file
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task ListUploadsTest()
         {
             var result = await _gateway.ListFileUpload();
@@ -55,16 +54,16 @@ namespace SecurionPayTests.Integration
         /// test for upload file
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task RetrieveUploadTest()
         {
             var newUpload = await Upload("test.pdf", FileUploadPurpose.DisputeEvidence);
 
             var retrievedUpload = await _gateway.RetrieveFileUpload(newUpload.Id);
 
-            Assert.AreEqual(newUpload.Type, retrievedUpload.Type);
-            Assert.AreEqual(newUpload.Id, retrievedUpload.Id);
-            Assert.AreEqual(newUpload.Size, retrievedUpload.Size);
+            Assert.Equal(retrievedUpload.Type, newUpload.Type);
+            Assert.Equal(retrievedUpload.Id, newUpload.Id);
+            Assert.Equal(retrievedUpload.Size, newUpload.Size);
 
         }
 
@@ -77,7 +76,7 @@ namespace SecurionPayTests.Integration
 
         private byte[] GetTestDocument(string file)
         {
-            return File.ReadAllBytes(string.Format("TestUploadFiles\\{0}",file));
+            return File.ReadAllBytes(string.Format("TestUploadFiles/{0}",file));
         }
     }
 }

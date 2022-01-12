@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Common;
 using SecurionPay.Request;
 using SecurionPay.Response;
@@ -12,10 +12,9 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class DisputeTests : BaseUnitTestsSet
+        public class DisputeTests : BaseUnitTestsSet
     {
-        [TestMethod]
+        [Fact]
         public async Task RetrieveDisputeTest()
         {
             var requestTester = GetRequestTester();
@@ -35,7 +34,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task UpdateDisputeTest()
         {
             var requestTester = GetRequestTester();
@@ -57,7 +56,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CloseDisputeTest()
         {
             var requestTester = GetRequestTester();
@@ -77,7 +76,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListDisputeTest()
         {
             var requestTester = GetRequestTester();
