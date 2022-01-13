@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Internal;
 using SecurionPay.Request;
 using SecurionPayTests.ModelBuilders;
@@ -10,12 +10,11 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Integration
 {
-    [TestClass]
-    public class ListWithFilterTests :IntegrationTest
+        public class ListWithFilterTests :IntegrationTest
     {
         CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
 
-        [TestMethod]
+        [Fact]
         public async Task CustomerListWithFilterTest()
         {
             var customerRequest = _customerRequestBuilder.Build();
@@ -28,7 +27,7 @@ namespace SecurionPayTests.Integration
                 }
             };
             var result = await _gateway.ListCustomers(listRequest);
-            Assert.IsTrue(result.List.Any(item => item.Id == customer.Id));
+            Assert.Contains(result.List, item => item.Id == customer.Id);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using SecurionPay;
 using SecurionPay.Internal;
@@ -14,10 +14,9 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class UploadTests : BaseUnitTestsSet
+        public class UploadTests : BaseUnitTestsSet
     {
-        [TestMethod]
+        [Fact]
         public async Task RetrieveFileUploadTest()
         {
             var requestTester = GetRequestTester();
@@ -37,7 +36,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListFileUploadTest()
         {
             var requestTester = GetRequestTester();
@@ -56,7 +55,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateFileUploadTest()
         {
             var apiClientMock = new Mock<IApiClient>();

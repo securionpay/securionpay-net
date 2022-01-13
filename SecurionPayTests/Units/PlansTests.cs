@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Request;
 using SecurionPay.Response;
 using SecurionPayTests.ModelBuilders;
@@ -12,12 +12,11 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class PlansTests : BaseUnitTestsSet
+        public class PlansTests : BaseUnitTestsSet
     {
         PlanRequestBuilder _planRequestBuilder = new PlanRequestBuilder();
 
-        [TestMethod]
+        [Fact]
         public async Task CreatePlanTest()
         {
             var requestTester = GetRequestTester();
@@ -36,7 +35,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task RetrievePlanTest()
         {
             var requestTester = GetRequestTester();
@@ -55,7 +54,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task UpdatePlanTest()
         {
             var requestTester = GetRequestTester();
@@ -75,7 +74,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListPlansTest()
         {
             var requestTester = GetRequestTester();
@@ -93,7 +92,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task DeletePlanTest()
         {
             var requestTester = GetRequestTester();

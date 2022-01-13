@@ -16,5 +16,8 @@ namespace SecurionPay.Request
 
         [JsonProperty("requireSuccessfulLiabilityShiftForEnrolledCard")]
         public bool? RequireSuccessfulLiabilityShiftForEnrolledCard { get; set; }
+
+        [JsonProperty("external")]
+        public ThreeDSecureExternal External { get; set; }
     }
 }

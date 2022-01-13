@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using SecurionPay;
 using SecurionPay.Internal;
@@ -12,10 +12,9 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class CheckoutRequestTests :BaseUnitTestsSet
+        public class CheckoutRequestTests :BaseUnitTestsSet
     {
-        [TestMethod]
+        [Fact]
         public void TestCheckoutRequest()
         {
             var signServiceMock = new Mock<ISignService>();
@@ -31,7 +30,7 @@ namespace SecurionPayTests.Units
             };
             var signedCheckout=gateway.SignCheckoutRequest(checkoutRequest);
             signServiceMock.Verify(service => service.Sign(It.Is<string>(x=>x=="{\"charge\":{\"amount\":499,\"currency\":\"EUR\"}}")));
-            Assert.AreEqual("Y2Y5Y2UyZDgzMzFjNTMxZjgzODlhNjE2YTE4Zjk1NzhjMTM0Yjc4NGRhYjVjYjdlNGI1OTY0ZTc3OTBmMTczY3x7ImNoYXJnZSI6eyJhbW91bnQiOjQ5OSwiY3VycmVuY3kiOiJFVVIifX0=", signedCheckout);
+            Assert.Equal("Y2Y5Y2UyZDgzMzFjNTMxZjgzODlhNjE2YTE4Zjk1NzhjMTM0Yjc4NGRhYjVjYjdlNGI1OTY0ZTc3OTBmMTczY3x7ImNoYXJnZSI6eyJhbW91bnQiOjQ5OSwiY3VycmVuY3kiOiJFVVIifX0=", signedCheckout);
         }
     }
 }

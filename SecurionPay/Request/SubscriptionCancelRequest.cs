@@ -11,8 +11,6 @@ namespace SecurionPay.Request
     {
         [JsonIgnore]
         public String SubscriptionId;
-        [JsonIgnore]
-        public String CustomerId;
 
         [JsonProperty("atPeriodEnd")]
         public bool? AtPeriodEnd;

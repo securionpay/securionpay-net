@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Request;
 using SecurionPay.Response;
 using SecurionPayTests.ModelBuilders;
@@ -12,12 +12,11 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class TokensTests :BaseUnitTestsSet
+        public class TokensTests :BaseUnitTestsSet
     {
         TokenRequestBuilder _tokenRequestBuilder=new TokenRequestBuilder();
 
-        [TestMethod]
+        [Fact]
         public async Task CreateTokenTest()
         {
             var requestTester = GetRequestTester();
@@ -36,7 +35,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task RetrieveTokenTest()
         {
             var requestTester = GetRequestTester();

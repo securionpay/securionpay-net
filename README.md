@@ -1,6 +1,6 @@
 # SecurionPay .NET Library
 
-[![Build status](https://ci.appveyor.com/api/projects/status/84d0yck10hlpaseq/branch/master?svg=true)](https://ci.appveyor.com/project/SecurionPay/securionpay-net/branch/master)
+[![Build](https://github.com/securionpay/securionpay-net/actions/workflows/build.yml/badge.svg)](https://github.com/securionpay/securionpay-net/actions/workflows/build.yml)
 
 If you don't already have SecurionPay account you can create it [here](https://securionpay.com/signup). 
 

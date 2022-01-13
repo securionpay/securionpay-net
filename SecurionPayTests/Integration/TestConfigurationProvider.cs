@@ -10,21 +10,24 @@ namespace SecurionPayTests.Integration
 {
     public class TestConfigurationProvider : ISecretKeyProvider, IConfigurationProvider
     {
-        Configuration _config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+        public TestConfigurationProvider() {
+            DotNetEnv.Env.TraversePath().Load();
+        }
 
         public string GetApiUrl()
         {
-            return _config.AppSettings.Settings["gateway_test_url"].Value;
+            return DotNetEnv.Env.GetString("API_URL", "https://api.securionpay.com/");
         }
 
         public string GetUploadsUrl()
         {
-            return _config.AppSettings.Settings["uploads_test_url"].Value;
+            return DotNetEnv.Env.GetString("UPLOADS_URL", "https://uploads.securionpay.com/");
+    
         }
 
         public string GetSecretKey()
         {
-            return _config.AppSettings.Settings["gateway_test_key"].Value;
+            return DotNetEnv.Env.GetString("SECRET_KEY");
         }
     }
 }

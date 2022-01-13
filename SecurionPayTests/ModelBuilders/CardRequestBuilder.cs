@@ -25,6 +25,12 @@ namespace SecurionPayTests.ModelBuilders
             return this;
         }
 
+        public CardRequestBuilder WithNumberCausingFraudWarning()
+        {
+            _cardNumber = "4242000000000208";
+            return this;
+        }
+
         public CardRequestBuilder WithWrongNumber()
         {
             _cardNumber = "44444444";

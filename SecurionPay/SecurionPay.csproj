@@ -1,206 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9318D796-2A9C-4313-9D14-9C5D3E215C31}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SecurionPay</RootNamespace>
-    <AssemblyName>SecurionPay</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>SecurionPay</PackageId>
+    <Version>3.0.0</Version>
+    <Authors>SecurionPay Team</Authors>
+    <Copyright>Copyright (c) Payments Group AG 2015</Copyright>
+    <Company>Online Payments Group AG</Company>
+    <Description>Wrapper for SecurionPay API</Description>
+    <PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../icon.png" Pack="true" Visible="false" PackagePath=""/>
+  </ItemGroup>
+
+  <PropertyGroup>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="app.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Enums\DisputeReason.cs" />
-    <Compile Include="Enums\DisputeStatus.cs" />
-    <Compile Include="Enums\FileUploadPurpose.cs" />
-    <Compile Include="Enums\FileUploadType.cs" />
-    <Compile Include="Enums\LiabilityShift.cs" />
-    <Compile Include="Internal\ApiClient.cs" />
-    <Compile Include="Converters\DateConverter.cs" />
-    <Compile Include="Internal\ConfigurationProvider.cs" />
-    <Compile Include="Internal\HttpClient.cs" />
-    <Compile Include="Internal\IHttpClient.cs" />
-    <Compile Include="Internal\ReflectionExtensions.cs" />
-    <Compile Include="Internal\UnixDateConverter.cs" />
-    <Compile Include="Internal\FileExtensionToMimeMapper.cs" />
-    <Compile Include="Internal\IApiClient.cs" />
-    <Compile Include="IConfigurationProvider.cs" />
-    <Compile Include="Internal\IFileExtensionToMimeMapper.cs" />
-    <Compile Include="ISecretKeyProvider.cs" />
-    <Compile Include="Internal\ISignService.cs" />
-    <Compile Include="Internal\SignService.cs" />
-    <Compile Include="Request\BaseRequest.cs" />
-    <Compile Include="Request\Checkout\CheckoutRequestCharge.cs" />
-    <Compile Include="Request\Checkout\CheckoutRequest.cs" />
-    <Compile Include="Request\Checkout\CheckoutRequestCustomCharge.cs" />
-    <Compile Include="Request\Checkout\CheckoutRequestSubscription.cs" />
-    <Compile Include="Request\Checkout\CheckoutRequestThreeDSecure.cs" />
-    <Compile Include="Request\Checkout\CustomAmount.cs" />
-    <Compile Include="Request\CreditRequest.cs" />
-    <Compile Include="Request\CreditUpdateRequest.cs" />
-    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequestCharge.cs" />
-    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferListRequest.cs" />
-    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequest.cs" />
-    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferUpdateRequest.cs" />
-    <Compile Include="Request\CrossSaleOffer\CrossSaleOfferRequestSubscription.cs" />
-    <Compile Include="Request\CustomerRecordFeeListRequest.cs" />
-    <Compile Include="Request\CustomerRecordProfitListRequest.cs" />
-    <Compile Include="Request\CustomerRecordRefreshRequest.cs" />
-    <Compile Include="Request\CustomerRecordRequest.cs" />
-    <Compile Include="Common\Address.cs" />
-    <Compile Include="Common\Billing.cs" />
-    <Compile Include="Request\DisputeUpdateRequest.cs" />
-    <Compile Include="Request\FileUploadRequest.cs" />
-    <Compile Include="Request\ListRequest.cs" />
-    <Compile Include="Request\ThreeDSecure.cs" />
-    <Compile Include="Response\BaseResponse.cs" />
-    <Compile Include="Response\Credit.cs" />
-    <Compile Include="Response\CrossSaleOffer.cs" />
-    <Compile Include="Enums\CrossSaleOfferTemplate.cs" />
-    <Compile Include="Response\CrossSaleOfferCharge.cs" />
-    <Compile Include="Response\CrossSaleOfferSubscription.cs" />
-    <Compile Include="Response\CustomerRecord.cs" />
-    <Compile Include="Response\CustomerRecordFee.cs" />
-    <Compile Include="Response\CustomerRecordProfit.cs" />
-    <Compile Include="Response\Dispute.cs" />
-    <Compile Include="Common\DisputeEvidence.cs" />
-    <Compile Include="Response\DisputeEvidenceDetails.cs" />
-    <Compile Include="Response\FileUpload.cs" />
-    <Compile Include="Response\FromCrossSale.cs" />
-    <Compile Include="Common\Shipping.cs" />
-    <Compile Include="Response\ThreeDSecureInfo.cs" />
-    <Compile Include="Response\WithCrossSale.cs" />
-    <Compile Include="SecurionPayException.cs" />
-    <Compile Include="Converters\EventDataConverter.cs" />
-    <Compile Include="Converters\SafeEnumConverter.cs" />
-    <Compile Include="Enums\BlacklistRuleType.cs" />
-    <Compile Include="Enums\CardBrand.cs" />
-    <Compile Include="Enums\CardType.cs" />
-    <Compile Include="Enums\ErrorType.cs" />
-    <Compile Include="Enums\EventType.cs" />
-    <Compile Include="Enums\SubscriptionStatus.cs" />
-    <Compile Include="Request\SubscriptionCancelRequest.cs" />
-    <Compile Include="Request\CaptureRequest.cs" />
-    <Compile Include="Request\ChargeRequest.cs" />
-    <Compile Include="Request\BlacklistRuleRequest.cs" />
-    <Compile Include="Request\CardRequest.cs" />
-    <Compile Include="Request\CustomerRequest.cs" />
-    <Compile Include="Request\CreatedFilter.cs" />
-    <Compile Include="Request\PlanRequest.cs" />
-    <Compile Include="Request\SubscriptionRequest.cs" />
-    <Compile Include="Request\TokenRequest.cs" />
-    <Compile Include="Request\FraudCheckDataRequest.cs" />
-    <Compile Include="Enums\Interval.cs" />
-    <Compile Include="Request\BlacklistRuleListRequest.cs" />
-    <Compile Include="Request\CardListRequest.cs" />
-    <Compile Include="Request\ChargeListRequest.cs" />
-    <Compile Include="Request\CustomerListRequest.cs" />
-    <Compile Include="Request\PlanListRequest.cs" />
-    <Compile Include="Request\SubscriptionListRequest.cs" />
-    <Compile Include="Request\RefundRequest.cs" />
-    <Compile Include="Response\BlacklistRule.cs" />
-    <Compile Include="Response\Card.cs" />
-    <Compile Include="Response\Charge.cs" />
-    <Compile Include="Response\Customer.cs" />
-    <Compile Include="Response\DeleteResponse.cs" />
-    <Compile Include="Response\Error.cs" />
-    <Compile Include="Enums\ErrorCode.cs" />
-    <Compile Include="Response\ErrorResponse.cs" />
-    <Compile Include="Response\Event.cs" />
-    <Compile Include="Response\FraudCheckData.cs" />
-    <Compile Include="Response\FraudDetails.cs" />
-    <Compile Include="Enums\FraudStatus.cs" />
-    <Compile Include="Response\ListResponse.cs" />
-    <Compile Include="Response\Plan.cs" />
-    <Compile Include="Response\Refund.cs" />
-    <Compile Include="Response\SecurionpayList.cs" />
-    <Compile Include="Response\Subscription.cs" />
-    <Compile Include="Response\Token.cs" />
-    <Compile Include="Request\CardUpdateRequest.cs" />
-    <Compile Include="Request\ChargeUpdateRequest.cs" />
-    <Compile Include="Request\CustomerUpdateRequest.cs" />
-    <Compile Include="Request\PlanUpdateRequest.cs" />
-    <Compile Include="Request\SubscriptionUpdateRequest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SecurionPayGateway.cs" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="bouncy_castle_hmac_sha_pcl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BouncyCastle-PCL.1.0.0.6\lib\bouncy_castle_hmac_sha_pcl.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Threading.Tasks">
-      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net40+sl4+win8+wp71+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Threading.Tasks.Extensions">
-      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net40+sl4+win8+wp71+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO">
-      <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\portable-net40+sl5+win8+wp8+wpa81\System.IO.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime">
-      <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\portable-net40+sl5+win8+wp8+wpa81\System.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks">
-      <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\portable-net40+sl5+win8+wp8+wpa81\System.Threading.Tasks.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

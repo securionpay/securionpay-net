@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
@@ -18,54 +18,53 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class BlackListTests :BaseUnitTestsSet
+        public class BlackListTests :BaseUnitTestsSet
     {
 
-        [TestMethod]
+        [Fact]
         public async Task CreateFingerprintBlackListTest()
         {
             await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.Fingerprint, Fingerprint = "test_fp" + DateTime.Now.Millisecond });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateEmailBlackListTest()
         {
             await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.Email, Email = "test" + DateTime.Now.Millisecond + "@example.com" });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateLanguageBlackListTest()
         {
             await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.AcceptLanguage, AcceptLanguage = "test" + DateTime.Now.Millisecond});
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateIpBlackListTest()
         {
             await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.IpAddress, IpAddress = "192.168.11.1" });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateIpCountryBlackListTest()
         {
             await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.IpCountry, IpCountry = "PL" });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateMetadataBlackListTest()
         {
             await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.Metadata, MetadataKey = "key",MetadataValue="value" });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateUserAgentBlackListTest()
         {
             await CreatelBlackListTest(new BlacklistRuleRequest() { RuleType = BlacklistRuleType.UserAgent, IpCountry = "UA" });
         }
 
 
-        [TestMethod]
+        [Fact]
         public async Task RetrieveBlackListTest()
         {
             var requestTester = GetRequestTester();
@@ -84,7 +83,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task DeleteBlackListTest()
         {
             var requestTester = GetRequestTester();
@@ -103,7 +102,7 @@ namespace SecurionPayTests.Units
             );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListBlackListTest()
         {
             var requestTester = GetRequestTester();

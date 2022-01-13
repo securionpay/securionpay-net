@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Enums;
 using SecurionPay.Exception;
 using SecurionPay.Request;
@@ -13,24 +13,23 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Integration
 {
-    [TestClass]
-    public class CrossSaleOfferTests : IntegrationTest
+        public class CrossSaleOfferTests : IntegrationTest
     {
         private PlanRequestBuilder _planRequestBuilder = new PlanRequestBuilder();
 
-        [TestMethod]
+        [Fact]
         public async Task CreateCrossSaleOfferTest()
         {
             try
             {
                 var createRequest = GetCreateRequest();
                 var offer = await _gateway.CreateCrossSaleOffer(createRequest);
-                Assert.AreEqual(createRequest.CompanyLocation, offer.CompanyLocation);
-                Assert.AreEqual(createRequest.Description, offer.Description);
-                Assert.AreEqual(createRequest.Template, offer.Template);
-                Assert.AreEqual(createRequest.CompanyName, offer.CompanyName);
-                Assert.AreEqual(createRequest.Template, offer.Template);
-                Assert.AreEqual(createRequest.Charge.Amount, offer.Charge.Amount);
+                Assert.Equal(createRequest.CompanyLocation, offer.CompanyLocation);
+                Assert.Equal(createRequest.Description, offer.Description);
+                Assert.Equal(createRequest.Template, offer.Template);
+                Assert.Equal(createRequest.CompanyName, offer.CompanyName);
+                Assert.Equal(createRequest.Template, offer.Template);
+                Assert.Equal(createRequest.Charge.Amount, offer.Charge.Amount);
             }
             catch (SecurionPayException exc)
             {
@@ -39,7 +38,7 @@ namespace SecurionPayTests.Integration
         }
 
 
-        [TestMethod]
+        [Fact]
         public async Task CreateCrossSaleOfferWithSubscriptionTest()
         {
             try
@@ -52,12 +51,12 @@ namespace SecurionPayTests.Integration
                 };
                 createRequest.Charge = null;
                 var offer = await _gateway.CreateCrossSaleOffer(createRequest);
-                Assert.AreEqual(createRequest.CompanyLocation, offer.CompanyLocation);
-                Assert.AreEqual(createRequest.Description, offer.Description);
-                Assert.AreEqual(createRequest.Template, offer.Template);
-                Assert.AreEqual(createRequest.CompanyName, offer.CompanyName);
-                Assert.AreEqual(createRequest.Template, offer.Template);
-                Assert.AreEqual(createRequest.Subscription.PlanId, offer.Subscription.PlanId);
+                Assert.Equal(createRequest.CompanyLocation, offer.CompanyLocation);
+                Assert.Equal(createRequest.Description, offer.Description);
+                Assert.Equal(createRequest.Template, offer.Template);
+                Assert.Equal(createRequest.CompanyName, offer.CompanyName);
+                Assert.Equal(createRequest.Template, offer.Template);
+                Assert.Equal(createRequest.Subscription.PlanId, offer.Subscription.PlanId);
             }
             catch (SecurionPayException exc)
             {
@@ -65,7 +64,7 @@ namespace SecurionPayTests.Integration
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task RetrieveCrossSaleOfferTest()
         {
             try
@@ -73,12 +72,12 @@ namespace SecurionPayTests.Integration
                 var createRequest = GetCreateRequest();
                 var offer = await _gateway.CreateCrossSaleOffer(createRequest);
                 var retirevedOffer = await _gateway.RetrieveCrossSaleOffer(offer.Id);
-                Assert.AreEqual(createRequest.CompanyLocation, retirevedOffer.CompanyLocation);
-                Assert.AreEqual(createRequest.Description, retirevedOffer.Description);
-                Assert.AreEqual(createRequest.Template, retirevedOffer.Template);
-                Assert.AreEqual(createRequest.CompanyName, retirevedOffer.CompanyName);
-                Assert.AreEqual(createRequest.Template, retirevedOffer.Template);
-                Assert.AreEqual(createRequest.Charge.Amount, retirevedOffer.Charge.Amount);
+                Assert.Equal(createRequest.CompanyLocation, retirevedOffer.CompanyLocation);
+                Assert.Equal(createRequest.Description, retirevedOffer.Description);
+                Assert.Equal(createRequest.Template, retirevedOffer.Template);
+                Assert.Equal(createRequest.CompanyName, retirevedOffer.CompanyName);
+                Assert.Equal(createRequest.Template, retirevedOffer.Template);
+                Assert.Equal(createRequest.Charge.Amount, retirevedOffer.Charge.Amount);
             }
             catch (SecurionPayException exc)
             {
@@ -86,7 +85,7 @@ namespace SecurionPayTests.Integration
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task UpdateCrossSaleOfferTest()
         {
             try
@@ -111,12 +110,12 @@ namespace SecurionPayTests.Integration
 
                 };
                 var updatedOffer = await _gateway.UpdateCrossSaleOffer(updateRequest);
-                Assert.AreEqual(updateRequest.CompanyLocation, updatedOffer.CompanyLocation);
-                Assert.AreEqual(updateRequest.Description, updatedOffer.Description);
-                Assert.AreEqual(updateRequest.CompanyName, updatedOffer.CompanyName);
-                Assert.AreEqual(updateRequest.Charge.Amount, updatedOffer.Charge.Amount);
-                Assert.AreEqual(updateRequest.Title, updatedOffer.Title);
-                Assert.AreEqual(updateRequest.Template, updatedOffer.Template);
+                Assert.Equal(updateRequest.CompanyLocation, updatedOffer.CompanyLocation);
+                Assert.Equal(updateRequest.Description, updatedOffer.Description);
+                Assert.Equal(updateRequest.CompanyName, updatedOffer.CompanyName);
+                Assert.Equal(updateRequest.Charge.Amount, updatedOffer.Charge.Amount);
+                Assert.Equal(updateRequest.Title, updatedOffer.Title);
+                Assert.Equal(updateRequest.Template, updatedOffer.Template);
             }
             catch (SecurionPayException exc)
             {
@@ -124,7 +123,7 @@ namespace SecurionPayTests.Integration
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListCrossSaleOfferTest()
         {
             try
@@ -132,7 +131,7 @@ namespace SecurionPayTests.Integration
                 var createRequest = GetCreateRequest();
                 var offer = await _gateway.CreateCrossSaleOffer(createRequest);
                 var retirevedOffers = await _gateway.ListCrossSaleOffers();
-                Assert.IsTrue(retirevedOffers.List.Any(x => x.Id == offer.Id));
+                Assert.Contains(retirevedOffers.List, x => x.Id == offer.Id);
             }
             catch (SecurionPayException exc)
             {
@@ -141,7 +140,7 @@ namespace SecurionPayTests.Integration
 
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ListCrossSaleOfferWithFilterTest()
         {
             try
@@ -154,7 +153,7 @@ namespace SecurionPayTests.Integration
                     EndingBeforeId = offer.Id
                 };
                 var retirevedOffers = await _gateway.ListCrossSaleOffers(listRequest);
-                Assert.IsTrue(retirevedOffers.List.All(x => x.Id != offer.Id));
+                Assert.True(retirevedOffers.List.All(x => x.Id != offer.Id));
             }
             catch (SecurionPayException exc)
             {
@@ -162,7 +161,7 @@ namespace SecurionPayTests.Integration
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task DeleteCrossSaleOfferTest()
         {
             try
@@ -170,7 +169,7 @@ namespace SecurionPayTests.Integration
                 var createRequest = GetCreateRequest();
                 var offer = await _gateway.CreateCrossSaleOffer(createRequest);
                 var deleteResponse = await _gateway.DeleteCrossSaleOffer(offer.Id);
-                Assert.AreEqual(offer.Id, deleteResponse.Id);
+                Assert.Equal(offer.Id, deleteResponse.Id);
             }
             catch (SecurionPayException exc)
             {

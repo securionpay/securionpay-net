@@ -25,6 +25,14 @@ namespace SecurionPay.Converters
                     var charge = new Charge();
                     serializer.Populate(jObject.CreateReader(), charge);
                     return charge;
+                case "credit":
+                    var credit = new Credit();
+                    serializer.Populate(jObject.CreateReader(), credit);
+                    return credit;
+                case "dispute":
+                    var dispute = new Dispute();
+                    serializer.Populate(jObject.CreateReader(), dispute);
+                    return dispute;
                 case "subscription":
                     var subscription = new Subscription();
                     serializer.Populate(jObject.CreateReader(), subscription);
@@ -37,10 +45,18 @@ namespace SecurionPay.Converters
                     var customer = new Customer();
                     serializer.Populate(jObject.CreateReader(), customer);
                     return customer;
+                case "fraud_warning":
+                    var warning = new FraudWarning();
+                    serializer.Populate(jObject.CreateReader(), warning);
+                    return warning;
                 case "card":
                     var card = new Card();
                     serializer.Populate(jObject.CreateReader(), card);
                     return card;
+                case "crossSaleOffer":
+                    var crossSaleOffer = new CrossSaleOffer();
+                    serializer.Populate(jObject.CreateReader(), crossSaleOffer);
+                    return crossSaleOffer;
 
 
             }

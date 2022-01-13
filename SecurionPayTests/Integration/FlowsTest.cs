@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SecurionPay.Enums;
 using SecurionPay.Exception;
 using SecurionPay.Request;
@@ -13,8 +13,7 @@ using SecurionPayTests.Utils;
 
 namespace SecurionPayTests.Integration
 {
-    [TestClass]
-    public class FlowsTest : IntegrationTest
+        public class FlowsTest : IntegrationTest
     {
         private CustomerRequestBuilder _customerRequestBuilder = new CustomerRequestBuilder();
         private CardRequestBuilder _cardRequestBuilder = new CardRequestBuilder();
@@ -26,7 +25,7 @@ namespace SecurionPayTests.Integration
         /// test for flow Token -> Charge -> Capture -> Refund
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task ChargeCaptureRefundFlowTest()
         {
             try
@@ -48,11 +47,11 @@ namespace SecurionPayTests.Integration
 
                 charge = await _gateway.RetrieveCharge(charge.Id);
 
-                Assert.IsTrue(charge.Captured);
-                Assert.IsTrue(charge.Refunded);
-                Assert.AreEqual(1, charge.Refunds.Count);
-                Assert.AreEqual(500, charge.Refunds.First().Amount);
-                Assert.AreEqual(chargeRequest.Amount - 500, charge.Amount);
+                Assert.True(charge.Captured);
+                Assert.True(charge.Refunded);
+                Assert.Single(charge.Refunds);
+                Assert.Equal(500, charge.Refunds.First().Amount);
+                Assert.Equal(chargeRequest.Amount - 500, charge.Amount);
             }
             catch (SecurionPayException exc)
             {
@@ -66,7 +65,7 @@ namespace SecurionPayTests.Integration
         /// test for flow Token -> Charge -> Customer -> Charge (existing card)
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task ChargeCustomerFromChargeFlowTest()
         {
             try
@@ -84,8 +83,8 @@ namespace SecurionPayTests.Integration
                 var chargeRequest2 = new ChargeRequestBuilder().WithCustomerId(customer.Id).Build();
                 charge = await _gateway.CreateCharge(chargeRequest2);
 
-                Assert.AreEqual(chargeRequest2.Amount, charge.Amount);
-                Assert.AreEqual(customer.Id, charge.CustomerId);
+                Assert.Equal(chargeRequest2.Amount, charge.Amount);
+                Assert.Equal(customer.Id, charge.CustomerId);
 
             }
             catch (SecurionPayException exc)
@@ -98,7 +97,7 @@ namespace SecurionPayTests.Integration
         /// test for flow Plan -> Customer -> Token -> Subscription
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task SubscribeWithTokenTest()
         {
             try
@@ -115,8 +114,8 @@ namespace SecurionPayTests.Integration
                 var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = new CardRequest() { Id = token.Id } };
                 var subscription = await _gateway.CreateSubscription(subscriptionRequest);
 
-                Assert.AreEqual(plan.Id, subscription.PlanId);
-                Assert.AreEqual(customer.Id, subscription.CustomerId);
+                Assert.Equal(plan.Id, subscription.PlanId);
+                Assert.Equal(customer.Id, subscription.CustomerId);
 
             }
             catch (SecurionPayException exc)
@@ -129,7 +128,7 @@ namespace SecurionPayTests.Integration
         /// test for flow Customer -> Charge -> Charge (existing card)
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task ChargeCustomerTwiceTest()
         {
             try
@@ -146,8 +145,8 @@ namespace SecurionPayTests.Integration
                 var chargeRequest2 = new ChargeRequest() { Amount = 1000, Currency = chargeRequest.Currency, CustomerId = charge.CustomerId };
                 var charge2 = await _gateway.CreateCharge(chargeRequest2);
 
-                Assert.AreEqual(1000,charge2.Amount);
-                Assert.AreEqual(customer.Id, charge2.CustomerId);
+                Assert.Equal(1000, charge2.Amount);
+                Assert.Equal(customer.Id, charge2.CustomerId);
 
             }
             catch (SecurionPayException exc)
@@ -160,7 +159,7 @@ namespace SecurionPayTests.Integration
         /// test for flow Customer -> Add card -> Charge card
         /// </summary>
         /// <returns></returns>
-        [TestMethod]
+        [Fact]
         public async Task ChargeCardTest()
         {
             try
@@ -173,16 +172,16 @@ namespace SecurionPayTests.Integration
 
                 card = await _gateway.RetrieveCard(customer.Id, card.Id);
 
-                Assert.AreEqual(cardRequest.GetLast4(), card.Last4);
-                Assert.AreEqual(cardRequest.ExpMonth, card.ExpMonth);
-                Assert.AreEqual(cardRequest.ExpYear, card.ExpYear);
-                Assert.AreEqual(cardRequest.CardholderName, card.CardholderName);
+                Assert.Equal(cardRequest.GetLast4(), card.Last4);
+                Assert.Equal(cardRequest.ExpMonth, card.ExpMonth);
+                Assert.Equal(cardRequest.ExpYear, card.ExpYear);
+                Assert.Equal(cardRequest.CardholderName, card.CardholderName);
 
                 var chargeReqest = _chargeRequestBuilder.WithCustomerId(customer.Id)
                                                         .Build();
                 var charge =await _gateway.CreateCharge(chargeReqest);
 
-                Assert.AreEqual(chargeReqest.Amount, charge.Amount);
+                Assert.Equal(chargeReqest.Amount, charge.Amount);
                 
             }
             catch (SecurionPayException exc)

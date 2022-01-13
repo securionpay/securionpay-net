@@ -16,7 +16,6 @@ namespace SecurionPay
     public class ApiClient : IApiClient
     {
         private string _privateAuthToken;
-        private string _version = "2.3.2";
         private IHttpClient _client;
         private IFileExtensionToMimeMapper _fileExtensionToMimeMapper;
 
@@ -28,7 +27,10 @@ namespace SecurionPay
             _fileExtensionToMimeMapper = fileExtensionToMimeMapper;
             _client = httpClient;
             _client.SetAuthorizationHeader(new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", _privateAuthToken));
-            _client.AddHeader("User-Agent", string.Format("SecurionPay-DOTNET/{0}", _version));
+            
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            _client.AddHeader("User-Agent", string.Format("SecurionPay-DOTNET/{0}", fvi.ProductVersion));
         }
 
         public async Task<T> SendRequest<T>(HttpMethod method, string url, object parameter)

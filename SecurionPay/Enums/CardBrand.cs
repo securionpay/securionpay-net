@@ -11,8 +11,8 @@ namespace SecurionPay.Enums
         Visa,
         [EnumMember(Value="American Express")]
         AmericanExpress,
-        [EnumMember(Value = "Master")]
         MasterCard,
+        Maestro,
         Discover,
         JCB,
         [EnumMember(Value="Diners Club")]

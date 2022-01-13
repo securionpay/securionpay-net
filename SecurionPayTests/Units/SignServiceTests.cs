@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using Moq;
 using SecurionPay;
 using SecurionPay.Internal;
@@ -10,10 +10,9 @@ using System.Threading.Tasks;
 
 namespace SecurionPayTests.Units
 {
-    [TestClass]
-    public class SignServiceTests
+        public class SignServiceTests
     {
-        [TestMethod]
+        [Fact]
         public void SignTest()
         {
             var mock = new Mock<ISecretKeyProvider>();
@@ -21,7 +20,7 @@ namespace SecurionPayTests.Units
             var subject = new SignService(mock.Object);
             var stringToSign = "{\"charge\":{\"amount\":499,\"currency\":\"EUR\"}}";
             var signature = subject.Sign(stringToSign);
-            Assert.AreEqual("cf9ce2d8331c531f8389a616a18f9578c134b784dab5cb7e4b5964e7790f173c", signature);
+            Assert.Equal("cf9ce2d8331c531f8389a616a18f9578c134b784dab5cb7e4b5964e7790f173c", signature);
         }
     }
 }
