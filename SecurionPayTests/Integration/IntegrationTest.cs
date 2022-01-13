@@ -50,5 +50,19 @@ namespace SecurionPayTests.Integration
             }
         }
 
+        protected async Task WaitUntil(Func<Task<bool>> condition, int timeout, int frequency = 100)
+        {
+            var waitTask = Task.Run(async () =>
+            {
+                while (!(await condition())) 
+                {
+                    await Task.Delay(frequency);
+                }
+            });
+
+            if (waitTask != await Task.WhenAny(waitTask, Task.Delay(timeout))) 
+                throw new TimeoutException();
+        }
+
     }
 }

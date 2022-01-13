@@ -35,11 +35,9 @@ namespace SecurionPay
         private const string EVENTS_PATH = "events";
         private const string BLACKLIST_RULE_PATH = "blacklist";
         private const string CROSS_SALE_OFFER_PATH = "cross-sale-offers";
-        private const string CUSTOMER_RECORDS_PATH = "customer-records";
-        private const string CUSTOMER_RECORD_FEES_PATH = "customer-records/{0}/fees";
-        private const string CUSTOMER_RECORD_PROFITS_PATH = "customer-records/{0}/profits";
         private const string FILES_PATH = "files";
         private const string DISPUTES_PATH= "disputes";
+        private const string FRAUD_WARNING_PATH = "/fraud-warnings";
         private IApiClient _apiClient;
         private ISignService _signService;
         private IConfigurationProvider _configurationProvider;
@@ -369,76 +367,6 @@ namespace SecurionPay
 
         #endregion
 
-        #region customer records
-
-        public async Task<CustomerRecord> CreateCustomerRecord(CustomerRecordRequest request)
-        {
-            return await SendRequest<CustomerRecord>(HttpMethod.Post, CUSTOMER_RECORDS_PATH, request);
-        }
-
-        public async Task<CustomerRecord> RefreshCustomerRecord(CustomerRecordRefreshRequest request)
-        {
-            var url = CUSTOMER_RECORDS_PATH + "/" + request.CustomerRecordId;
-            return await SendRequest<CustomerRecord>(HttpMethod.Post, url, request);
-
-        }
-
-        public async Task<CustomerRecord> RetrieveCustomerRecord(string customerRecordId)
-        {
-            var url = CUSTOMER_RECORDS_PATH + "/" + customerRecordId;
-            return await SendRequest<CustomerRecord>(HttpMethod.Get, url);
-        }
-
-        public async Task<ListResponse<CustomerRecord>> ListCustomerRecords()
-        {
-            return await SendListRequest<CustomerRecord>(HttpMethod.Get, CUSTOMER_RECORDS_PATH);
-
-        }
-
-        public async Task<ListResponse<CustomerRecord>> ListCustomerRecords(ListRequest request)
-        {
-            return await SendListRequest<CustomerRecord>(HttpMethod.Get, CUSTOMER_RECORDS_PATH, request);
-        }
-
-        public async Task<CustomerRecordFee> RetrieveCustomerRecordFee(string customerRecordId, string customerRecordFeeId)
-        {
-            var url = string.Format(CUSTOMER_RECORD_FEES_PATH, customerRecordId) + "/" + customerRecordFeeId;
-            return await SendRequest<CustomerRecordFee>(HttpMethod.Get, url);
-
-        }
-
-        public async Task<ListResponse<CustomerRecordFee>> ListCustomerRecordFees(string customerRecordId)
-        {
-            var url = string.Format(CUSTOMER_RECORD_FEES_PATH, customerRecordId);
-            return await SendListRequest<CustomerRecordFee>(HttpMethod.Get, url);
-        }
-
-        public async Task<ListResponse<CustomerRecordFee>> ListCustomerRecordFees(CustomerRecordFeeListRequest request)
-        {
-            var url = string.Format(CUSTOMER_RECORD_FEES_PATH, request.CustomerRecordId);
-            return await SendListRequest<CustomerRecordFee>(HttpMethod.Get, url, request);
-        }
-
-        public async Task<CustomerRecordProfit> RetrieveCustomerRecordProfit(string customerRecordId, string customerRecordProfitId)
-        {
-            var url = string.Format(CUSTOMER_RECORD_PROFITS_PATH, customerRecordId) + "/" + customerRecordProfitId;
-            return await SendRequest<CustomerRecordProfit>(HttpMethod.Get, url);
-        }
-
-        public async Task<ListResponse<CustomerRecordProfit>> ListCustomerRecordProfits(string customerRecordId)
-        {
-            var url = string.Format(CUSTOMER_RECORD_PROFITS_PATH, customerRecordId);
-            return await SendListRequest<CustomerRecordProfit>(HttpMethod.Get, url);
-        }
-
-        public async Task<ListResponse<CustomerRecordProfit>> ListCustomerRecordProfits(CustomerRecordProfitListRequest request)
-        {
-            var url = string.Format(CUSTOMER_RECORD_PROFITS_PATH, request.CustomerRecordId);
-            return await SendListRequest<CustomerRecordProfit>(HttpMethod.Get, url);
-        }
-
-        #endregion
-
         #region credits
 
         public async Task<ListResponse<Credit>> ListCredits()
@@ -493,6 +421,28 @@ namespace SecurionPay
             var url = string.Format("{0}/{1}/close", DISPUTES_PATH,id);
             return await SendRequest<Dispute>(HttpMethod.Post, url);
         }
+
+        #endregion
+
+        #region fraud-warnings
+
+        public async Task<FraudWarning> RetriveFraudWarning(string id)
+        {
+            var url = FRAUD_WARNING_PATH + "/" + id;
+            return await SendRequest<FraudWarning>(HttpMethod.Get, url);
+        }
+        
+        public async Task<ListResponse<FraudWarning>> ListFraudWarnings()
+        {
+            return await SendListRequest<FraudWarning>(HttpMethod.Get, FRAUD_WARNING_PATH);
+        }
+
+        public async Task<ListResponse<FraudWarning>> ListFraudWarnings(FraudWarningListRequest request)
+        {
+            return await SendListRequest<FraudWarning>(HttpMethod.Get, FRAUD_WARNING_PATH, request);
+        }
+
+
 
         #endregion
 
