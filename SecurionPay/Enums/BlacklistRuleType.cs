@@ -22,6 +22,12 @@ namespace SecurionPay.Enums
         UserAgent,
         [EnumMember(Value = "accept_language")]
         AcceptLanguage,
+        [EnumMember(Value = "card_country")]
+        CardCountry,
+        [EnumMember(Value = "card_bin")]
+        CardBin,
+        [EnumMember(Value = "card_issuer")]
+        CardIssuer,
 
 
         //Used when received value can't be mapped to this enumeration.

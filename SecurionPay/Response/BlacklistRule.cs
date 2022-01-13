@@ -47,6 +47,15 @@ namespace SecurionPay.Response
         [JsonProperty("acceptLanguage")]
         public String AcceptLanguage { get; set; }
 
+        [JsonProperty("cardCountry")]
+        public String CardCountry { get; set; }
+
+        [JsonProperty("cardBin")]
+        public String CardBin { get; set; }
+
+        [JsonProperty("cardIssuer")]
+        public String CardIssuer { get; set; }
+
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }
     }

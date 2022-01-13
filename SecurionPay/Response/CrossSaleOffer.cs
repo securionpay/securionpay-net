@@ -51,6 +51,9 @@ namespace SecurionPay.Response
         [JsonProperty("partnerId")]
         public string PartnerId { get; set; }
 
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
         [JsonProperty("visibleForAllPartners")]
         public bool VisibleForAllPartners { get; set; }
 

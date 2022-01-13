@@ -48,6 +48,9 @@ namespace SecurionPay.Request.CrossSaleOffer
         [JsonProperty("visibleForPartnerIds")]
         public List<string> VisibleForPartnerIds { get; set; }
 
+        [JsonProperty("url")]
+        public String Url { get; set; }
+
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }
     }

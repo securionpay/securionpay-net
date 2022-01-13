@@ -47,5 +47,8 @@ namespace SecurionPay.Response
         [JsonProperty("failureMessage")]
         public string FailureMessage { get; set; }
 
+        [JsonProperty("failureIssuerDeclineCode")]
+        public string FailureIssuerDeclineCode { get; set; }
+
     }
 }

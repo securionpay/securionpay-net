@@ -26,5 +26,9 @@ namespace SecurionPay.Response
         [JsonConverter(typeof(SafeEnumConverter))]
         public LiabilityShift LiabilityShift { get; set; }
 
+        [JsonProperty("authenticationFlow")]
+        [JsonConverter(typeof(SafeEnumConverter))]
+        public AuthenticationFlow AuthenticationFlow { get; set; }
+
     }
 }

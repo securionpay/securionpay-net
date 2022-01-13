@@ -44,6 +44,12 @@ namespace SecurionPay.Response
         [JsonConverter(typeof(SafeEnumConverter))]
         public CardType Type { get; set; }
 
+        [JsonProperty("country")]
+        public String Country { get; set; }
+
+        [JsonProperty("issuer")]
+        public String Issuer { get; set; }
+
         [JsonProperty("addressLine1")]
         public String AddressLine1 { get; set; }
 
@@ -64,9 +70,6 @@ namespace SecurionPay.Response
 
         [JsonProperty("fingerprint")]
         public string Fingerprint { get; set; }
-
-        [JsonProperty("subscriptionId")]
-        public string SubscriptionId { get; set; }
 
         [JsonProperty("fraudCheckData")]
         public FraudCheckData FraudCheckData { get; set; }

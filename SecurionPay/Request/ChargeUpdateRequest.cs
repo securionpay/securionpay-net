@@ -22,6 +22,9 @@ namespace SecurionPay.Request
         [JsonProperty("billing")]
         public Billing Billing { get; set; }
 
+        [JsonProperty("fraudDetails")]
+        public ChargeFraudDetailRequest FraudDetails { get; set; }
+
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }
 

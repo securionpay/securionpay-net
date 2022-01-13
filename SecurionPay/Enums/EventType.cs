@@ -60,6 +60,25 @@ namespace SecurionPay.Enums
         [EnumMember(Value = "PLAN_DELETED")]
         PlanDeleted,
 
+        [EnumMember(Value = "CROSS_SALE_OFFER_CREATED")]
+        CrossSaleOfferCreated,
+        [EnumMember(Value = "CROSS_SALE_OFFER_UPDATED")]
+        CrossSaleOfferUpdated,
+        [EnumMember(Value = "CROSS_SALE_OFFER_DELETED")]
+        CrossSaleOfferDeleted,
+        
+        [EnumMember(Value = "FRAUD_WARNING_CREATED")]
+        FraudWarningCreated,
+        [EnumMember(Value = "FRAUD_WARNING_UPDATED")]
+        FraudWarningUpdated,
+
+        [EnumMember(Value = "CREDIT_SUCCEEDED")]
+        CreditSucceeded,
+        [EnumMember(Value = "CREDIT_FAILED")]
+        CreditFailed,
+        [EnumMember(Value = "CREDIT_UPDATED")]
+        CreditUpdated,
+
 
         //Used when received value can't be mapped to this enumeration.
         Unrecognized
