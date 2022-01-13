@@ -11,9 +11,6 @@ namespace SecurionPay.Request
         [JsonIgnore]
         public String SubscriptionId { get; set; }
 
-        [JsonIgnore]
-        public String CustomerId { get; set; }
-
         [JsonProperty("planId")]
         public String PlanId { get; set; }
 

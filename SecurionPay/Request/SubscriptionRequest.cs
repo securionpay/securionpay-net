@@ -8,7 +8,7 @@ namespace SecurionPay.Request
 {
     public class SubscriptionRequest : BaseRequest
     {
-        [JsonIgnore]
+        [JsonProperty("customerId")]
         public String CustomerId { get; set; }
 
         [JsonProperty("planId")]

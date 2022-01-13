@@ -45,6 +45,29 @@ namespace SecurionPayTests.Integration
         }
 
         [Fact]
+        public async Task CancelSubscribtion()
+        {
+            try
+            {
+                // given
+                var plan = await _gateway.CreatePlan(_planRequestBuilder.Build());
+                var customer = await _gateway.CreateCustomer(_customerRequestBuilder.Build());
+                var subscriptionRequest = new SubscriptionRequest() { CustomerId = customer.Id, PlanId = plan.Id, Card = _cardRequestBuilder.Build() };
+                var subscription = await _gateway.CreateSubscription(subscriptionRequest);
+                // when
+                await _gateway.CancelSubscription(new SubscriptionCancelRequest() { SubscriptionId = subscription.Id });
+                subscription = await _gateway.RetrieveSubscription(subscription.Id);
+                // then
+                Assert.True(subscription.Deleted);
+
+            }
+            catch (SecurionPayException exc)
+            {
+                HandleApiException(exc);
+            }
+        }
+
+        [Fact]
         public async Task SubscribeCaptureChargesByDefaultTest()
         {
             try

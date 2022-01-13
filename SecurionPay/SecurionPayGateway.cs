@@ -31,7 +31,7 @@ namespace SecurionPay
         private const string CUSTOMERS_PATH = "customers";
         private const string CARDS_PATH = "customers/{0}/cards";
         private const string PLANS_PATH = "plans";
-        private const string SUBSCRIPTIONS_PATH = "customers/{0}/subscriptions";
+        private const string SUBSCRIPTIONS_PATH = "subscriptions";
         private const string EVENTS_PATH = "events";
         private const string BLACKLIST_RULE_PATH = "blacklist";
         private const string CROSS_SALE_OFFER_PATH = "cross-sale-offers";
@@ -235,39 +235,36 @@ namespace SecurionPay
 
         public async Task<Subscription> CreateSubscription(SubscriptionRequest createSubscriptionRequest)
         {
-            var url = string.Format(SUBSCRIPTIONS_PATH, createSubscriptionRequest.CustomerId);
-            return await SendRequest<Subscription>(HttpMethod.Post, url, createSubscriptionRequest);
+            return await SendRequest<Subscription>(HttpMethod.Post, SUBSCRIPTIONS_PATH, createSubscriptionRequest);
         }
 
-        public async Task<Subscription> RetrieveSubscription(string customerId, string id)
+        public async Task<Subscription> RetrieveSubscription(string id)
         {
-            var url = string.Format(SUBSCRIPTIONS_PATH, customerId) + "/" + id;
+            var url = SUBSCRIPTIONS_PATH + "/" + id;
             return await SendRequest<Subscription>(HttpMethod.Get, url);
         }
 
         public async Task<Subscription> UpdateSubscription(SubscriptionUpdateRequest updateSubscriptionRequest)
         {
-            var url = string.Format(SUBSCRIPTIONS_PATH, updateSubscriptionRequest.CustomerId) + "/" + updateSubscriptionRequest.SubscriptionId;
+            var url = SUBSCRIPTIONS_PATH + "/" + updateSubscriptionRequest.SubscriptionId;
             return await SendRequest<Subscription>(HttpMethod.Post, url, updateSubscriptionRequest);
         }
 
-        public async Task<ListResponse<Subscription>> ListSubscriptions(string customerId)
+        public async Task<ListResponse<Subscription>> ListSubscriptions()
         {
-            var url = string.Format(SUBSCRIPTIONS_PATH, customerId);
-            return await SendListRequest<Subscription>(HttpMethod.Get, url);
+            return await SendListRequest<Subscription>(HttpMethod.Get, SUBSCRIPTIONS_PATH);
 
         }
 
         public async Task<Subscription> CancelSubscription(SubscriptionCancelRequest cancelSubscriptionsRequest)
         {
-            var url = string.Format(SUBSCRIPTIONS_PATH, cancelSubscriptionsRequest.CustomerId) + "/" + cancelSubscriptionsRequest.SubscriptionId;
+            var url = SUBSCRIPTIONS_PATH + "/" + cancelSubscriptionsRequest.SubscriptionId;
             return await SendRequest<Subscription>(HttpMethod.Delete, url, cancelSubscriptionsRequest);
         }
 
         public async Task<ListResponse<Subscription>> ListSubscriptions(SubscriptionListRequest request)
         {
-            var url = string.Format(SUBSCRIPTIONS_PATH, request.CustomerId);
-            return await SendListRequest<Subscription>(HttpMethod.Get, url, request);
+            return await SendListRequest<Subscription>(HttpMethod.Get, SUBSCRIPTIONS_PATH, request);
         }
 
         #endregion
@@ -662,5 +659,6 @@ namespace SecurionPay
         }
 
         #endregion
+
     }
 }
