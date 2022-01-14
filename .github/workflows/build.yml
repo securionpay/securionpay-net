@@ -54,11 +54,9 @@ jobs:
         uses: actions/download-artifact@v2      
         with:
           name: nuget-package
-      - name: Publish package dto NuGet
+      - name: Publish package to nuget.org
         run: >-
-          dotnet nuget push SecurionPay.*.nupkg 
-            --api-key $NUGET_API_KEY
-            --source https://api.nuget.org/v3/index.json
+          dotnet nuget push SecurionPay.*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
 
   create-release:
     if: startsWith(github.event.ref, 'refs/tags/v')
