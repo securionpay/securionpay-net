@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   
@@ -20,8 +20,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    
-    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" Condition="'$(TargetFramework)' == 'netcoreapp2.1'" />
+  
   </ItemGroup>
   
   <ItemGroup>
