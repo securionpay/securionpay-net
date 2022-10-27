@@ -16,5 +16,8 @@ namespace SecurionPay.Common
 
         [JsonProperty("vat")]
         public string Vat { get; set; }
+
+        [JsonProperty("email")]
+        public string Email { get; set; }
     }
 }

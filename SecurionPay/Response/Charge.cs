@@ -17,6 +17,9 @@ namespace SecurionPay.Response
         [JsonProperty("id")]
         public String Id { get; set; }
 
+        [JsonProperty("clientObjectId")]
+        public String ClientObjectId { get; set; }
+
         [JsonProperty("created")]
         [JsonConverter(typeof(DateConverter))]
         public DateTime Created { get; set; }
@@ -30,8 +33,18 @@ namespace SecurionPay.Response
         [JsonProperty("description")]
         public String Description { get; set; }
 
+        [JsonProperty("status")]
+        [JsonConverter(typeof(SafeEnumConverter))]
+        public ChargeStatus Status { get; set; }
+
         [JsonProperty("card")]
         public Card Card { get; set; }
+
+        [JsonProperty("paymentMethod")]
+        public PaymentMethod PaymentMethod { get; set; }
+
+        [JsonProperty("flow")]
+        public ChargeFlow ChargeFlow { get; set; }
 
         [JsonProperty("customerId")]
         public String CustomerId { get; set; }

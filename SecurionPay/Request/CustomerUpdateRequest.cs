@@ -23,5 +23,8 @@ namespace SecurionPay.Request
 
         [JsonProperty("defaultCardId")]
         public String DefaultCardId { get; set; }
+
+        [JsonProperty("defaultPaymentMethodId")]
+        public String DefaultPaymentMethodId { get; set; }
     }
 }
