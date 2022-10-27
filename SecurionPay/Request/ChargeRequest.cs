@@ -38,6 +38,12 @@ namespace SecurionPay.Request
         [JsonProperty("card")]
         public CardRequest Card { get; set; }
 
+        [JsonProperty("paymentMethod")]
+        public PaymentMethodRequest paymentMethod { get; set; }
+
+        [JsonProperty("flow")]
+        public ChargeFlowRequest flow { get; set; }
+
         [JsonProperty("metadata")]
         public Dictionary<String, String> Metadata { get; set; }
     }

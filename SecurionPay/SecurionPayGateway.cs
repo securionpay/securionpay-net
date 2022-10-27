@@ -30,6 +30,7 @@ namespace SecurionPay
         private const string TOKENS_PATH = "tokens";
         private const string CUSTOMERS_PATH = "customers";
         private const string CARDS_PATH = "customers/{0}/cards";
+        private const string PAYMENT_METHODS_PATH = "payment-methods";
         private const string PLANS_PATH = "plans";
         private const string SUBSCRIPTIONS_PATH = "subscriptions";
         private const string EVENTS_PATH = "events";
@@ -190,6 +191,30 @@ namespace SecurionPay
             return await SendListRequest<Card>(HttpMethod.Get, url, request);
         }
 
+        #endregion
+
+        #region PaymentMethods
+
+        public async Task<PaymentMethod> CreatePaymentMethod(PaymentMethodRequest createPaymentMethodRequest)
+        {
+            return await SendRequest<PaymentMethod>(HttpMethod.Post, PAYMENT_METHODS_PATH, createPaymentMethodRequest);
+        }
+
+        public async Task<PaymentMethod> RetrievePaymentMethod(string id)
+        {
+            return await SendRequest<PaymentMethod>(HttpMethod.Get, PAYMENT_METHODS_PATH + "/" + id);
+        }
+
+        public async Task<DeleteResponse> DeletePaymentMethod(string id)
+        {
+            return await SendRequest<DeleteResponse>(HttpMethod.Delete, PAYMENT_METHODS_PATH + "/" + id);
+        }
+
+        public async Task<ListResponse<PaymentMethod>> ListPaymentMethods(PaymentMethodListRequest request)
+        {
+            return await SendListRequest<PaymentMethod>(HttpMethod.Get, PAYMENT_METHODS_PATH, request);
+        }
+        
         #endregion
 
         #region plans
