@@ -1,3 +1,8 @@
+Deprecation
+===================================
+
+This library is deprecated. Please use [Shift4 .NET Library](https://github.com/shift4developer/shift4-net).
+
 # SecurionPay .NET Library
 
 [![Build](https://github.com/securionpay/securionpay-net/actions/workflows/build.yml/badge.svg)](https://github.com/securionpay/securionpay-net/actions/workflows/build.yml)
